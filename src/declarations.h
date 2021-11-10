@@ -1,0 +1,20 @@
+#ifndef DECLARE_H
+#define DECLARE_H
+
+#define WINDOW_HEIGHT 640
+#define WINDOW_WIDTH 640
+
+// Ensure that the grid is centered
+#define GRID_SIZE 450
+
+#define GRID_POSITION_X ((WINDOW_WIDTH - GRID_SIZE)/2)
+#define GRID_POSITION_Y ((WINDOW_HEIGHT - GRID_SIZE)/2)
+
+#define SPRITE_UPDATE_DELAY 100
+
+#define NUMBER_OF_BLOCKS 10
+
+#define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 7)
+#define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 7)
+
+#endif // !DECLARE_H
