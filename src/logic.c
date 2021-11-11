@@ -1,5 +1,8 @@
 
 #include "stdbool.h"
+#include "stdlib.h"
+#include "time.h"
+
 #include "declarations.h"
 #include "utils.h"
 #include "logic.h"
@@ -68,7 +71,6 @@ void display_board(GameSprites* all_sprites) {
             BoardElement element = MAP[row][col];
                 switch (element) {
                     case EMPTY:
-                        continue;
                         break;
                     case PACMAN:
                         pacman->rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * row);
@@ -80,8 +82,8 @@ void display_board(GameSprites* all_sprites) {
                         current_food_index ++;
                         break;
                     case BLOCK:
-                        blocks->rect[current_block_index].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
                         blocks->rect[current_block_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
+                        blocks->rect[current_block_index].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
                         current_block_index ++;
                         break;
                     case EXIT:
@@ -139,11 +141,11 @@ void move_pacman(Move move, GameSprites* all_sprites) {
     Sprite* pacman = &all_sprites->pacman;
 
     int future_position;
-    MAP[curr_x][curr_y] = EMPTY;
     switch (move) {
         case MOVE_UP:
             future_position = MAP[curr_x - 1][curr_y];
             MAP[curr_x - 1][curr_y] = PACMAN;
+            MAP[curr_x][curr_y] = EMPTY;
 
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 270;
@@ -151,6 +153,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
         case MOVE_DOWN:
             future_position = MAP[curr_x + 1][curr_y];
             MAP[curr_x + 1][curr_y] = PACMAN;
+            MAP[curr_x][curr_y] = EMPTY;
 
             pacman->flip = SDL_FLIP_VERTICAL;
             pacman->rotation = 90;
@@ -158,6 +161,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
         case MOVE_LEFT:
             future_position = MAP[curr_x][curr_y -1];
             MAP[curr_x][curr_y - 1] = PACMAN;
+            MAP[curr_x][curr_y] = EMPTY;
 
             pacman->flip = SDL_FLIP_HORIZONTAL;
             pacman->rotation = 0;
@@ -165,6 +169,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
         case MOVE_RIGHT:
             future_position = MAP[curr_x][curr_y +1];
             MAP[curr_x][curr_y + 1] = PACMAN;
+            MAP[curr_x][curr_y] = EMPTY;
 
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 0;
@@ -239,12 +244,18 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     sprites.blocks = blocks;
     sprites.foods = foods;
 
-    fill_board_with_blocks();
-    fill_board_with_food();
 
     return sprites;
 }
 
 void run_game(SDL_Renderer *renderer, GameSprites* all_sprites) {
     display_board(all_sprites);
+}
+
+void init_game() {
+
+    time_t t;
+    srand((unsigned) time(&t));
+    fill_board_with_blocks();
+    fill_board_with_food();
 }

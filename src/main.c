@@ -15,6 +15,7 @@ int main (int argc, char *argv[]) {
     IMG_Init(IMG_INIT_PNG);
     SDL_SetRenderDrawColor(renderer, 236, 239, 244, 1);
      
+    init_game();
     GameSprites all_sprites = load_all_sprites(renderer);
      
 

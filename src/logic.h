@@ -15,5 +15,7 @@ void display_board(GameSprites* all_sprites);
 
 GameSprites load_all_sprites(SDL_Renderer *renderer);
 
+void init_game();
+
 extern int NUMBER_OF_FOODS;
 #endif // !DECLARE_H
