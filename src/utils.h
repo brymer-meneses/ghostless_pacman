@@ -18,17 +18,6 @@ typedef struct Sprite {
     int                 frame_size;
 } Sprite;
 
-typedef struct SpriteCollection {
-    SDL_Renderer        *renderer;
-    SDL_Texture         *texture;
-    SDL_Rect            *rect;
-    SDL_RendererFlip    flip;
-    float               rotation;
-    int                 total_frames;
-    int                 frame_size;
-    int                 total_sprites;
-} SpriteCollection;
-
 typedef struct Position {
     int x;
     int y;
@@ -41,11 +30,4 @@ SDL_Window* create_window();
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect);
 void draw_sprite(Sprite *sprite);
 
-SpriteCollection load_sprite_collection(int number_of_sprites, 
-                                        SDL_Renderer* renderer,
-                                        char* filename,
-                                        int sprite_frame_size,
-                                        int total_frames, 
-                                        SDL_Rect rect);
-void draw_sprite_collection(SpriteCollection *sprite_collection);
 #endif // !UTILS_H

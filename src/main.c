@@ -23,8 +23,10 @@ int main (int argc, char *argv[]) {
     while (!user_wants_to_quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) user_wants_to_quit = true; 
-            else if (event.type == SDL_KEYDOWN) handle_keypress(event, &all_sprites);
+            if (event.type == SDL_QUIT) 
+                user_wants_to_quit = true; 
+            else if (event.type == SDL_KEYDOWN) 
+                handle_keypress(event, &all_sprites);
         }
         SDL_RenderClear(renderer);
         display_board(&all_sprites);

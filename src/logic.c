@@ -43,11 +43,10 @@ static int MAP[10][10] = {
 
 // TODO: Get number of food from user
 // DEBUG: Set it to 8 for now
-int NUMBER_OF_FOODS = 8;
+int NUMBER_OF_FOODS = 10;
 static int PLAYER_SCORE = 0;
 
 static PlayerState PLAYER_STATE = PLAYER_STILL_PLAYING;
-
 
 
 // void display_board(Sprite *pacman, Sprite *grid) {
@@ -55,13 +54,11 @@ void display_board(GameSprites* all_sprites) {
 
     Sprite* grid = &all_sprites->grid;
     Sprite* pacman = &all_sprites->pacman;
-    SpriteCollection* foods = &all_sprites->foods;
-    SpriteCollection* blocks = &all_sprites->blocks;
+    Sprite* foods = all_sprites->foods;
+    Sprite* blocks = all_sprites->blocks;
 
     draw_sprite(grid);
     draw_sprite(pacman);
-    draw_sprite_collection(foods);
-    draw_sprite_collection(blocks);
 
     int current_food_index = 0;
     int current_block_index = 0;
@@ -72,15 +69,18 @@ void display_board(GameSprites* all_sprites) {
                 switch (element) {
                     case EMPTY:
                     case PACMAN:
+                        continue;
                         break;
                     case FOOD:
-                        foods->rect[current_food_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
-                        foods->rect[current_food_index].x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
+                        foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
+                        foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
+                        draw_sprite(&foods[current_food_index]);
                         current_food_index++;
                         break;
                     case BLOCK:
-                        blocks->rect[current_block_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
-                        blocks->rect[current_block_index].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
+                        blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        draw_sprite(&blocks[current_block_index]);
                         current_block_index++;
                         break;
                     case EXIT:
@@ -118,10 +118,10 @@ void check_if_player_won() {
 
 void fill_board_with_food() {
     int total_foods_generated = 0;
-    while (total_foods_generated != NUMBER_OF_FOODS){
+    while (total_foods_generated < NUMBER_OF_FOODS){
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY) {
+         if (MAP[rand_x][rand_y] == EMPTY && rand_x > 0 && rand_y > 0) {
             MAP[rand_x][rand_y] = FOOD;
             total_foods_generated++;
         }
@@ -130,10 +130,10 @@ void fill_board_with_food() {
 
 void fill_board_with_blocks() {
     int total_blocks_generated = 0;
-    while (total_blocks_generated != NUMBER_OF_BLOCKS) {
+    while (total_blocks_generated < NUMBER_OF_BLOCKS) {
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY) {
+         if (MAP[rand_x][rand_y] == EMPTY && rand_x > 0 && rand_y > 0) {
              MAP[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
         }
@@ -202,9 +202,10 @@ void move_pacman(Move move, GameSprites* all_sprites) {
         PLAYER_STATE = PLAYER_LOST;
     } else if (MAP[future_position.x][future_position.y] == FOOD) {
         PLAYER_SCORE++;
+        printf("New Score: %d\n", PLAYER_SCORE);
         MAP[future_position.x][future_position.y] = EMPTY;
     }
-    printf("%d\n", PLAYER_SCORE);
+    // printf("%d\n", PLAYER_SCORE);
 }
 
 void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
@@ -255,31 +256,32 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     Sprite exit = load_sprite(renderer, "assets/exit.png", 40, 10, exit_rect);
 
     SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
-    SpriteCollection blocks = load_sprite_collection(NUMBER_OF_BLOCKS, renderer, "assets/box.png", 0, 1, block_rect);
-
     SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
-    SpriteCollection foods = load_sprite_collection(NUMBER_OF_BLOCKS, renderer, "assets/food.png", 0, 1, food_rect);
-
 
     GameSprites sprites;
     sprites.pacman = pacman;
     sprites.grid = grid;
     sprites.exit = exit;
-    sprites.blocks = blocks;
-    sprites.foods = foods;
+
+    sprites.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
+    sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
+
+    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
+        sprites.blocks[i] = load_sprite(renderer, "assets/box.png", 0 , 1, block_rect);
+    }
+
+    for (int i=0; i<NUMBER_OF_FOODS; i++) {
+        sprites.foods[i] = load_sprite(renderer, "assets/food.png", 0 , 1, food_rect);
+    }
 
 
+    fill_board_with_blocks();
+    fill_board_with_food();
     return sprites;
-}
-
-void run_game(SDL_Renderer *renderer, GameSprites* all_sprites) {
-    display_board(all_sprites);
 }
 
 void init_game() {
 
     time_t t;
     srand((unsigned) time(&t));
-    fill_board_with_blocks();
-    fill_board_with_food();
 }
