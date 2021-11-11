@@ -2,6 +2,7 @@
 #include "stdbool.h"
 #include "declarations.h"
 #include "utils.h"
+#include "logic.h"
 
 typedef enum BoardElement {
     EMPTY,
@@ -39,17 +40,26 @@ static int MAP[10][10] = {
 
 // TODO: Get number of food from user
 // DEBUG: Set it to 8 for now
-static int NUMBER_OF_FOODS = 8;
+int NUMBER_OF_FOODS = 8;
 static int PLAYER_SCORE = 0;
 
 static PlayerState PLAYER_STATE = PLAYER_STILL_PLAYING;
 
 
 
-void display_board(Sprite *pacman, Sprite *grid) {
-// void display_board(Sprite *pacman, Sprite* exit, Sprite *grid, Sprite blocks[NUMBER_OF_BLOCKS], Sprite foods[NUMBER_OF_FOODS]) {
+// void display_board(Sprite *pacman, Sprite *grid) {
+void display_board(GameSprites* all_sprites) {
+
+    Sprite* grid = &all_sprites->grid;
+    Sprite* pacman = &all_sprites->pacman;
+    SpriteCollection* foods = &all_sprites->foods;
+    SpriteCollection* blocks = &all_sprites->blocks;
+
     draw_sprite(grid);
     draw_sprite(pacman);
+    draw_sprite_collection(foods);
+    draw_sprite_collection(blocks);
+
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             BoardElement element = MAP[row][col];
@@ -62,12 +72,12 @@ void display_board(Sprite *pacman, Sprite *grid) {
                         pacman->rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * col);
                         break;
                     case FOOD:
-                        // foods[row + col].rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * col);
-                        // foods[row + col].rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * row);
+                        foods->rect[row+col % NUMBER_OF_FOODS].y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
+                        foods->rect[row+col % NUMBER_OF_FOODS].x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
                         break;
                     case BLOCK:
-                        // blocks[row + col].rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * row);
-                        // blocks[row + col].rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * col);
+                        blocks->rect[row+col].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        blocks->rect[row+col].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
                         break;
                     case EXIT:
                         break;
@@ -116,10 +126,12 @@ void fill_board_with_blocks() {
     }
 }
 
-void move_pacman(Move move, Sprite *pacman) {
+void move_pacman(Move move, GameSprites* all_sprites) {
     Position current_position = query_pacman_position();
     int curr_x = current_position.x;
     int curr_y = current_position.y;
+
+    Sprite* pacman = &all_sprites->pacman;
 
     int future_position;
     MAP[curr_x][curr_y] = EMPTY;
@@ -161,7 +173,7 @@ void move_pacman(Move move, Sprite *pacman) {
     }
 }
 
-void handle_keypress(SDL_Event event, Sprite* pacman) {
+void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
     /* 
         A function that handles the various keypresses of the user.
         params: 
@@ -176,16 +188,16 @@ void handle_keypress(SDL_Event event, Sprite* pacman) {
     switch (event.key.keysym.scancode) {
         // Moving pacman
         case SDL_SCANCODE_W:
-            move_pacman(MOVE_UP, pacman);
+            move_pacman(MOVE_UP, all_sprites);
             break;
         case SDL_SCANCODE_A:
-            move_pacman(MOVE_LEFT, pacman);
+            move_pacman(MOVE_LEFT, all_sprites);
             break;
         case SDL_SCANCODE_S:
-            move_pacman(MOVE_DOWN, pacman);
+            move_pacman(MOVE_DOWN, all_sprites);
             break;
         case SDL_SCANCODE_D:
-            move_pacman(MOVE_RIGHT, pacman);
+            move_pacman(MOVE_RIGHT, all_sprites);
             break;
 
         // Misc
@@ -198,4 +210,36 @@ void handle_keypress(SDL_Event event, Sprite* pacman) {
     }
 }
 
+GameSprites load_all_sprites(SDL_Renderer* renderer) {
+    SDL_Rect pacman_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=34, .w=34};
+    Sprite pacman = load_sprite(renderer, "assets/pacman.png", 40, 10, pacman_rect);
 
+    SDL_Rect grid_rect = {GRID_POSITION_X, GRID_POSITION_Y, GRID_SIZE, GRID_SIZE};
+    Sprite grid = load_sprite(renderer, "assets/grid.png", 0, 1, grid_rect);
+
+    SDL_Rect exit_rect = {GRID_POSITION_X, GRID_POSITION_Y, 33, 23};
+    Sprite exit = load_sprite(renderer, "assets/exit.png", 40, 10, exit_rect);
+
+    SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
+    SpriteCollection blocks = load_sprite_collection(NUMBER_OF_BLOCKS, renderer, "assets/box.png", 0, 1, block_rect);
+
+    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
+    SpriteCollection foods = load_sprite_collection(NUMBER_OF_BLOCKS, renderer, "assets/food.png", 0, 1, food_rect);
+
+
+    GameSprites sprites;
+    sprites.pacman = pacman;
+    sprites.grid = grid;
+    sprites.exit = exit;
+    sprites.blocks = blocks;
+    sprites.foods = foods;
+
+    fill_board_with_blocks();
+    fill_board_with_food();
+
+    return sprites;
+}
+
+void run_game(SDL_Renderer *renderer, GameSprites* all_sprites) {
+    display_board(all_sprites);
+}

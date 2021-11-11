@@ -2,6 +2,18 @@
 #define LOGIC_H
 #include "utils.h"
 
-void handle_keypress(SDL_Event event, Sprite *pacman);
-void display_board(Sprite *pacman, Sprite *grid);
+typedef struct GameSprites {
+    Sprite pacman;
+    Sprite grid;
+    Sprite exit;
+    SpriteCollection blocks;
+    SpriteCollection foods ;
+} GameSprites;
+
+void handle_keypress(SDL_Event event, GameSprites* all_sprites);
+void display_board(GameSprites* all_sprites);
+
+GameSprites load_all_sprites(SDL_Renderer *renderer);
+
+extern int NUMBER_OF_FOODS;
 #endif // !DECLARE_H

@@ -61,7 +61,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 
     SDL_Surface* image_surface = IMG_Load(filename);
     if (!image_surface) {
-        printf("Error: creating surface\n");
+        printf("Error creating surface\n");
     }
     SDL_Texture* image_texture = SDL_CreateTextureFromSurface(renderer, image_surface);
     if (!image_texture) {
@@ -83,4 +83,53 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
     return sprite;
 }
 
+SpriteCollection load_sprite_collection(int number_of_sprites, SDL_Renderer* renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
 
+    SDL_Surface* image_surface = IMG_Load(filename);
+    if (!image_surface) {
+        printf("error creating surface\n");
+    }
+    SDL_Texture* image_texture = SDL_CreateTextureFromSurface(renderer, image_surface);
+    if (!image_texture) {
+        printf("error creating texture: %s\n", SDL_GetError());
+
+    }
+    SDL_FreeSurface(image_surface);
+
+    SpriteCollection sprite_collection;
+    sprite_collection.rect = (SDL_Rect*) malloc(number_of_sprites * sizeof(rect));
+
+    sprite_collection.texture = image_texture;
+    sprite_collection.renderer = renderer;
+    sprite_collection.total_frames = total_frames;
+    sprite_collection.rotation = 0;
+    sprite_collection.flip = SDL_FLIP_NONE;
+    sprite_collection.total_sprites = number_of_sprites;
+
+    for (int n=0; n<number_of_sprites; n++) {
+        sprite_collection.rect[n] = rect;
+    }
+
+    return sprite_collection;
+}
+
+void draw_sprite_collection(SpriteCollection *sprite_collection) {
+
+    bool is_sprite_collection_static = sprite_collection->total_frames == 1;
+
+    if (is_sprite_collection_static) {
+        for (int n=0; n<sprite_collection->total_sprites; n++) {
+            SDL_RenderCopy(sprite_collection->renderer, sprite_collection->texture, NULL, &sprite_collection->rect[n]);
+        }
+    } else {
+        Uint32 ticks = SDL_GetTicks();
+        Uint32 current_frame = ( ticks/ SPRITE_UPDATE_DELAY ) % sprite_collection->total_frames;
+        SDL_Rect clip_rect = { current_frame * sprite_collection->frame_size, 0, sprite_collection->rect->w, sprite_collection->rect->h };
+
+        for (int n=0; n<sprite_collection->total_sprites; n++) {
+        SDL_RenderCopyEx(sprite_collection->renderer,
+            sprite_collection->texture, &clip_rect, &sprite_collection->rect[n],
+            sprite_collection->rotation, NULL, sprite_collection->flip);
+        }
+    }
+}
