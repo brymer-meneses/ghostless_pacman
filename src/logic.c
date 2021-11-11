@@ -29,7 +29,7 @@ typedef enum PlayerState {
 } PlayerState;
 
 static int MAP[10][10] = {
-    {1, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
+    {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
     {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
     {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
     {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
@@ -71,20 +71,17 @@ void display_board(GameSprites* all_sprites) {
             BoardElement element = MAP[row][col];
                 switch (element) {
                     case EMPTY:
-                        break;
                     case PACMAN:
-                        pacman->rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * row);
-                        pacman->rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * col);
                         break;
                     case FOOD:
                         foods->rect[current_food_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
                         foods->rect[current_food_index].x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
-                        current_food_index ++;
+                        current_food_index++;
                         break;
                     case BLOCK:
                         blocks->rect[current_block_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
                         blocks->rect[current_block_index].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
-                        current_block_index ++;
+                        current_block_index++;
                         break;
                     case EXIT:
                         break;
@@ -93,21 +90,23 @@ void display_board(GameSprites* all_sprites) {
     }
 }
 
-Position query_pacman_position() {
+Position query_pacman_position(Sprite* pacman) {
     Position pos;
-    for (int row=0; row<10; row++) {
-        for (int col=0; col<10; col++) {
-            if (MAP[row][col] == PACMAN) {
-                pos.x = row;
-                pos.y = col;
-                return pos;
-            } 
-            else {
-                continue;
-            }
-        }
-    }
+    pos.x = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / 44;
+    pos.y = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / 44;
+    return pos;
 };
+
+bool check_move_validity(Position future_position) {
+    int x = future_position.x;
+    int y = future_position.y;
+
+    if (x >= 0 && x <= 9 && y >= 0 && y <=9) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 void check_if_player_won() {
     if (PLAYER_SCORE == NUMBER_OF_FOODS) {
@@ -118,69 +117,94 @@ void check_if_player_won() {
 };
 
 void fill_board_with_food() {
-    for (int i=0; i<NUMBER_OF_FOODS; i++) {
+    int total_foods_generated = 0;
+    while (total_foods_generated != NUMBER_OF_FOODS){
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         MAP[rand_x][rand_y] = FOOD;
+         if (MAP[rand_x][rand_y] == EMPTY) {
+            MAP[rand_x][rand_y] = FOOD;
+            total_foods_generated++;
+        }
     }
 }
 
 void fill_board_with_blocks() {
-    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
+    int total_blocks_generated = 0;
+    while (total_blocks_generated != NUMBER_OF_BLOCKS) {
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         MAP[rand_x][rand_y] = BLOCK;
+         if (MAP[rand_x][rand_y] == EMPTY) {
+             MAP[rand_x][rand_y] = BLOCK;
+             total_blocks_generated++;
+        }
     }
 }
 
 void move_pacman(Move move, GameSprites* all_sprites) {
-    Position current_position = query_pacman_position();
-    int curr_x = current_position.x;
-    int curr_y = current_position.y;
 
     Sprite* pacman = &all_sprites->pacman;
 
-    int future_position;
+    Position current_position = query_pacman_position(pacman);
+    Position future_position;
+    bool is_move_valid;
+
     switch (move) {
         case MOVE_UP:
-            future_position = MAP[curr_x - 1][curr_y];
-            MAP[curr_x - 1][curr_y] = PACMAN;
-            MAP[curr_x][curr_y] = EMPTY;
+            future_position.x =  current_position.x +  0; 
+            future_position.y =  current_position.y + -1;
 
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 270;
+            is_move_valid = check_move_validity(future_position);
+            if (is_move_valid) {
+                pacman->flip = SDL_FLIP_NONE;
+                pacman->rotation = 270;
+                pacman->rect.y -= 44;
+            };
             break;
         case MOVE_DOWN:
-            future_position = MAP[curr_x + 1][curr_y];
-            MAP[curr_x + 1][curr_y] = PACMAN;
-            MAP[curr_x][curr_y] = EMPTY;
+            future_position.x =  current_position.x +  0; 
+            future_position.y =  current_position.y +  1;
 
-            pacman->flip = SDL_FLIP_VERTICAL;
-            pacman->rotation = 90;
+            is_move_valid = check_move_validity(future_position);
+            if (is_move_valid) {
+                pacman->flip = SDL_FLIP_VERTICAL;
+                pacman->rotation = 90;
+                pacman->rect.y += 44;
+            };
+
             break;
         case MOVE_LEFT:
-            future_position = MAP[curr_x][curr_y -1];
-            MAP[curr_x][curr_y - 1] = PACMAN;
-            MAP[curr_x][curr_y] = EMPTY;
+            future_position.x =  current_position.x + -1; 
+            future_position.y =  current_position.y +  0;
 
-            pacman->flip = SDL_FLIP_HORIZONTAL;
-            pacman->rotation = 0;
+            is_move_valid = check_move_validity(future_position);
+            if (is_move_valid) {
+                pacman->flip = SDL_FLIP_HORIZONTAL;
+                pacman->rotation = 0;
+                pacman->rect.x -= 44;
+            };
             break;
         case MOVE_RIGHT:
-            future_position = MAP[curr_x][curr_y +1];
-            MAP[curr_x][curr_y + 1] = PACMAN;
-            MAP[curr_x][curr_y] = EMPTY;
+            future_position.x =  current_position.x +  1; 
+            future_position.y =  current_position.y +  0;
 
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 0;
+            is_move_valid = check_move_validity(future_position);
+            if (is_move_valid) {
+                pacman->flip = SDL_FLIP_NONE;
+                pacman->rotation = 0;
+                pacman->rect.x += 44;
+            };
+
             break;
 
     }
-    if (future_position == BLOCK) {
+    // printf("x : %d, y: %d\n", future_position.x, future_position.y);
+    if (MAP[future_position.x][future_position.y] == BLOCK) {
         PLAYER_STATE = PLAYER_LOST;
-    } else if (future_position == FOOD) {
+    } else if (MAP[future_position.x][future_position.y] == FOOD) {
         PLAYER_SCORE++;
+        MAP[future_position.x][future_position.y] = EMPTY;
     }
+    printf("%d\n", PLAYER_SCORE);
 }
 
 void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
