@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) user_wants_to_quit = true; 
-            else handle_keypress(event, &pacman);
+            else if (event.type == SDL_KEYDOWN) handle_keypress(event, &pacman);
         }
         SDL_RenderClear(renderer);
         display_board(&pacman, &grid);

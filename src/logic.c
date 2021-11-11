@@ -24,7 +24,7 @@ typedef enum PlayerState {
     PLAYER_STILL_PLAYING,
 } PlayerState;
 
-int MAP[10][10] = {
+static int MAP[10][10] = {
     {1, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
     {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
     {0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0},
@@ -39,10 +39,10 @@ int MAP[10][10] = {
 
 // TODO: Get number of food from user
 // DEBUG: Set it to 8 for now
-int NUMBER_OF_FOODS = 8;
-int PLAYER_SCORE = 0;
+static int NUMBER_OF_FOODS = 8;
+static int PLAYER_SCORE = 0;
 
-PlayerState PLAYER_STATE = PLAYER_STILL_PLAYING;
+static PlayerState PLAYER_STATE = PLAYER_STILL_PLAYING;
 
 
 
@@ -58,8 +58,8 @@ void display_board(Sprite *pacman, Sprite *grid) {
                         continue;
                         break;
                     case PACMAN:
-                        pacman->rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * row);
-                        pacman->rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * col);
+                        pacman->rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * row);
+                        pacman->rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * col);
                         break;
                     case FOOD:
                         // foods[row + col].rect.y =  ELEMENT_INITIAL_POSITION_Y + (44 * col);
@@ -121,19 +121,19 @@ void move_pacman(Move move, Sprite *pacman) {
     int curr_x = current_position.x;
     int curr_y = current_position.y;
 
-    MAP[curr_x][curr_y] = EMPTY;
     int future_position;
+    MAP[curr_x][curr_y] = EMPTY;
     switch (move) {
         case MOVE_UP:
-            future_position = MAP[curr_x + 1][curr_y];
-            MAP[curr_x + 1][curr_y] = PACMAN;
+            future_position = MAP[curr_x - 1][curr_y];
+            MAP[curr_x - 1][curr_y] = PACMAN;
 
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 270;
             break;
         case MOVE_DOWN:
-            future_position = MAP[curr_x - 1][curr_y];
-            MAP[curr_x - 1][curr_y] = PACMAN;
+            future_position = MAP[curr_x + 1][curr_y];
+            MAP[curr_x + 1][curr_y] = PACMAN;
 
             pacman->flip = SDL_FLIP_VERTICAL;
             pacman->rotation = 90;
