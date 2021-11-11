@@ -60,6 +60,9 @@ void display_board(GameSprites* all_sprites) {
     draw_sprite_collection(foods);
     draw_sprite_collection(blocks);
 
+    int current_food_index = 0;
+    int current_block_index = 0;
+
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             BoardElement element = MAP[row][col];
@@ -72,12 +75,14 @@ void display_board(GameSprites* all_sprites) {
                         pacman->rect.x =  ELEMENT_INITIAL_POSITION_X + (44 * col);
                         break;
                     case FOOD:
-                        foods->rect[row+col % NUMBER_OF_FOODS].y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
-                        foods->rect[row+col % NUMBER_OF_FOODS].x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
+                        foods->rect[current_food_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
+                        foods->rect[current_food_index].x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
+                        current_food_index ++;
                         break;
                     case BLOCK:
-                        blocks->rect[row+col].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
-                        blocks->rect[row+col].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
+                        blocks->rect[current_block_index].x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        blocks->rect[current_block_index].y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
+                        current_block_index ++;
                         break;
                     case EXIT:
                         break;
