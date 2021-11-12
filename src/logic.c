@@ -90,16 +90,13 @@ Position query_pacman_position(Sprite* pacman) {
     return pos;
 };
 
-// bool check_move_validity(Position future_position) {
-//     int x = future_position.x;
-//     int y = future_position.y;
-
-//     if (x >= 0 && x <= 9 && y >= 0 && y <=9) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
+void init_board() {
+    for (int row=0; row<10; row++) {
+        for (int col=0; col<10; col++) {
+            MAP[row][col] = EMPTY;
+        }
+    }
+}
 
 PlayerState check_player_status(Position future_position) {
     int x = future_position.x;
@@ -126,7 +123,7 @@ void fill_board_with_food() {
     while (total_foods_generated < NUMBER_OF_FOODS){
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY && rand_x > 0 && rand_y > 0) {
+         if (MAP[rand_x][rand_y] == EMPTY && MAP[rand_x][rand_y] != EXIT && rand_x > 0 && rand_y > 0) {
             MAP[rand_x][rand_y] = FOOD;
             total_foods_generated++;
         }
@@ -138,7 +135,7 @@ void fill_board_with_blocks() {
     while (total_blocks_generated < NUMBER_OF_BLOCKS) {
          int rand_x = rand() % 10;
          int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY && rand_x > 0 && rand_y > 0) {
+         if (MAP[rand_x][rand_y] == EMPTY && MAP[rand_x][rand_y] != EXIT && rand_x > 0 && rand_y > 0) {
              MAP[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
         }
@@ -298,11 +295,18 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
 }
 
 void init_game() {
+
     time_t t;
     srand((unsigned) time(&t));
 
-    int exit_x = rand() % 10;
-    int exit_y = rand() % 10;
+    init_board();
+
+    int exit_x = 0;
+    int exit_y = 0;
+    while (exit_x == 0 || exit_y == 0) {
+        exit_x = rand() % 10;
+        exit_y = rand() % 10;
+    }
     MAP[exit_x][exit_y] = EXIT;
 
     fill_board_with_blocks();

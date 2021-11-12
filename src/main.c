@@ -31,7 +31,8 @@ int main (int argc, char *argv[]) {
         SDL_RenderClear(renderer);
         display_board(&all_sprites);
         SDL_RenderPresent(renderer);
-        SDL_Delay(1000/60); }
+        SDL_Delay(1000/60); 
+    }
 
     IMG_Quit();
     SDL_DestroyWindow(window);
