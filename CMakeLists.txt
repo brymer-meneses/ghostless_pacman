@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(ghostless-pacman, VERSION 0.1)
+project(ghostless-pacman)
 
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
@@ -47,7 +47,6 @@ file(GLOB ALL_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.h"
     )
 
-find_package (Threads)
 
 if (WIN32) 
     set(lib dll)
@@ -57,19 +56,20 @@ if (UNIX)
     set(lib a)
 endif ()
 
-add_executable(ghostless-pacman ${ALL_SRCS})
+add_executable(${PROJECT_NAME} ${ALL_SRCS})
 
-add_dependencies(ghostless-pacman SDL2)
-add_dependencies(ghostless-pacman SDL2_image)
+add_dependencies(${PROJECT_NAME} SDL2)
+add_dependencies(${PROJECT_NAME} SDL2_image)
 
 # Link SDL Dependencies
-target_link_libraries(ghostless-pacman "${SDL_LIBRARIES}/libSDL2main.${lib}")
-target_link_libraries(ghostless-pacman "${SDL_LIBRARIES}/libSDL2.${lib}")
-target_link_libraries(ghostless-pacman "${SDL_IMAGE_LIBRARIES}/libSDL2_image.${lib}")
+target_link_libraries(${PROJECT_NAME} "${SDL_LIBRARIES}/libSDL2main.${lib}")
+target_link_libraries(${PROJECT_NAME} "${SDL_LIBRARIES}/libSDL2.${lib}")
+target_link_libraries(${PROJECT_NAME} "${SDL_IMAGE_LIBRARIES}/libSDL2_image.${lib}")
 
 # Link C libraries 
-target_link_libraries(ghostless-pacman ${CMAKE_DL_LIBS})
-target_link_libraries(ghostless-pacman ${CMAKE_THREAD_LIBS_INIT})
+find_package (Threads)
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
 # Link Math library
-target_link_libraries(ghostless-pacman m)
+target_link_libraries(${PROJECT_NAME} m)
