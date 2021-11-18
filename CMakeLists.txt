@@ -6,6 +6,9 @@ include(FetchContent)
 project(ghostless-pacman)
 
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# set( CMAKE_C_FLAGS )
+# add_compile_options(-Wno-dev)
+add_definitions(-DSDL_MAIN_HANDLED)
 
 file(GLOB ALL_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.c"
@@ -59,25 +62,53 @@ if (WIN32)
 
     include_directories(
         ${PROJECT_NAME}
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/include/SDL2/
-        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/include/SDL2/
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/include/
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/include/
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/include/SDL2
         )
     target_link_libraries(
         ${PROJECT_NAME}
         # SDL libraries
-        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.a
+        # ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.a
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.dll.a
         ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2main.a
-        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/bin/SDL2.dll
 
         # SDL2_image libraries
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/lib/libSDL2_image.a
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/SDL2_image.dll
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/lib/libSDL2_image.dll.a
 
         # SDL2_image dependencies
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libjpeg-9.dll
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libtiff-5.dll
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libweb-7.dll
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libwebp-7.dll
+    )
+    FetchContent_Declare(
+        SDL2_DLL
+        URL             https://www.libsdl.org/release/SDL2-2.0.16-win32-x64.zip
+        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/output
+    )
+    FetchContent_Declare(
+        SDL2_IMAGE_DLL
+        URL             https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5-win32-x64.zip
+        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/output/
+    )
+    FetchContent_MakeAvailable(SDL2_IMAGE_DLL)
+    FetchContent_MakeAvailable(SDL2_DLL)
+
+    file(COPY 
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/SDL2_image.dll
+        DESTINATION
+        ${PROJECT_SOURCE_DIR}/
+    )
+    file(COPY 
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/bin/SDL2.dll
+        DESTINATION
+        ${PROJECT_SOURCE_DIR}/
+    )
+    file(COPY 
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
+        DESTINATION
+        ${PROJECT_SOURCE_DIR}/
     )
 endif ()
 

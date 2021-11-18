@@ -2,6 +2,7 @@
 #include "stdbool.h"
 #include "stdlib.h"
 #include "time.h"
+#include "stdio.h"
 
 #include "declarations.h"
 #include "utils.h"

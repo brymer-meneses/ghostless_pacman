@@ -1,5 +1,6 @@
 
 #include "stdbool.h"
+#include "stdio.h"
 
 #include "utils.h"
 #include "declarations.h"

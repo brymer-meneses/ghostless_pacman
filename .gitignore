@@ -13,5 +13,7 @@ _deps
 build/
 external/
 
+*.dll
+
 ghostless-pacman
 ghostless-pacman.exe
