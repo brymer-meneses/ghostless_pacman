@@ -264,13 +264,13 @@ void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
 
 GameSprites load_all_sprites(SDL_Renderer* renderer) {
     SDL_Rect pacman_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=34, .w=34};
-    Sprite pacman = load_sprite(renderer, "assets/pacman.png", 40, 10, pacman_rect);
+    Sprite pacman = load_sprite(renderer, "./assets/pacman.png", 40, 10, pacman_rect);
 
     SDL_Rect grid_rect = {GRID_POSITION_X, GRID_POSITION_Y, GRID_SIZE, GRID_SIZE};
-    Sprite grid = load_sprite(renderer, "assets/grid.png", 0, 1, grid_rect);
+    Sprite grid = load_sprite(renderer, "./assets/grid.png", 0, 1, grid_rect);
 
     SDL_Rect exit_rect = {GRID_POSITION_X, GRID_POSITION_Y, 23, 33};
-    Sprite exit = load_sprite(renderer, "assets/exit.png", 0, 1, exit_rect);
+    Sprite exit = load_sprite(renderer, "./assets/exit.png", 0, 1, exit_rect);
 
     SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
@@ -284,11 +284,11 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
 
     for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
-        sprites.blocks[i] = load_sprite(renderer, "assets/box.png", 0 , 1, block_rect);
+        sprites.blocks[i] = load_sprite(renderer, ".assets/box.png", 0 , 1, block_rect);
     }
 
     for (int i=0; i<NUMBER_OF_FOODS; i++) {
-        sprites.foods[i] = load_sprite(renderer, "assets/food.png", 0 , 1, food_rect);
+        sprites.foods[i] = load_sprite(renderer, ".assets/food.png", 0 , 1, food_rect);
     }
 
 
