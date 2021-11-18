@@ -1,75 +1,84 @@
+
+## Settings
 cmake_minimum_required(VERSION 3.21)
+include(FetchContent)
 
 project(ghostless-pacman)
 
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR} )
-
-set (SDL_VERSION "2.0.16")
-set (SDL_IMAGE_VERSION "2.0.5")
-
-set (SDL_SOURCE_DIR "${PROJECT_SOURCE_DIR}/build/SDL2")
-set (SDL_INSTALL_DIR "${PROJECT_SOURCE_DIR}/external/SDL2")
-
-set (SDL_IMAGE_SOURCE_DIR "${PROJECT_SOURCE_DIR}/build/SDL2_image")
-set (SDL_IMAGE_INSTALL_DIR "${PROJECT_SOURCE_DIR}/external/SDL2_image")
-
-include(ExternalProject)
-
-ExternalProject_Add(
-    SDL2
-    URL "https://github.com/libsdl-org/SDL/archive/refs/tags/release-${SDL_VERSION}.zip"
-    SOURCE_DIR "${SDL_SOURCE_DIR}"
-    BUILD_IN_SOURCE TRUE
-    CONFIGURE_COMMAND ${SDL_SOURCE_DIR}/configure --prefix=${SDL_INSTALL_DIR}
-    )
-
-ExternalProject_Add(
-    SDL2_image
-    URL "https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-${SDL_IMAGE_VERSION}.zip"
-    SOURCE_DIR "${SDL_IMAGE_SOURCE_DIR}"
-    BUILD_IN_SOURCE TRUE
-    CONFIGURE_COMMAND ${SDL_IMAGE_SOURCE_DIR}/configure --prefix=${SDL_IMAGE_INSTALL_DIR}
-    )
-
-set (SDL_LIBRARIES "${SDL_INSTALL_DIR}/lib")
-set (SDL_INCLUDE_DIRS "${SDL_INSTALL_DIR}/include/SDL2/")
-
-set (SDL_IMAGE_LIBRARIES "${SDL_IMAGE_INSTALL_DIR}/lib")
-set (SDL_IMAGE_INCLUDE_DIRS "${SDL_IMAGE_INSTALL_DIR}/include/SDL2")
-
-include_directories(
-    "${SDL_INCLUDE_DIRS}"
-    "${SDL_IMAGE_INCLUDE_DIRS}"
-    )
 
 file(GLOB ALL_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.c"
     "${PROJECT_SOURCE_DIR}/src/*.h"
     )
 
-
-if (WIN32) 
-    set(lib dll)
-endif ()
-
-if (UNIX)
-    set(lib a)
-endif ()
-
 add_executable(${PROJECT_NAME} ${ALL_SRCS})
 
-add_dependencies(${PROJECT_NAME} SDL2)
-add_dependencies(${PROJECT_NAME} SDL2_image)
+## Handle Dependencies for UNIX
+if (UNIX)
+    FetchContent_Declare(
+        SDL2_CMAKE 
+        GIT_REPOSITORY  https://github.com/aminosbh/sdl2-cmake-modules
+        GIT_TAG         origin/master
+        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/cmake
+    )
+    
+    FetchContent_MakeAvailable(SDL2_CMAKE)
 
-# Link SDL Dependencies
-target_link_libraries(${PROJECT_NAME} "${SDL_LIBRARIES}/libSDL2main.${lib}")
-target_link_libraries(${PROJECT_NAME} "${SDL_LIBRARIES}/libSDL2.${lib}")
-target_link_libraries(${PROJECT_NAME} "${SDL_IMAGE_LIBRARIES}/libSDL2_image.${lib}")
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/external/cmake"})
 
-# Link C libraries 
-find_package (Threads)
-target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
 
-# Link Math library
-target_link_libraries(${PROJECT_NAME} m)
+    include_directories(${PROJECT_NAME} 
+        ${SDL2_INCLUDE_DIRS} 
+        ${SDL2_IMAGE_INCLUDE_DIRS}
+    )
+    target_link_libraries(${PROJECT_NAME} 
+        ${SDL2_LIBRARIES} 
+        ${SDL2_IMAGE_LIBRARIES}
+    )
+endif ()
+
+## Handle Dependencies for UNIX
+if (WIN32)
+    FetchContent_Declare(
+        SDL2
+        URL             https://www.libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz        
+        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2
+    )
+
+    FetchContent_Declare(
+        SDL2_image
+        URL             https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.5-mingw.tar.gz
+        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2_image
+    )
+    
+    FetchContent_MakeAvailable(SDL2 SDL2_image)
+    set(ARCH x86_64-w64-mingw32)
+
+    include_directories(
+        ${PROJECT_NAME}
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/include/SDL2/
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/include/SDL2/
+        )
+    target_link_libraries(
+        ${PROJECT_NAME}
+        # SDL libraries
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.a
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2main.a
+        ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/bin/SDL2.dll
+
+        # SDL2_image libraries
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/lib/libSDL2_image.a
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/SDL2_image.dll
+
+        # SDL2_image dependencies
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libjpeg-9.dll
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libtiff-5.dll
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libweb-7.dll
+    )
+endif ()
+
+
