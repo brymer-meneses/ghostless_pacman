@@ -82,18 +82,6 @@ if (WIN32)
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libtiff-5.dll
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libwebp-7.dll
     )
-    FetchContent_Declare(
-        SDL2_DLL
-        URL             https://www.libsdl.org/release/SDL2-2.0.16-win32-x64.zip
-        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/output
-    )
-    FetchContent_Declare(
-        SDL2_IMAGE_DLL
-        URL             https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5-win32-x64.zip
-        SOURCE_DIR      ${PROJECT_SOURCE_DIR}/output/
-    )
-    FetchContent_MakeAvailable(SDL2_IMAGE_DLL)
-    FetchContent_MakeAvailable(SDL2_DLL)
 
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/SDL2_image.dll
