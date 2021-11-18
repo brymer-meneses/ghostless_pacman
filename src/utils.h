@@ -1,12 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#ifdef _WIN32
-    #include "lib/SDL2/SDL.h"
-#else
-    #include "SDL2/SDL.h"
-    #include "SDL2/SDL_image.h"
-#endif
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 typedef struct Sprite {
     SDL_Renderer        *renderer;
