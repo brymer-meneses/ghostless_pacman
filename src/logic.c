@@ -284,11 +284,11 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
 
     for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
-        sprites.blocks[i] = load_sprite(renderer, ".assets/box.png", 0 , 1, block_rect);
+        sprites.blocks[i] = load_sprite(renderer, "./assets/box.png", 0 , 1, block_rect);
     }
 
     for (int i=0; i<NUMBER_OF_FOODS; i++) {
-        sprites.foods[i] = load_sprite(renderer, ".assets/food.png", 0 , 1, food_rect);
+        sprites.foods[i] = load_sprite(renderer, "./assets/food.png", 0 , 1, food_rect);
     }
 
 

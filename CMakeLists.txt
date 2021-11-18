@@ -72,15 +72,8 @@ if (WIN32)
         # ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.a
         ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2.dll.a
         ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/lib/libSDL2main.a
-
         # SDL2_image libraries
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/lib/libSDL2_image.dll.a
-
-        # SDL2_image dependencies
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libjpeg-9.dll
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libtiff-5.dll
-        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libwebp-7.dll
     )
 
     file(COPY 
@@ -95,6 +88,11 @@ if (WIN32)
     )
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
+        DESTINATION
+        ${PROJECT_SOURCE_DIR}/
+    )
+    file(COPY 
+        ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/zlib1.dll
         DESTINATION
         ${PROJECT_SOURCE_DIR}/
     )
