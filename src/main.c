@@ -18,6 +18,7 @@ int main (int argc, char *argv[]) {
     init_game();
     GameSprites all_sprites = load_all_sprites(renderer);
      
+    PlayerState player_state = PLAYER_ON_MENU;
 
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
@@ -26,10 +27,12 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &all_sprites);
+                handle_keypress(event, player_state, &all_sprites);
         }
         SDL_RenderClear(renderer);
-        display_board(&all_sprites);
+    
+        handle_state(player_state, &all_sprites);
+
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 
     }

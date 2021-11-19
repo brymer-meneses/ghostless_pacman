@@ -23,11 +23,6 @@ typedef enum Move {
     MOVE_RIGHT,
 } Move;
 
-typedef enum PlayerState {
-    PLAYER_WON,
-    PLAYER_LOST,
-    PLAYER_STILL_PLAYING,
-} PlayerState;
 
 static int MAP[10][10];
 
@@ -35,8 +30,6 @@ static int MAP[10][10];
 // DEBUG: Set it to 8 for now
 int NUMBER_OF_FOODS = 8;
 static int PLAYER_SCORE = 0;
-
-static PlayerState PLAYER_STATE = PLAYER_STILL_PLAYING;
 
 
 void display_board(GameSprites* all_sprites) {
@@ -110,13 +103,14 @@ PlayerState check_player_status(Position future_position) {
         return PLAYER_WON;
     } 
     if (MAP[x][y] == BLOCK) {
-        return PLAYER_LOST;
+        return PLAYER_LOST_HIT_BLOCK;
     }
     if (player_within_horizontal_borders && player_within_vertical_borders) {
         return PLAYER_STILL_PLAYING;
+    } else {
+        return PLAYER_LOST_HIT_BORDER;
     }
-    return PLAYER_LOST;
-
+    return PLAYER_LOST_INSUFFICIENT_FOOD;
 };
 
 void fill_board_with_food() {
@@ -160,7 +154,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 270;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST) {
+            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
                 puts("You lost");
                 break;
             }
@@ -175,7 +169,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 90;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST) {
+            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
                 puts("You lost");
                 break;
             }
@@ -191,7 +185,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 0;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST) {
+            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
                 puts("You lost");
                 break;
             } 
@@ -206,7 +200,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 0;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST) {
+            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
                 puts("You lost");
                 break;
             } 
@@ -228,7 +222,7 @@ void move_pacman(Move move, GameSprites* all_sprites) {
     } 
 }
 
-void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
+void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all_sprites) {
     /* 
         A function that handles the various keypresses of the user.
         params: 
@@ -240,19 +234,21 @@ void handle_keypress(SDL_Event event, GameSprites* all_sprites) {
             NONE
             
     */
+    bool is_game_running = player_state == PLAYER_STILL_PLAYING;
+
     switch (event.key.keysym.scancode) {
         // Moving pacman
         case SDL_SCANCODE_W:
-            move_pacman(MOVE_UP, all_sprites);
+            if (is_game_running) move_pacman(MOVE_UP, all_sprites);
             break;
         case SDL_SCANCODE_A:
-            move_pacman(MOVE_LEFT, all_sprites);
+            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
             break;
         case SDL_SCANCODE_S:
-            move_pacman(MOVE_DOWN, all_sprites);
+            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
             break;
         case SDL_SCANCODE_D:
-            move_pacman(MOVE_RIGHT, all_sprites);
+            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
             break;
 
         // Misc
@@ -298,6 +294,7 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     return sprites;
 }
 
+
 void init_game() {
 
     time_t t;
@@ -315,4 +312,26 @@ void init_game() {
 
     fill_board_with_blocks();
     fill_board_with_food();
+}
+
+void handle_state(PlayerState state, GameSprites* all_sprites) {
+    switch (state) {
+        case PLAYER_ON_MENU:
+            break;
+        case PLAYER_ON_TUTORIAL:
+            break;
+        case PLAYER_ON_ABOUT:
+            break;
+        case PLAYER_STILL_PLAYING:
+            display_board(all_sprites);
+            break;
+        case PLAYER_WON:
+            break;
+        case PLAYER_LOST_HIT_BLOCK:
+            break;
+        case PLAYER_LOST_HIT_BORDER:
+            break;
+        case PLAYER_LOST_INSUFFICIENT_FOOD:
+            break;
+    }
 }
