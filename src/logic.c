@@ -271,6 +271,9 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     SDL_Rect exit_rect = {GRID_POSITION_X, GRID_POSITION_Y, 23, 33};
     Sprite exit = load_sprite(renderer, "./assets/exit.png", 0, 1, exit_rect);
 
+    SDL_Rect home_screen_rect = {0, 0, 640, 640};
+    Sprite home_screen = load_sprite(renderer, "./assets/homescreen.png", 0, 1, home_screen_rect);
+
     SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
 
@@ -278,6 +281,7 @@ GameSprites load_all_sprites(SDL_Renderer* renderer) {
     sprites.pacman = pacman;
     sprites.grid = grid;
     sprites.exit = exit;
+    sprites.home_screen = home_screen;
 
     sprites.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
     sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
@@ -315,8 +319,10 @@ void init_game() {
 }
 
 void handle_state(PlayerState state, GameSprites* all_sprites) {
+    Sprite home_screen = all_sprites->home_screen;
     switch (state) {
         case PLAYER_ON_MENU:
+            draw_sprite(&home_screen);
             break;
         case PLAYER_ON_TUTORIAL:
             break;

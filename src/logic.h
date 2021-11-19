@@ -6,6 +6,7 @@ typedef struct GameSprites {
     Sprite pacman;
     Sprite grid;
     Sprite exit;
+    Sprite home_screen;
     Sprite *blocks;
     Sprite *foods ;
 } GameSprites;
