@@ -156,28 +156,30 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y + -1;
 
+            pacman->flip = SDL_FLIP_NONE;
+            pacman->rotation = 270;
+
             status = check_player_status(future_position);
             if (status == PLAYER_LOST) {
                 puts("You lost");
                 break;
             }
 
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 270;
             pacman->rect.y -= 44;
             break;
         case MOVE_DOWN:
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y +  1;
 
+            pacman->flip = SDL_FLIP_VERTICAL;
+            pacman->rotation = 90;
+
             status = check_player_status(future_position);
             if (status == PLAYER_LOST) {
                 puts("You lost");
                 break;
             }
 
-            pacman->flip = SDL_FLIP_VERTICAL;
-            pacman->rotation = 90;
             pacman->rect.y += 44;
 
             break;
@@ -185,31 +187,32 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             future_position.x =  current_position.x + -1; 
             future_position.y =  current_position.y +  0;
 
+            pacman->flip = SDL_FLIP_HORIZONTAL;
+            pacman->rotation = 0;
+
             status = check_player_status(future_position);
             if (status == PLAYER_LOST) {
                 puts("You lost");
                 break;
             } 
 
-            pacman->flip = SDL_FLIP_HORIZONTAL;
-            pacman->rotation = 0;
             pacman->rect.x -= 44;
             break;
         case MOVE_RIGHT:
             future_position.x =  current_position.x +  1; 
             future_position.y =  current_position.y +  0;
 
+            pacman->flip = SDL_FLIP_NONE;
+            pacman->rotation = 0;
+
             status = check_player_status(future_position);
             if (status == PLAYER_LOST) {
                 puts("You lost");
                 break;
             } 
 
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 0;
             pacman->rect.x += 44;
             
-
             break;
 
     }
