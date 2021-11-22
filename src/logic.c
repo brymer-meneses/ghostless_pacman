@@ -235,29 +235,39 @@ void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all
             
     */
     bool is_game_running = player_state == PLAYER_STILL_PLAYING;
+    if (is_game_running) {
 
-    switch (event.key.keysym.scancode) {
-        // Moving pacman
-        case SDL_SCANCODE_W:
-            if (is_game_running) move_pacman(MOVE_UP, all_sprites);
-            break;
-        case SDL_SCANCODE_A:
-            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
-            break;
-        case SDL_SCANCODE_S:
-            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
-            break;
-        case SDL_SCANCODE_D:
-            if (is_game_running) move_pacman(MOVE_LEFT, all_sprites);
-            break;
+        switch (event.key.keysym.scancode) {
+            // Moving pacman
+            case SDL_SCANCODE_W:
+                move_pacman(MOVE_UP, all_sprites);
+                break;
+            case SDL_SCANCODE_A:
+                move_pacman(MOVE_LEFT, all_sprites);
+                break;
+            case SDL_SCANCODE_S:
+                move_pacman(MOVE_LEFT, all_sprites);
+                break;
+            case SDL_SCANCODE_D:
+                move_pacman(MOVE_LEFT, all_sprites);
+                break;
+            default:
+                // TODO: Warn the user if the input is invalid
+                // perhaps add some instructions?
+                break;
+            }
+    } else {
+        switch (event.key.keysym.scancode) {
+            case SDL_SCANCODE_W:
+                if (is_game_running) move_pacman(MOVE_UP, all_sprites);
+                break;
+            default:
+                // TODO: Warn the user if the input is invalid
+                // perhaps add some instructions?
+                break;
+        }
+    }
 
-        // Misc
-        case SDL_SCANCODE_M:
-            break;
-        default:
-            // TODO: Warn the user if the input is invalid
-            // perhaps add some instructions?
-            break;
     }
 }
 
