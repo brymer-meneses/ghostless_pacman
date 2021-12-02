@@ -9,6 +9,7 @@
 #include "state.h"
 #include "declarations.h"
 
+
 int main (int argc, char *argv[]) {
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
@@ -30,7 +31,7 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, player_state, &game_sprites);
+                handle_keypress(event, &player_state, &game_sprites);
         }
         SDL_RenderClear(renderer);
     

@@ -35,47 +35,55 @@ void handle_state(
     }
 }
 
-void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all_sprites) {
+void handle_keypress(SDL_Event event, PlayerState *player_state, GameSprites* all_sprites) {
     /* 
-        A function that handles the various keypresses of the user.
-        params: 
-            SDL_Event event 
-                - Specifies an `event` in the game like when the player presses the button `w` on their keyboard.
-        returns: 
-            NONE
-            
-    */
-    bool is_game_running = player_state == PLAYER_STILL_PLAYING;
-    if (is_game_running) {
-
-        switch (event.key.keysym.scancode) {
-            // Moving pacman
-            case SDL_SCANCODE_W:
-                move_pacman(MOVE_UP, all_sprites);
-                break;
-            case SDL_SCANCODE_A:
-                move_pacman(MOVE_LEFT, all_sprites);
-                break;
-            case SDL_SCANCODE_S:
-                move_pacman(MOVE_DOWN, all_sprites);
-                break;
-            case SDL_SCANCODE_D:
-                move_pacman(MOVE_RIGHT, all_sprites);
-                break;
-            default:
-                // TODO: Warn the user if the input is invalid
-                // perhaps add some instructions?
-                break;
+     *  A function that handles the various keypresses of the user.
+     *  params: 
+     *      SDL_Event event 
+     *          - Specifies an `event` in the game like when the player presses
+     *            the button `w` on their keyboard.
+     *      PlayerState player_state
+     *          - An enum that tracks the state of the application
+     *  returns: 
+     *      NONE
+     *      
+     */
+    switch (*player_state) {
+        case PLAYER_STILL_PLAYING:
+            switch (event.key.keysym.scancode) {
+                // Moving pacman
+                case SDL_SCANCODE_W:
+                    move_pacman(MOVE_UP, all_sprites);
+                    break;
+                case SDL_SCANCODE_A:
+                    move_pacman(MOVE_LEFT, all_sprites);
+                    break;
+                case SDL_SCANCODE_S:
+                    move_pacman(MOVE_DOWN, all_sprites);
+                    break;
+                case SDL_SCANCODE_D:
+                    move_pacman(MOVE_RIGHT, all_sprites);
+                    break;
+                default:
+                    // TODO: Warn the user if the input is invalid
+                    // perhaps add some instructions?
+                    break;
+                }
+            break;
+        case PLAYER_ON_MENU:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_S:
+                    *player_state = PLAYER_STILL_PLAYING;
+                    break;
+                default:
+                    // TODO: Warn the user if the input is invalid
+                    // perhaps add some instructions?
+                    break;
             }
-    } else {
-        switch (event.key.keysym.scancode) {
-            case SDL_SCANCODE_W:
-                break;
-            default:
-                // TODO: Warn the user if the input is invalid
-                // perhaps add some instructions?
-                break;
-        }
+        case PLAYER_ON_TUTORIAL:
+            break;
+        default:
+            break;
     }
 
 }
