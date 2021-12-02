@@ -268,7 +268,6 @@ void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all
         }
     }
 
-    }
 }
 
 GameSprites load_all_sprites(SDL_Renderer* renderer) {
