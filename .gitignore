@@ -12,6 +12,7 @@ _deps
 
 build/
 external/
+bin/
 
 *.dll
 
