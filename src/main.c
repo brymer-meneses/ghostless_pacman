@@ -18,7 +18,7 @@ int main (int argc, char *argv[]) {
     init_game();
     GameSprites all_sprites = load_all_sprites(renderer);
      
-    PlayerState player_state = PLAYER_ON_MENU;
+    PlayerState player_state = PLAYER_STILL_PLAYING;
 
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {

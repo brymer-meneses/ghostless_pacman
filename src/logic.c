@@ -113,6 +113,10 @@ PlayerState check_player_status(Position future_position) {
     return PLAYER_LOST_INSUFFICIENT_FOOD;
 };
 
+PlayerState check_if_player_won(Position future_position) {
+    return PLAYER_LOST_INSUFFICIENT_FOOD;
+}
+
 void fill_board_with_food() {
     int total_foods_generated = 0;
     while (total_foods_generated < NUMBER_OF_FOODS){
@@ -145,6 +149,8 @@ void move_pacman(Move move, GameSprites* all_sprites) {
     Position future_position;
     PlayerState status;
 
+    bool did_player_lost = false;
+
     switch (move) {
         case MOVE_UP:
             future_position.x =  current_position.x +  0; 
@@ -154,10 +160,17 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 270;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
-                puts("You lost");
-                break;
+            switch (status) {
+                case PLAYER_LOST_HIT_BLOCK:
+                case PLAYER_LOST_HIT_BORDER:
+                case PLAYER_LOST_INSUFFICIENT_FOOD:
+                    did_player_lost = true;
+                    break;
+                default:
+                    break;
             }
+
+            if (did_player_lost) break;
 
             pacman->rect.y -= 44;
             break;
@@ -169,11 +182,17 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 90;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
-                puts("You lost");
-                break;
+            switch (status) {
+                case PLAYER_LOST_HIT_BLOCK:
+                case PLAYER_LOST_HIT_BORDER:
+                case PLAYER_LOST_INSUFFICIENT_FOOD:
+                    did_player_lost = true;
+                    break;
+                default:
+                    break;
             }
 
+            if (did_player_lost) break;
             pacman->rect.y += 44;
 
             break;
@@ -185,11 +204,17 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 0;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
-                puts("You lost");
-                break;
-            } 
+            switch (status) {
+                case PLAYER_LOST_HIT_BLOCK:
+                case PLAYER_LOST_HIT_BORDER:
+                case PLAYER_LOST_INSUFFICIENT_FOOD:
+                    did_player_lost = true;
+                    break;
+                default:
+                    break;
+            }
 
+            if (did_player_lost) break;
             pacman->rect.x -= 44;
             break;
         case MOVE_RIGHT:
@@ -200,11 +225,17 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->rotation = 0;
 
             status = check_player_status(future_position);
-            if (status == PLAYER_LOST_HIT_BORDER || PLAYER_LOST_INSUFFICIENT_FOOD || PLAYER_LOST_HIT_BLOCK) {
-                puts("You lost");
-                break;
-            } 
+            switch (status) {
+                case PLAYER_LOST_HIT_BLOCK:
+                case PLAYER_LOST_HIT_BORDER:
+                case PLAYER_LOST_INSUFFICIENT_FOOD:
+                    did_player_lost = true;
+                    break;
+                default:
+                    break;
+            }
 
+            if (did_player_lost) break;
             pacman->rect.x += 44;
             
             break;
@@ -246,10 +277,10 @@ void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all
                 move_pacman(MOVE_LEFT, all_sprites);
                 break;
             case SDL_SCANCODE_S:
-                move_pacman(MOVE_LEFT, all_sprites);
+                move_pacman(MOVE_DOWN, all_sprites);
                 break;
             case SDL_SCANCODE_D:
-                move_pacman(MOVE_LEFT, all_sprites);
+                move_pacman(MOVE_RIGHT, all_sprites);
                 break;
             default:
                 // TODO: Warn the user if the input is invalid
@@ -257,6 +288,7 @@ void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all
                 break;
             }
     } else {
+        puts("hi");
         switch (event.key.keysym.scancode) {
             case SDL_SCANCODE_W:
                 if (is_game_running) move_pacman(MOVE_UP, all_sprites);
