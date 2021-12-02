@@ -32,10 +32,3 @@ add_executable(${PROJECT_NAME} ${ALL_SRCS})
 # the game.
 include(cmake/handle_dependencies.cmake)
 
-# Adds a symbolic link from the compiled executable located in the `bin` folder
-# to the root directory. This ensures that the root directory will not be cluttered
-# with DLLs which are required in running the game.
-file(CREATE_LINK 
-    ${PROJECT_SOURCE_DIR}/bin/${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}
-    SYMBOLIC
-    )

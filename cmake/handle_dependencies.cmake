@@ -16,6 +16,7 @@ if (UNIX)
 
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
 
     include_directories(${PROJECT_NAME} 
         ${SDL2_INCLUDE_DIRS} 
@@ -60,22 +61,22 @@ if (WIN32)
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/SDL2_image.dll
         DESTINATION
-        ${PROJECT_SOURCE_DIR}/
+        ${PROJECT_SOURCE_DIR}/bin/
     )
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/bin/SDL2.dll
         DESTINATION
-        ${PROJECT_SOURCE_DIR}/
+        ${PROJECT_SOURCE_DIR}/bin/
     )
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/libpng16-16.dll
         DESTINATION
-        ${PROJECT_SOURCE_DIR}/
+        ${PROJECT_SOURCE_DIR}/bin/
     )
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/bin/zlib1.dll
         DESTINATION
-        ${PROJECT_SOURCE_DIR}/
+        ${PROJECT_SOURCE_DIR}/bin/
     )
 endif ()
 
