@@ -80,8 +80,6 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
     sprite.texture = image_texture;
     sprite.rect = rect;
 
-    sprite.rotation = 0;
-    sprite.flip = SDL_FLIP_NONE;
     return sprite;
 }
 

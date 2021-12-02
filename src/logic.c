@@ -8,21 +8,6 @@
 #include "utils.h"
 #include "logic.h"
 
-typedef enum BoardElement {
-    EMPTY,
-    PACMAN,
-    FOOD,
-    BLOCK,
-    EXIT,
-} BoardElement;
-
-typedef enum Move {
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
-} Move;
-
 
 static int MAP[10][10];
 
@@ -253,92 +238,6 @@ void move_pacman(Move move, GameSprites* all_sprites) {
     } 
 }
 
-void handle_keypress(SDL_Event event, PlayerState player_state, GameSprites* all_sprites) {
-    /* 
-        A function that handles the various keypresses of the user.
-        params: 
-            SDL_Event event 
-                - Specifies an `event` in the game like when the player presses the button `w` on their keyboard.
-            Game *game
-                - Pointer to an instance of the struct `Game`.
-        returns: 
-            NONE
-            
-    */
-    bool is_game_running = player_state == PLAYER_STILL_PLAYING;
-    if (is_game_running) {
-
-        switch (event.key.keysym.scancode) {
-            // Moving pacman
-            case SDL_SCANCODE_W:
-                move_pacman(MOVE_UP, all_sprites);
-                break;
-            case SDL_SCANCODE_A:
-                move_pacman(MOVE_LEFT, all_sprites);
-                break;
-            case SDL_SCANCODE_S:
-                move_pacman(MOVE_DOWN, all_sprites);
-                break;
-            case SDL_SCANCODE_D:
-                move_pacman(MOVE_RIGHT, all_sprites);
-                break;
-            default:
-                // TODO: Warn the user if the input is invalid
-                // perhaps add some instructions?
-                break;
-            }
-    } else {
-        puts("hi");
-        switch (event.key.keysym.scancode) {
-            case SDL_SCANCODE_W:
-                if (is_game_running) move_pacman(MOVE_UP, all_sprites);
-                break;
-            default:
-                // TODO: Warn the user if the input is invalid
-                // perhaps add some instructions?
-                break;
-        }
-    }
-
-}
-
-GameSprites load_all_sprites(SDL_Renderer* renderer) {
-    SDL_Rect pacman_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=34, .w=34};
-    Sprite pacman = load_sprite(renderer, "../assets/pacman.png", 40, 10, pacman_rect);
-
-    SDL_Rect grid_rect = {GRID_POSITION_X, GRID_POSITION_Y, GRID_SIZE, GRID_SIZE};
-    Sprite grid = load_sprite(renderer, "../assets/grid.png", 0, 1, grid_rect);
-
-    SDL_Rect exit_rect = {GRID_POSITION_X, GRID_POSITION_Y, 23, 33};
-    Sprite exit = load_sprite(renderer, "../assets/exit.png", 0, 1, exit_rect);
-
-    SDL_Rect home_screen_rect = {0, 0, 640, 640};
-    Sprite home_screen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, home_screen_rect);
-
-    SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
-    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
-
-    GameSprites sprites;
-    sprites.pacman = pacman;
-    sprites.grid = grid;
-    sprites.exit = exit;
-    sprites.home_screen = home_screen;
-
-    sprites.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
-    sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
-
-    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
-        sprites.blocks[i] = load_sprite(renderer, "../assets/box.png", 0 , 1, block_rect);
-    }
-
-    for (int i=0; i<NUMBER_OF_FOODS; i++) {
-        sprites.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
-    }
-
-
-    return sprites;
-}
-
 
 void init_game() {
 
@@ -359,26 +258,3 @@ void init_game() {
     fill_board_with_food();
 }
 
-void handle_state(PlayerState state, GameSprites* all_sprites) {
-    Sprite home_screen = all_sprites->home_screen;
-    switch (state) {
-        case PLAYER_ON_MENU:
-            draw_sprite(&home_screen);
-            break;
-        case PLAYER_ON_TUTORIAL:
-            break;
-        case PLAYER_ON_ABOUT:
-            break;
-        case PLAYER_STILL_PLAYING:
-            display_board(all_sprites);
-            break;
-        case PLAYER_WON:
-            break;
-        case PLAYER_LOST_HIT_BLOCK:
-            break;
-        case PLAYER_LOST_HIT_BORDER:
-            break;
-        case PLAYER_LOST_INSUFFICIENT_FOOD:
-            break;
-    }
-}
