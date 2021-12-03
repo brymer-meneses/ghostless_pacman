@@ -6,13 +6,25 @@
 
 
 
-void handle_state(
-        PlayerState state, 
-        Map *map,
-        GameSprites* game_sprites, 
-        MiscSprites* misc_sprites, 
-        PromptSprites* prompt_sprites) {
-
+void handle_state( PlayerState state, Map *map, GameSprites* game_sprites, MiscSprites* misc_sprites, PromptSprites* prompt_sprites) {
+    /* 
+     *   A function that handles the `state` of the game, the game changes
+     *   `state` when the player hits a wall causing them to lose. This function handles
+     *   the different `states` of the game.
+     *
+     *   params: 
+     *       SDL_Event event 
+     *           - Specifies an `event` in the game like when the player presses
+     *             the button `w` on their keyboard.
+     *       PlayerState *player_state
+     *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
+     *             It is necessay to become a pointer since this function will modify some 
+     *      Map *map    
+     *          - A pointer to the struct Map, which encapsulates variables required 
+     *            in the game.
+     *       GameSprites *game_sprites
+     *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
+     */
     Sprite homescreen = misc_sprites->homescreen;
     switch (state) {
         case PLAYER_ON_MENU:
@@ -36,35 +48,41 @@ void handle_state(
     }
 }
 
-void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map ,GameSprites* all_sprites) {
+void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map ,GameSprites* game_sprites) {
     /* 
-     *  A function that handles the various keypresses of the user.
-     *  params: 
-     *      SDL_Event event 
-     *          - Specifies an `event` in the game like when the player presses
-     *            the button `w` on their keyboard.
-     *      PlayerState player_state
-     *          - An enum that tracks the state of the application
-     *  returns: 
-     *      NONE
-     *      
+     *   A function that handles the various keypresses of the user.
+     *
+     *   params: 
+     *       SDL_Event event 
+     *           - Specifies an `event` in the game like when the player presses
+     *             the button `w` on their keyboard.
+     *       PlayerState *player_state
+     *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
+     *             It is necessay to become a pointer since this function will modify some 
+     *      Map *map    
+     *          - A pointer to the struct Map, which encapsulates variables required 
+     *            in the game.
+     *       GameSprites *game_sprites
+     *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
     switch (*player_state) {
         case PLAYER_STILL_PLAYING:
             switch (event.key.keysym.scancode) {
                 // Moving pacman
                 case SDL_SCANCODE_W:
-                    move_pacman(MOVE_UP, all_sprites, map);
+                    move_pacman(MOVE_UP, game_sprites, map);
                     break;
                 case SDL_SCANCODE_A:
-                    move_pacman(MOVE_LEFT, all_sprites, map);
+                    move_pacman(MOVE_LEFT, game_sprites, map);
                     break;
                 case SDL_SCANCODE_S:
-                    move_pacman(MOVE_DOWN, all_sprites, map);
+                    move_pacman(MOVE_DOWN, game_sprites, map);
                     break;
                 case SDL_SCANCODE_D:
-                    move_pacman(MOVE_RIGHT, all_sprites, map);
+                    move_pacman(MOVE_RIGHT, game_sprites, map);
                     break;
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
                 default:
                     // TODO: Warn the user if the input is invalid
                     // perhaps add some instructions?
@@ -89,7 +107,18 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map ,GameS
 
 }
 
-GameSprites load_all_game_sprites(SDL_Renderer* renderer, Map* map) {
+GameSprites load_all_game_sprites(SDL_Renderer *renderer, Map* map) {
+    /* 
+     *   A function that loads all the sprites for running the game itself.
+     *
+     *   params: 
+     *      SDL_Renderer *renderer
+     *          - A pointer to the SDL_Renderer, which handles the rendering of
+     *            elements in the screen
+     *      Map *map    
+     *          - A pointer to the struct Map, which encapsulates variables required 
+     *            in the game.
+     */
     SDL_Rect pacman_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=34, .w=34};
     Sprite pacman = load_sprite(renderer, "../assets/pacman.png", 40, 10, pacman_rect);
 
@@ -123,12 +152,35 @@ GameSprites load_all_game_sprites(SDL_Renderer* renderer, Map* map) {
 }
 
 PromptSprites load_all_prompt_sprites(SDL_Renderer* renderer) {
+    /* 
+     *   A function that loads all the sprites responsible for prompts,
+     *
+     *   params: 
+     *      SDL_Renderer *renderer
+     *          - A pointer to the SDL_Renderer, which handles the rendering of
+     *            elements in the screen
+     *   returns:
+     *      PromptSprites
+     *          - A struct that encapsulates all the sprites required for popups and prompts. 
+     */
     PromptSprites prompt_sprites;
 
     return prompt_sprites;
 }
 
 MiscSprites load_all_misc_sprites(SDL_Renderer* renderer) {
+    /* 
+     *   A function that loads all the miscellanious sprites required in the game
+     *
+     *   params: 
+     *      SDL_Renderer *renderer
+     *          - A pointer to the SDL_Renderer, which handles the rendering of
+     *            elements in the screen
+     *
+     *   returns:
+     *      MusicSprites
+     *          - A struct that encapsulates all the miscellaneous sprites.
+     */
     MiscSprites misc_sprites;
 
     SDL_Rect home_screen_rect = {0, 0, 640, 640};
