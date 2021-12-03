@@ -14,11 +14,13 @@ int main (int argc, char *argv[]) {
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
 
-    IMG_Init(IMG_INIT_PNG);
+    // Set the background color
     SDL_SetRenderDrawColor(renderer, 236, 239, 244, 1);
      
-    init_game();
-    GameSprites game_sprites = load_all_game_sprites(renderer);
+    // Initialize map which will be used in the game
+    Map *map = init_map();
+
+    GameSprites game_sprites = load_all_game_sprites(renderer, map);
     MiscSprites misc_sprites = load_all_misc_sprites(renderer);
     PromptSprites prompt_sprites = load_all_prompt_sprites(renderer);
      
@@ -31,11 +33,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &player_state, &game_sprites);
+                handle_keypress(event, &player_state, map, &game_sprites);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(player_state, &game_sprites, &misc_sprites, &prompt_sprites);
+        handle_state(player_state, map, &game_sprites, &misc_sprites, &prompt_sprites);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 

@@ -8,6 +8,7 @@
 
 void handle_state(
         PlayerState state, 
+        Map *map,
         GameSprites* game_sprites, 
         MiscSprites* misc_sprites, 
         PromptSprites* prompt_sprites) {
@@ -15,14 +16,14 @@ void handle_state(
     Sprite homescreen = misc_sprites->homescreen;
     switch (state) {
         case PLAYER_ON_MENU:
-            draw_sprite(&homescreen);
+            render_sprite(&homescreen);
             break;
         case PLAYER_ON_TUTORIAL:
             break;
         case PLAYER_ON_ABOUT:
             break;
         case PLAYER_STILL_PLAYING:
-            display_board(game_sprites);
+            render_map(map, game_sprites);
             break;
         case PLAYER_WON:
             break;
@@ -35,7 +36,7 @@ void handle_state(
     }
 }
 
-void handle_keypress(SDL_Event event, PlayerState *player_state, GameSprites* all_sprites) {
+void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map ,GameSprites* all_sprites) {
     /* 
      *  A function that handles the various keypresses of the user.
      *  params: 
@@ -53,16 +54,16 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, GameSprites* al
             switch (event.key.keysym.scancode) {
                 // Moving pacman
                 case SDL_SCANCODE_W:
-                    move_pacman(MOVE_UP, all_sprites);
+                    move_pacman(MOVE_UP, all_sprites, map);
                     break;
                 case SDL_SCANCODE_A:
-                    move_pacman(MOVE_LEFT, all_sprites);
+                    move_pacman(MOVE_LEFT, all_sprites, map);
                     break;
                 case SDL_SCANCODE_S:
-                    move_pacman(MOVE_DOWN, all_sprites);
+                    move_pacman(MOVE_DOWN, all_sprites, map);
                     break;
                 case SDL_SCANCODE_D:
-                    move_pacman(MOVE_RIGHT, all_sprites);
+                    move_pacman(MOVE_RIGHT, all_sprites, map);
                     break;
                 default:
                     // TODO: Warn the user if the input is invalid
@@ -88,7 +89,7 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, GameSprites* al
 
 }
 
-GameSprites load_all_game_sprites(SDL_Renderer* renderer) {
+GameSprites load_all_game_sprites(SDL_Renderer* renderer, Map* map) {
     SDL_Rect pacman_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=34, .w=34};
     Sprite pacman = load_sprite(renderer, "../assets/pacman.png", 40, 10, pacman_rect);
 
@@ -107,14 +108,14 @@ GameSprites load_all_game_sprites(SDL_Renderer* renderer) {
     sprites.grid = grid;
     sprites.exit = exit;
 
-    sprites.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
-    sprites.foods = (Sprite*) malloc(NUMBER_OF_FOODS * sizeof(Sprite));
+    sprites.blocks = (Sprite*) malloc(map->number_of_blocks * sizeof(Sprite));
+    sprites.foods = (Sprite*) malloc(map->number_of_foods * sizeof(Sprite));
 
-    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
+    for (int i=0; i<map->number_of_blocks; i++) {
         sprites.blocks[i] = load_sprite(renderer, "../assets/box.png", 0 , 1, block_rect);
     }
 
-    for (int i=0; i<NUMBER_OF_FOODS; i++) {
+    for (int i=0; i<map->number_of_foods; i++) {
         sprites.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
     }
 

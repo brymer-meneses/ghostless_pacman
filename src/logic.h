@@ -31,12 +31,17 @@ typedef struct PromptSprites {
 } PromptSprites;
 
 
-void display_board(GameSprites* game_sprites);
-GameSprites load_all_game_sprites(SDL_Renderer* renderer);
-MiscSprites load_all_misc_sprites(SDL_Renderer* renderer);
-PromptSprites load_all_prompt_sprites(SDL_Renderer* renderer);
+typedef struct Map { 
+    // Pointer to a 10 by 10, two-dimensional array
+    int board[10][10];
+    // Total number of foods generated in the map
+    int number_of_foods;
+    // Total number of blocks generated in the map
+    int number_of_blocks;
+    
+    int total_player_score;
+} Map;
 
-void init_game();
 
 typedef enum PlayerState {
     PLAYER_WON,
@@ -67,6 +72,13 @@ typedef enum Move {
 
 extern int NUMBER_OF_FOODS;
 
-void move_pacman(Move move, GameSprites* all_sprites);
+void move_pacman(Move move, GameSprites* all_sprites, Map* map);
+
+Map* init_map();
+void render_map(Map* map, GameSprites* game_sprites);
+
+GameSprites load_all_game_sprites(SDL_Renderer* renderer, Map* map);
+MiscSprites load_all_misc_sprites(SDL_Renderer* renderer);
+PromptSprites load_all_prompt_sprites(SDL_Renderer* renderer);
 
 #endif // !DECLARE_H

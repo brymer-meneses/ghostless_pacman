@@ -8,34 +8,25 @@
 #include "utils.h"
 #include "logic.h"
 
+void render_map(Map *map, GameSprites *game_sprites) {
 
-static int MAP[10][10];
+    Sprite* grid = &game_sprites->grid;
+    Sprite* pacman = &game_sprites->pacman;
+    Sprite* exit = &game_sprites->exit;
 
-// TODO: Get number of food from user
-// DEBUG: Set it to 8 for now
-int NUMBER_OF_FOODS = 8;
-static int PLAYER_SCORE = 0;
+    Sprite* foods = game_sprites->foods;
+    Sprite* blocks = game_sprites->blocks;
 
-
-void display_board(GameSprites* all_sprites) {
-
-    Sprite* grid = &all_sprites->grid;
-    Sprite* pacman = &all_sprites->pacman;
-    Sprite* exit = &all_sprites->exit;
-
-    Sprite* foods = all_sprites->foods;
-    Sprite* blocks = all_sprites->blocks;
-
-    draw_sprite(grid);
-    draw_sprite(pacman);
-    draw_sprite(exit);
+    render_sprite(grid);
+    render_sprite(pacman);
+    render_sprite(exit);
 
     int current_food_index = 0;
     int current_block_index = 0;
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            BoardElement element = MAP[row][col];
+            BoardElement element = map->board[row][col];
                 switch (element) {
                     case EMPTY:
                     case PACMAN:
@@ -44,18 +35,18 @@ void display_board(GameSprites* all_sprites) {
                     case FOOD:
                         foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
                         foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
-                        draw_sprite(&foods[current_food_index]);
+                        render_sprite(&foods[current_food_index]);
                         current_food_index++;
                         break;
                     case BLOCK:
                         blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
                         blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
-                        draw_sprite(&blocks[current_block_index]);
+                        render_sprite(&blocks[current_block_index]);
                         current_block_index++;
                         break;
                     case EXIT:
-                        exit->rect.x = ELEMENT_INITIAL_POSITION_X + 5 + (44 * col);
                         exit->rect.y = ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
+                        exit->rect.x = ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
                         break;
                 }
         }
@@ -69,93 +60,100 @@ Position query_pacman_position(Sprite* pacman) {
     return pos;
 };
 
-void init_board() {
-    for (int row=0; row<10; row++) {
-        for (int col=0; col<10; col++) {
-            MAP[row][col] = EMPTY;
-        }
-    }
-}
 
-PlayerState check_player_status(Position future_position) {
+PlayerState check_player_status(Position future_position, BoardElement future_obstacle, Map *map) {
     int x = future_position.x;
     int y = future_position.y;
 
     bool player_within_horizontal_borders = y >= 0 && y <=9;
     bool player_within_vertical_borders = x >= 0 && x <= 9;
+    bool player_within_borders = player_within_horizontal_borders && player_within_vertical_borders;
 
-    if (MAP[x][y] == EXIT) {
-        return PLAYER_WON;
-    } 
-    if (MAP[x][y] == BLOCK) {
-        return PLAYER_LOST_HIT_BLOCK;
+    switch (future_obstacle) {
+        case FOOD:
+            map->total_player_score++;
+            map->board[x][y] = EMPTY;
+            break;
+        case BLOCK:
+            return PLAYER_LOST_HIT_BLOCK;
+            break;
+        default: 
+            break;
     }
-    if (player_within_horizontal_borders && player_within_vertical_borders) {
-        return PLAYER_STILL_PLAYING;
-    } else {
+
+    if (!player_within_borders) {
         return PLAYER_LOST_HIT_BORDER;
-    }
-    return PLAYER_LOST_INSUFFICIENT_FOOD;
+    } 
+
+    return PLAYER_STILL_PLAYING;
 };
 
-PlayerState check_if_player_won(Position future_position) {
-    return PLAYER_LOST_INSUFFICIENT_FOOD;
+PlayerState check_if_player_won(Position future_position, Map* map) {
+    if (map->total_player_score == map->number_of_foods) {
+        return PLAYER_WON;
+    } else {
+        return PLAYER_LOST_INSUFFICIENT_FOOD;
+    }
+
 }
 
-void fill_board_with_food() {
+void fill_board_with_food(Map *map) {
     int total_foods_generated = 0;
-    while (total_foods_generated < NUMBER_OF_FOODS){
-         int rand_x = rand() % 10;
-         int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY && MAP[rand_x][rand_y] != EXIT && rand_x > 0 && rand_y > 0) {
-            MAP[rand_x][rand_y] = FOOD;
+    while (total_foods_generated < map->number_of_foods){
+         int rand_x =  rand() % 10;
+         int rand_y =  rand() % 10;
+         if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
+            map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
         }
     }
 }
 
-void fill_board_with_blocks() {
+void fill_board_with_blocks(Map *map) {
     int total_blocks_generated = 0;
-    while (total_blocks_generated < NUMBER_OF_BLOCKS) {
-         int rand_x = rand() % 10;
-         int rand_y = rand() % 10;
-         if (MAP[rand_x][rand_y] == EMPTY && MAP[rand_x][rand_y] != EXIT && rand_x > 0 && rand_y > 0) {
-             MAP[rand_x][rand_y] = BLOCK;
+    while (total_blocks_generated < map->number_of_blocks) {
+         int rand_x =  rand() % 10;
+         int rand_y =  rand() % 10;
+         if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
+             map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
         }
     }
 }
 
-void move_pacman(Move move, GameSprites* all_sprites) {
+void move_pacman(Move move, GameSprites* all_sprites, Map* map) {
 
     Sprite* pacman = &all_sprites->pacman;
 
     Position current_position = query_pacman_position(pacman);
     Position future_position;
-    PlayerState status;
+    PlayerState player_state;
 
-    bool did_player_lost = false;
-
+    BoardElement future_obstacle;
     switch (move) {
         case MOVE_UP:
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y + -1;
 
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 270;
-
-            status = check_player_status(future_position);
-            switch (status) {
-                case PLAYER_LOST_HIT_BLOCK:
-                case PLAYER_LOST_HIT_BORDER:
-                case PLAYER_LOST_INSUFFICIENT_FOOD:
-                    did_player_lost = true;
-                    break;
-                default:
-                    break;
+            future_obstacle = map->board[future_position.x][future_position.y];
+            if (future_obstacle == EXIT) { 
+                player_state = check_if_player_won(future_position, map);
+                if (player_state == PLAYER_WON) { 
+                    // display player won prompt
+                    puts("You won!");
+                } else {
+                    // display player lost prompt
+                    puts("You lost!");
+                }
+                break;
+            } else { 
+                player_state = check_player_status(future_position, future_obstacle, map);
+                if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
-            if (did_player_lost) break;
+
+            pacman->flip = SDL_FLIP_NONE;
+            pacman->rotation = 270;
 
             pacman->rect.y -= 44;
             break;
@@ -163,21 +161,25 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y +  1;
 
+            future_obstacle = map->board[future_position.x][future_position.y];
+            if (future_obstacle == EXIT) { 
+                player_state = check_if_player_won(future_position, map);
+                if (player_state == PLAYER_WON) { 
+                    // display player won prompt
+                    puts("You won!");
+                } else {
+                    // display player lost prompt
+                    puts("You lost!");
+                }
+                break;
+            } else { 
+                player_state = check_player_status(future_position, future_obstacle, map);
+                if (player_state != PLAYER_STILL_PLAYING) break;
+            }
+
             pacman->flip = SDL_FLIP_VERTICAL;
             pacman->rotation = 90;
 
-            status = check_player_status(future_position);
-            switch (status) {
-                case PLAYER_LOST_HIT_BLOCK:
-                case PLAYER_LOST_HIT_BORDER:
-                case PLAYER_LOST_INSUFFICIENT_FOOD:
-                    did_player_lost = true;
-                    break;
-                default:
-                    break;
-            }
-
-            if (did_player_lost) break;
             pacman->rect.y += 44;
 
             break;
@@ -188,18 +190,22 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->flip = SDL_FLIP_HORIZONTAL;
             pacman->rotation = 0;
 
-            status = check_player_status(future_position);
-            switch (status) {
-                case PLAYER_LOST_HIT_BLOCK:
-                case PLAYER_LOST_HIT_BORDER:
-                case PLAYER_LOST_INSUFFICIENT_FOOD:
-                    did_player_lost = true;
-                    break;
-                default:
-                    break;
+            future_obstacle = map->board[future_position.x][future_position.y];
+            if (future_obstacle == EXIT) { 
+                player_state = check_if_player_won(future_position, map);
+                if (player_state == PLAYER_WON) { 
+                    // display player won prompt
+                    puts("You won!");
+                } else {
+                    // display player lost prompt
+                    puts("You lost!");
+                }
+                break;
+            } else { 
+                player_state = check_player_status(future_position, future_obstacle, map);
+                if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
-            if (did_player_lost) break;
             pacman->rect.x -= 44;
             break;
         case MOVE_RIGHT:
@@ -209,52 +215,62 @@ void move_pacman(Move move, GameSprites* all_sprites) {
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 0;
 
-            status = check_player_status(future_position);
-            switch (status) {
-                case PLAYER_LOST_HIT_BLOCK:
-                case PLAYER_LOST_HIT_BORDER:
-                case PLAYER_LOST_INSUFFICIENT_FOOD:
-                    did_player_lost = true;
-                    break;
-                default:
-                    break;
+            future_obstacle = map->board[future_position.x][future_position.y];
+            if (future_obstacle == EXIT) { 
+                player_state = check_if_player_won(future_position, map);
+                if (player_state == PLAYER_WON) { 
+                    // display player won prompt
+                    puts("You won!");
+                } else {
+                    puts("You lost!");
+                    // display player lost prompt
+                }
+                break;
+            } else { 
+                player_state = check_player_status(future_position, future_obstacle, map);
+                if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
-            if (did_player_lost) break;
             pacman->rect.x += 44;
-            
             break;
 
     }
-    BoardElement future_obstacle = MAP[future_position.x][future_position.y];
-    if (future_obstacle == FOOD) {
-        PLAYER_SCORE++;
-        printf("New Score: %d\n", PLAYER_SCORE);
-        MAP[future_position.x][future_position.y] = EMPTY;
-    }
 
-    if (status == PLAYER_WON) {
-        puts("You won!");
-    } 
 }
 
 
-void init_game() {
+Map* init_map() {
 
     time_t t;
     srand((unsigned) time(&t));
 
-    init_board();
-
-    int exit_x = 0;
-    int exit_y = 0;
-    while (exit_x == 0 || exit_y == 0) {
-        exit_x = rand() % 10;
-        exit_y = rand() % 10;
+    Map* map = malloc(1 * sizeof(Map));
+    if (!map) {
+        puts("Memory allocation for struct Map failed");
     }
-    MAP[exit_x][exit_y] = EXIT;
 
-    fill_board_with_blocks();
-    fill_board_with_food();
+    map->total_player_score = 0;
+    map->number_of_blocks = NUMBER_OF_BLOCKS;
+    map->number_of_foods = 2 + rand() % 9;
+
+    for (int row=0; row<10; row++) {
+        for (int col=0; col<10; col++) {
+            map->board[row][col] = EMPTY;
+        }
+    }
+
+    int exit_coordinate_x = 1 + rand() % 9;
+    int exit_coordinate_y = 1 + rand() % 9;
+    printf("exit coordinate %d %d\n", exit_coordinate_x, exit_coordinate_y);
+
+    map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
+
+    fill_board_with_blocks(map);
+    fill_board_with_food(map);
+
+
+
+
+    return map;
 }
 

@@ -12,6 +12,9 @@ SDL_Window* create_window() {
     // Turn on anti-aliasing by default
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
+    // Tell SDL to initialize loading of png images. 
+    IMG_Init(IMG_INIT_PNG);
+
     // Initializes SDL, if it fails exit with an error code.
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
@@ -45,7 +48,7 @@ SDL_Renderer* create_renderer(SDL_Window* window) {
     return renderer;
 }
 
-void draw_sprite(Sprite *sprite) {
+void render_sprite(Sprite *sprite) {
 
     bool is_sprite_static = sprite->total_frames == 1;
 
