@@ -89,11 +89,13 @@ if (WIN32)
     # SDL Image
     file(COPY 
         ${SDL2_IMAGE_DLLS}
+        DESTINATION
         ${PROJECT_SOURCE_DIR}/bin/
         )
     # SDL Mixer
     file(COPY 
         ${SDL2_MIXER_DLLS}
+        DESTINATION
         ${PROJECT_SOURCE_DIR}/bin/
         )
 
