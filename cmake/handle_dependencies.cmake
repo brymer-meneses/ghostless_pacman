@@ -66,9 +66,7 @@ if (WIN32)
         ${PROJECT_SOURCE_DIR}/external/SDL2_mixer/${ARCH}/lib/libSDL2_mixer.dll.a
     )
 
-    target_link_libraries(
-        mingw32
-        )
+    target_link_libraries( ${PROJECT_NAME} mingw32 )
 
     file(GLOB 
         SDL2_IMAGE_DLLS
