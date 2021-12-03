@@ -30,6 +30,9 @@ endif ()
 
 ## Handle Dependencies for Windows
 if (WIN32)
+
+    add_definitions(-DSDL_MAIN_HANDLED)
+
     FetchContent_Declare(
         SDL2
         URL             https://www.libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz        
@@ -66,7 +69,6 @@ if (WIN32)
         ${PROJECT_SOURCE_DIR}/external/SDL2_mixer/${ARCH}/lib/libSDL2_mixer.dll.a
     )
 
-    target_link_libraries( ${PROJECT_NAME} PRIVATE mingw32 )
 
     file(GLOB 
         SDL2_IMAGE_DLLS
