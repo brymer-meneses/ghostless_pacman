@@ -84,6 +84,7 @@ if (WIN32)
     # SDL
     file(COPY 
         ${PROJECT_SOURCE_DIR}/external/SDL2/${ARCH}/bin/SDL2.dll
+        DESTINATION
         ${PROJECT_SOURCE_DIR}/bin/
     )
     # SDL Image
