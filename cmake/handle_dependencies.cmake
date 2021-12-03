@@ -30,6 +30,7 @@ endif ()
 
 ## Handle Dependencies for Windows
 if (WIN32)
+    add_definitions(-DSDL_MAIN_HANDLED)
     FetchContent_Declare(
         SDL2
         URL             https://www.libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz        
