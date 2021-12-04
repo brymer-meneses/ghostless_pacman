@@ -61,7 +61,7 @@ Position query_pacman_position(Sprite* pacman) {
 };
 
 
-PlayerState check_player_status(Position future_position, BoardElement future_obstacle, Map *map) {
+PlayerState check_player_status(Position future_position, BoardElement future_obstacle, Map *map, Assets* assets) {
     int x = future_position.x;
     int y = future_position.y;
 
