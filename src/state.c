@@ -72,16 +72,16 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
             switch (event.key.keysym.scancode) {
                 // Moving pacman
                 case SDL_SCANCODE_W:
-                    move_pacman(MOVE_UP, assets, map);
+                    move_pacman(MOVE_UP, assets, map, player_state);
                     break;
                 case SDL_SCANCODE_A:
-                    move_pacman(MOVE_LEFT, assets, map);
+                    move_pacman(MOVE_LEFT, assets, map, player_state);
                     break;
                 case SDL_SCANCODE_S:
-                    move_pacman(MOVE_DOWN, assets, map);
+                    move_pacman(MOVE_DOWN, assets, map, player_state);
                     break;
                 case SDL_SCANCODE_D:
-                    move_pacman(MOVE_RIGHT, assets, map);
+                    move_pacman(MOVE_RIGHT, assets, map, player_state);
                     break;
                 case SDL_SCANCODE_M:
                     *player_state = PLAYER_ON_MENU;
