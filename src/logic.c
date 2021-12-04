@@ -8,6 +8,9 @@
 #include "utils.h"
 #include "logic.h"
 
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+
 void render_map(Map *map, Assets* assets) {
 
     Sprite* grid =   &assets->game.grid;
@@ -73,8 +76,10 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
         case FOOD:
             map->total_player_score++;
             map->board[x][y] = EMPTY;
+            Mix_PlayChannel(-1, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
+            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
             return PLAYER_LOST_HIT_BLOCK;
             break;
         default: 
@@ -82,6 +87,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
     }
 
     if (!player_within_borders) {
+        Mix_PlayChannel(-1, assets->sounds.game_over, 0);
         return PLAYER_LOST_HIT_BORDER;
     } 
 
@@ -144,9 +150,11 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 player_state = check_if_player_won(future_position, map);
                 if (player_state == PLAYER_WON) { 
                     // display player won prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_win, 0);
                     puts("You won!");
                 } else {
                     // display player lost prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_over, 0);
                     puts("You lost!");
                 }
                 break;
@@ -160,6 +168,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             pacman->rotation = 270;
 
             pacman->rect.y -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_DOWN:
             future_position.x =  current_position.x +  0; 
@@ -170,9 +179,11 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 player_state = check_if_player_won(future_position, map);
                 if (player_state == PLAYER_WON) { 
                     // display player won prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_win, 0);
                     puts("You won!");
                 } else {
                     // display player lost prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_over, 0);
                     puts("You lost!");
                 }
                 break;
@@ -185,7 +196,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             pacman->rotation = 90;
 
             pacman->rect.y += 44;
-
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_LEFT:
             future_position.x =  current_position.x + -1; 
@@ -199,9 +210,11 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 player_state = check_if_player_won(future_position, map);
                 if (player_state == PLAYER_WON) { 
                     // display player won prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_win, 0);
                     puts("You won!");
                 } else {
                     // display player lost prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_over, 0);
                     puts("You lost!");
                 }
                 break;
@@ -211,6 +224,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             }
 
             pacman->rect.x -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_RIGHT:
             future_position.x =  current_position.x +  1; 
@@ -224,10 +238,13 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 player_state = check_if_player_won(future_position, map);
                 if (player_state == PLAYER_WON) { 
                     // display player won prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_win, 0);
                     puts("You won!");
                 } else {
                     puts("You lost!");
                     // display player lost prompt
+                    Mix_PlayChannel(-1, assets->sounds.game_over, 0);
+                    puts("You lost!"); 
                 }
                 break;
             } else { 
@@ -236,6 +253,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             }
 
             pacman->rect.x += 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
 
     }

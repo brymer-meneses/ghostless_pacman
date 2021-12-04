@@ -51,8 +51,12 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->misc.homescreen = homescreen;
 
     // Load game sounds
-    assets->sounds.background = Mix_LoadMUS("../assets/sounds/background_muzic.wav");
-
+    assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
+    assets->sounds.pacman_munch = Mix_LoadWAV("../assets/sounds/munch.wav");
+    assets->sounds.pacman_step = Mix_LoadWAV("../assets/sounds/step.wav");
+    assets->sounds.game_notification = Mix_LoadWAV("../assets/sounds/notif.wav");
+    assets->sounds.game_win = Mix_LoadWAV("../assets/sounds/win.wav");
+    assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");    
     return assets;
 }
 
@@ -66,8 +70,13 @@ void free_all_assets(Assets *assets) {
     SDL_DestroyTexture(assets->game.grid.texture);
     SDL_DestroyTexture(assets->misc.homescreen.texture);
 
-    // Free all music
-    Mix_FreeMusic(assets->sounds.background);
+    // Free all sounds
+    Mix_FreeMusic(assets->sounds.background_music);
+    Mix_FreeChunk(assets->sounds.pacman_munch);
+    Mix_FreeChunk(assets->sounds.pacman_step);
+    Mix_FreeChunk(assets->sounds.game_notification);
+    Mix_FreeChunk(assets->sounds.game_win);
+    Mix_FreeChunk(assets->sounds.game_over);
     Mix_CloseAudio();
 }
 

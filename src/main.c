@@ -30,7 +30,7 @@ int main (int argc, char *argv[]) {
     PlayerState player_state = PLAYER_ON_MENU;
 
     // Play background music
-    Mix_FadeInMusic(assets->sounds.background, -1, 4000);
+    Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
 
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
