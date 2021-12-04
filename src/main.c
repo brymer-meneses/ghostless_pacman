@@ -12,6 +12,9 @@
 
 
 int main (int argc, char *argv[]) {
+
+    init_SDL();
+
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
 

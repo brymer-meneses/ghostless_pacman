@@ -3,8 +3,7 @@
 
 #include "declarations.h"
 
-
-
+void init_SDL();
 
 SDL_Renderer* create_renderer(SDL_Window* window);
 SDL_Window* create_window();

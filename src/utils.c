@@ -6,9 +6,7 @@
 #include "declarations.h"
 
 
-SDL_Window* create_window() {
-    // A function that initializes SDL and opens up a window
-
+void init_SDL() {
     // Turn on anti-aliasing by default
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
@@ -20,6 +18,13 @@ SDL_Window* create_window() {
         printf("Error initializing SDL: %s\n", SDL_GetError());
         SDL_Quit();
     }  
+}
+
+
+SDL_Window* create_window() {
+    // A function that initializes SDL and opens up a window
+
+
     // Initialize a window using SDL
     SDL_Window* window = SDL_CreateWindow("Ghostless Pacman",
                                         SDL_WINDOWPOS_CENTERED,
