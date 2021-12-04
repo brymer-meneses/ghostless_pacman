@@ -25,7 +25,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      *       GameSprites *game_sprites
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
-    
+
     Sprite homescreen = assets->misc.homescreen;
     Sprite about_screen = assets->misc.about_screen;
     Sprite player_lost_hit_block = assets->prompt.player_lost_hit_block;
@@ -125,6 +125,58 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
             switch (event.key.keysym.scancode) {
                 case SDL_SCANCODE_M:
                     *player_state = PLAYER_ON_MENU;
+                    break;
+                }
+        case PLAYER_WON:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_R:
+                    *player_state = PLAYER_STILL_PLAYING;
+                    reset_map(map, assets);
+                    break;
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
+                    break;
+                case SDL_SCANCODE_X:
+                    // quit box
+                    break;
+                }
+        case PLAYER_LOST_HIT_BLOCK:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_R:
+                    *player_state = PLAYER_STILL_PLAYING;
+                    reset_map(map, assets);
+                    break;
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
+                    break;
+                case SDL_SCANCODE_X:
+                    // quit box
+                    break;
+                }
+        case PLAYER_LOST_HIT_BORDER:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_R:
+                    *player_state = PLAYER_STILL_PLAYING;
+                    reset_map(map, assets);
+                    break;
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
+                    break;
+                case SDL_SCANCODE_X:
+                    // quit box
+                    break;
+                }
+        case PLAYER_LOST_INSUFFICIENT_FOOD:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_R:
+                    *player_state = PLAYER_STILL_PLAYING;
+                    reset_map(map, assets);
+                    break;
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
+                    break;
+                case SDL_SCANCODE_X:
+                    // quit box
                     break;
                 }
         default:
