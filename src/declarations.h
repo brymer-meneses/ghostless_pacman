@@ -68,7 +68,7 @@ typedef struct Assets {
     struct { 
         Mix_Music* background;
         Mix_Chunk* pacman_chomp;
-    } music;
+    } sounds;
 
 
 } Assets;

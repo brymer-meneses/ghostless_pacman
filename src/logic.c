@@ -147,7 +147,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 }
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map);
+                player_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
@@ -173,7 +173,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 }
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map);
+                player_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
@@ -202,7 +202,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 }
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map);
+                player_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (player_state != PLAYER_STILL_PLAYING) break;
             }
 
@@ -227,7 +227,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
                 }
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map);
+                player_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (player_state != PLAYER_STILL_PLAYING) break;
             }
 

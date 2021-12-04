@@ -50,6 +50,9 @@ Assets *load_all_assets(SDL_Renderer *renderer, Map *map) {
 
     assets->misc.homescreen = homescreen;
 
+    // Load game sounds
+    assets->sounds.background = Mix_LoadMUS("../assets/sounds/background_muzic.wav");
+
     return assets;
 }
 
@@ -64,6 +67,8 @@ void free_all_assets(Assets *assets) {
     SDL_DestroyTexture(assets->misc.homescreen.texture);
 
     // Free all music
+    Mix_FreeMusic(assets->sounds.background);
+    Mix_CloseAudio();
 }
 
 

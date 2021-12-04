@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "declarations.h"
 
+#include "SDL2/SDL_mixer.h"
 
 void init_SDL() {
     // Turn on anti-aliasing by default
@@ -18,6 +19,10 @@ void init_SDL() {
         printf("Error initializing SDL: %s\n", SDL_GetError());
         SDL_Quit();
     }  
+
+    // Initialize SDL audio system and mixer
+    SDL_Init(SDL_INIT_AUDIO);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT , 2, 2048);
 }
 
 

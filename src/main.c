@@ -30,6 +30,9 @@ int main (int argc, char *argv[]) {
      
     PlayerState player_state = PLAYER_ON_MENU;
 
+    // Play background music
+    Mix_PlayMusic(assets->sounds.background, -1);
+
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
         SDL_Event event;
