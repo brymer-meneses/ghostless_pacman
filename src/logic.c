@@ -76,6 +76,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
         case FOOD:
             map->total_player_score++;
             map->board[x][y] = EMPTY;
+            Mix_PlayChannel(-1, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
             Mix_PlayChannel(-1, assets->sounds.game_over, 0);
