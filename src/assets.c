@@ -70,11 +70,13 @@ void free_all_assets(Assets *assets) {
     SDL_DestroyTexture(assets->game.grid.texture);
     SDL_DestroyTexture(assets->misc.homescreen.texture);
 
-    // Free all music
+    // Free all sounds
     Mix_FreeMusic(assets->sounds.background_music);
-    Mix_FreeMusic(assets->sounds.pacman_munch);
-    Mix_FreeMusic(assets->sounds.game_win);
-    Mix_FreeMusic(assets->sounds.game_over);
+    Mix_FreeChunk(assets->sounds.pacman_munch);
+    Mix_FreeChunk(assets->sounds.pacman_step);
+    Mix_FreeChunk(assets->sounds.game_notification);
+    Mix_FreeChunk(assets->sounds.game_win);
+    Mix_FreeChunk(assets->sounds.game_over);
     Mix_CloseAudio();
 }
 
