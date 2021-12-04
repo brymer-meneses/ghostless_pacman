@@ -238,26 +238,20 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
 }
 
-
-Map* init_map() {
+void reset_map(Map* map) {
 
     time_t t;
     srand((unsigned) time(&t));
-
-    Map* map = malloc(1 * sizeof(Map));
-    if (!map) {
-        puts("Memory allocation for struct Map failed");
-    }
-
-    map->total_player_score = 0;
-    map->number_of_blocks = NUMBER_OF_BLOCKS;
-    map->number_of_foods = 2 + rand() % 9;
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             map->board[row][col] = EMPTY;
         }
     }
+
+    map->total_player_score = 0;
+    map->number_of_blocks = NUMBER_OF_BLOCKS;
+    map->number_of_foods = 2 + rand() % 9;
 
     int exit_coordinate_x = 1 + rand() % 9;
     int exit_coordinate_y = 1 + rand() % 9;
@@ -267,6 +261,17 @@ Map* init_map() {
 
     fill_board_with_blocks(map);
     fill_board_with_food(map);
+}
+
+
+Map* init_map() {
+
+    Map* map = malloc(1 * sizeof(Map));
+    if (!map) {
+        puts("Memory allocation for struct Map failed");
+    }
+
+    reset_map(map);
 
     return map;
 }
