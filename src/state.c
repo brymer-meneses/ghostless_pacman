@@ -26,6 +26,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
     Sprite homescreen = assets->misc.homescreen;
+    Sprite player_lost_hit_block = assets->prompt.player_lost_hit_block;
     switch (state) {
         case PLAYER_ON_MENU:
             render_sprite(&homescreen);
@@ -40,6 +41,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
         case PLAYER_WON:
             break;
         case PLAYER_LOST_HIT_BLOCK:
+            render_sprite(&player_lost_hit_block);
             break;
         case PLAYER_LOST_HIT_BORDER:
             break;

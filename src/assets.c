@@ -46,9 +46,21 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
 
     SDL_Rect homescreen_rect = {0, 0, 640, 640};
+    SDL_Rect prompt_rect = {20, 20, 498, 506}; //20, 20 - untested
+
+    // Load screen displays
+
     Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, homescreen_rect);
+    Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
+    Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
+    Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
+    Sprite player_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
 
     assets->misc.homescreen = homescreen;
+    assets->prompt.player_lost_hit_block = player_lost_hit_block;
+    assets->prompt.player_lost_hit_border = player_lost_hit_border;
+    assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
+    assets->prompt.player_won = player_won;
 
     // Load game sounds
     assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
