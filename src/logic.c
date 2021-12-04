@@ -99,9 +99,11 @@ PlayerState check_if_player_won(Position future_position, Map* map) {
 
 void fill_board_with_food(Map *map) {
     int total_foods_generated = 0;
+    int rand_x;
+    int rand_y;
     while (total_foods_generated < map->number_of_foods){
-         int rand_x =  rand() % 10;
-         int rand_y =  rand() % 10;
+         rand_x =  rand() % 10;
+         rand_y =  rand() % 10;
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
@@ -111,9 +113,11 @@ void fill_board_with_food(Map *map) {
 
 void fill_board_with_blocks(Map *map) {
     int total_blocks_generated = 0;
+    int rand_x;
+    int rand_y;
     while (total_blocks_generated < map->number_of_blocks) {
-         int rand_x =  rand() % 10;
-         int rand_y =  rand() % 10;
+         rand_x =  rand() % 10;
+         rand_y =  rand() % 10;
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
              map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
@@ -255,7 +259,6 @@ void reset_map(Map* map) {
 
     int exit_coordinate_x = 1 + rand() % 9;
     int exit_coordinate_y = 1 + rand() % 9;
-    printf("exit coordinate %d %d\n", exit_coordinate_x, exit_coordinate_y);
 
     map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
 
