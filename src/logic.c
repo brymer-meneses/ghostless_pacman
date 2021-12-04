@@ -167,6 +167,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             pacman->rotation = 270;
 
             pacman->rect.y -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_DOWN:
             future_position.x =  current_position.x +  0; 
@@ -194,7 +195,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             pacman->rotation = 90;
 
             pacman->rect.y += 44;
-
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_LEFT:
             future_position.x =  current_position.x + -1; 
@@ -222,6 +223,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             }
 
             pacman->rect.x -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_RIGHT:
             future_position.x =  current_position.x +  1; 
@@ -250,6 +252,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             }
 
             pacman->rect.x += 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
 
     }

@@ -53,8 +53,10 @@ Assets *load_all_assets(SDL_Renderer *renderer, Map *map) {
     // Load game sounds
     assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
     assets->sounds.pacman_munch = Mix_LoadWAV("../assets/sounds/munch.wav");
+    assets->sounds.pacman_step = Mix_LoadWAV("../assets/sounds/step.wav");
+    assets->sounds.game_notification = Mix_LoadWAV("../assets/sounds/notif.wav");
     assets->sounds.game_win = Mix_LoadWAV("../assets/sounds/win.wav");
-    assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");
+    assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");    
     return assets;
 }
 
