@@ -4,6 +4,7 @@
 #include "declarations.h"
 
 Assets *load_all_assets(SDL_Renderer *renderer, Map *map);
+void free_all_assets(Assets *assets);
 
 #endif // !ASSETS_H
 

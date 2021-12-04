@@ -54,3 +54,16 @@ Assets *load_all_assets(SDL_Renderer *renderer, Map *map) {
 }
 
 
+void free_all_assets(Assets *assets) { 
+    // Free all sprites
+    SDL_DestroyTexture(assets->game.pacman.texture);
+    SDL_DestroyTexture(assets->game.blocks->texture);
+    SDL_DestroyTexture(assets->game.foods->texture);
+    SDL_DestroyTexture(assets->game.exit.texture);
+    SDL_DestroyTexture(assets->game.grid.texture);
+    SDL_DestroyTexture(assets->misc.homescreen.texture);
+
+    // Free all music
+}
+
+

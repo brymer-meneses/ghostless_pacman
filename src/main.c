@@ -21,6 +21,7 @@ int main (int argc, char *argv[]) {
     // Initialize map which will be used in the game
     Map *map = init_map();
 
+    // Load all game assets
     Assets *assets = load_all_assets(renderer, map);
 
      
@@ -43,6 +44,7 @@ int main (int argc, char *argv[]) {
         SDL_Delay(1000/60); 
     }
 
+    free_all_assets(assets);
     IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
