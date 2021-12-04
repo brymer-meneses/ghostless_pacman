@@ -55,6 +55,7 @@ typedef struct Assets {
         Sprite slide_3;
         Sprite slide_4;
         Sprite homescreen;
+        Sprite about_screen;
     } misc;
 
     struct { 

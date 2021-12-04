@@ -26,6 +26,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
     Sprite homescreen = assets->misc.homescreen;
+    Sprite about_screen = assets->misc.about_screen;
     Sprite player_lost_hit_block = assets->prompt.player_lost_hit_block;
     Sprite player_lost_hit_border = assets->prompt.player_lost_hit_border;
     Sprite player_lost_insufficient_food = assets->prompt.player_lost_insufficient_food;
@@ -38,6 +39,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
         case PLAYER_ON_TUTORIAL:
             break;
         case PLAYER_ON_ABOUT:
+            render_sprite(&about_screen);
             break;
         case PLAYER_STILL_PLAYING:
             render_map(map, assets);
@@ -109,6 +111,8 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
                 case SDL_SCANCODE_S:
                     *player_state = PLAYER_STILL_PLAYING;
                     break;
+                case SDL_SCANCODE_A:
+                    *player_state = PLAYER_ON_ABOUT;
                 default:
                     // TODO: Warn the user if the input is invalid
                     // perhaps add some instructions?
@@ -116,6 +120,12 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
             }
         case PLAYER_ON_TUTORIAL:
             break;
+        case PLAYER_ON_ABOUT:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_M:
+                    *player_state = PLAYER_ON_MENU;
+                    break;
+                }
         default:
             break;
     }
