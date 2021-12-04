@@ -138,6 +138,8 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
     Position current_position = query_pacman_position(pacman);
     Position future_position;
 
+    PlayerState future_player_state;
+
     BoardElement future_obstacle;
     switch (move) {
         case MOVE_UP:
@@ -146,10 +148,10 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                *player_state = check_if_player_won(future_position, map);
+                future_player_state = check_if_player_won(future_position, map);
             } else { 
-                *player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (*player_state != PLAYER_STILL_PLAYING) break;
+                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (future_player_state != PLAYER_STILL_PLAYING) break;
             }
 
 
@@ -165,10 +167,10 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                *player_state = check_if_player_won(future_position, map);
+                future_player_state = check_if_player_won(future_position, map);
             } else { 
-                *player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (*player_state != PLAYER_STILL_PLAYING) break;
+                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (future_player_state != PLAYER_STILL_PLAYING) break;
             }
 
             pacman->flip = SDL_FLIP_VERTICAL;
@@ -186,11 +188,11 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                *player_state = check_if_player_won(future_position, map);
+                future_player_state = check_if_player_won(future_position, map);
                 break;
             } else { 
-                *player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (*player_state != PLAYER_STILL_PLAYING) break;
+                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (future_player_state != PLAYER_STILL_PLAYING) break;
             }
 
             pacman->rect.x -= 44;
@@ -205,10 +207,10 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                *player_state = check_if_player_won(future_position, map);
+                future_player_state = check_if_player_won(future_position, map);
             } else { 
-                *player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (*player_state != PLAYER_STILL_PLAYING) break;
+                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (future_player_state != PLAYER_STILL_PLAYING) break;
             }
 
             pacman->rect.x += 44;
@@ -216,6 +218,8 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
             break;
 
     }
+    // Update `player_state` located on `main.c`
+    *player_state = future_player_state;
 
 }
 

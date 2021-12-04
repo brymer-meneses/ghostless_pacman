@@ -28,6 +28,7 @@ int main (int argc, char *argv[]) {
     Map *map = init_map(assets);
      
     PlayerState player_state = PLAYER_ON_MENU;
+    int current_tutorial_slide_number = 0;
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
@@ -39,7 +40,7 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &player_state, map, assets);
+                handle_keypress(event, &player_state, map, assets, &current_tutorial_slide_number);
         }
         SDL_RenderClear(renderer);
     

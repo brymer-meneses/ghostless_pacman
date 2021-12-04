@@ -13,6 +13,7 @@
 #define SPRITE_UPDATE_DELAY 100
 
 #define NUMBER_OF_BLOCKS 10
+#define NUMBER_OF_TUTORIAL_SLIDES 7
 
 #define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 8)
 #define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 8)
@@ -50,10 +51,7 @@ typedef struct Assets {
 
 
     struct { 
-        Sprite slide_1;
-        Sprite slide_2;
-        Sprite slide_3;
-        Sprite slide_4;
+        Sprite* tutorial_slides;
         Sprite homescreen;
     } misc;
 

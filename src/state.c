@@ -19,7 +19,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      *       PlayerState *player_state
      *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
      *             It is necessay to become a pointer since this function will modify some 
-     *      Map *map    
+     *       Map *map    
      *          - A pointer to the struct Map, which encapsulates variables required 
      *            in the game.
      *       GameSprites *game_sprites
@@ -52,7 +52,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
     }
 }
 
-void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Assets* assets) {
+void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Assets* assets, int* current_tutorial_slide_number) {
     /* 
      *   A function that handles the various keypresses of the user.
      *
@@ -63,12 +63,15 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
      *       PlayerState *player_state
      *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
      *             It is necessay to become a pointer since this function will modify some 
-     *      Map *map    
+     *       Map *map    
      *          - A pointer to the struct Map, which encapsulates variables required 
      *            in the game.
      *       GameSprites *game_sprites
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
+    bool is_not_on_the_last_slide = *current_tutorial_slide_number == NUMBER_OF_TUTORIAL_SLIDES;
+    bool is_not_on_the_first_slide = *current_tutorial_slide_number == 1;
+
     switch (*player_state) {
         case PLAYER_STILL_PLAYING:
             switch (event.key.keysym.scancode) {
@@ -97,15 +100,33 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
             break;
         case PLAYER_ON_MENU:
             switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_S:
+                case SDL_SCANCODE_0:
                     *player_state = PLAYER_STILL_PLAYING;
                     break;
+                case SDL_SCANCODE_1:
+                    *player_state = PLAYER_ON_TUTORIAL;
                 default:
                     // TODO: Warn the user if the input is invalid
                     // perhaps add some instructions?
                     break;
             }
         case PLAYER_ON_TUTORIAL:
+            switch (event.key.keysym.scancode) {
+                case SDL_SCANCODE_RIGHT:
+                    if (is_not_on_the_last_slide) 
+                        *current_tutorial_slide_number += 1;
+                    break;
+                case SDL_SCANCODE_LEFT:
+                    if (is_not_on_the_first_slide)  
+                        *current_tutorial_slide_number -= 1;
+                    break;
+                default:
+                    // TODO: Warn the user if the input is invalid
+                    // perhaps add some instructions?
+                    break;
+            }
+            puts("test");
+            render_sprite(&assets->misc.tutorial_slides[*current_tutorial_slide_number]);
             break;
         default:
             break;

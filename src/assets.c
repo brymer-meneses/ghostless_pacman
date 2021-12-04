@@ -45,12 +45,12 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
 
-    SDL_Rect homescreen_rect = {0, 0, 640, 640};
+    SDL_Rect fullscreen_rect = {0, 0, 640, 640};
     SDL_Rect prompt_rect = {108.35, 104.95, 423.3, 430.1};
 
     // Load screen displays
 
-    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, homescreen_rect);
+    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, fullscreen_rect);
     Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
     Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
     Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
@@ -62,6 +62,16 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
     assets->prompt.player_won = player_won;
 
+    assets->misc.tutorial_slides = malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
+
+    // Load tutorial slides
+    char filename[31];
+    for (int i=1; i<=NUMBER_OF_TUTORIAL_SLIDES; i++) {
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
+    }
+
+
     // Load game sounds
     assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
     assets->sounds.pacman_munch = Mix_LoadWAV("../assets/sounds/munch.wav");
@@ -69,6 +79,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->sounds.game_notification = Mix_LoadWAV("../assets/sounds/notif.wav");
     assets->sounds.game_win = Mix_LoadWAV("../assets/sounds/win.wav");
     assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");    
+
     return assets;
 }
 
