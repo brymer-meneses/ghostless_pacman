@@ -21,18 +21,23 @@ int main (int argc, char *argv[]) {
     // Set the background color
     SDL_SetRenderDrawColor(renderer, 236, 239, 244, 1);
      
-    // Initialize map which will be used in the game
-    Map *map = init_map();
-
     // Load all game assets
-    Assets *assets = load_all_assets(renderer, map);
+    Assets *assets = load_all_assets(renderer);
 
+    // Initialize map which will be used in the game
+    Map *map = init_map(assets);
      
-    PlayerState player_state = PLAYER_ON_MENU;
+    States states = {
+        // Set the initial state of the player
+        .player_state = PLAYER_IN_MENU, 
+        // Set the initial index for the tutorial slides 
+        .current_tutorial_slide_index = 0,
+    };
 
     // Play background music
-    Mix_FadeInMusic(assets->sounds.background, -1, 4000);
+    Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
 
+    printf("%d", states.player_state);
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
         SDL_Event event;
@@ -40,11 +45,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &player_state, map, assets);
+                handle_keypress(event, &states, map, assets);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(player_state, map, assets);
+        handle_state(&states, map, assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 

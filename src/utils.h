@@ -10,4 +10,6 @@ SDL_Window* create_window();
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect);
 void render_sprite(Sprite *sprite);
 
+int gen_random_num(int min, int max);
+
 #endif // !UTILS_H

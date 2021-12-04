@@ -13,9 +13,12 @@
 #define SPRITE_UPDATE_DELAY 100
 
 #define NUMBER_OF_BLOCKS 10
+#define NUMBER_OF_TUTORIAL_SLIDES 7
 
 #define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 8)
 #define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 8)
+
+#define MAX_NUMBER_OF_FOOD 9
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
@@ -48,11 +51,9 @@ typedef struct Assets {
 
 
     struct { 
-        Sprite slide_1;
-        Sprite slide_2;
-        Sprite slide_3;
-        Sprite slide_4;
+        Sprite* tutorial_slides;
         Sprite homescreen;
+        Sprite about_screen;
     } misc;
 
     struct { 
@@ -65,9 +66,15 @@ typedef struct Assets {
         Sprite wrong_key_during_instructions;
     } prompt;
 
+    // Struct for sounds
+
     struct { 
-        Mix_Music* background;
-        Mix_Chunk* pacman_chomp;
+        Mix_Music* background_music;
+        Mix_Chunk* pacman_munch;
+        Mix_Chunk* pacman_step;
+        Mix_Chunk* game_notification;
+        Mix_Chunk* game_win;
+        Mix_Chunk* game_over;
     } sounds;
 
 
@@ -84,17 +91,23 @@ typedef struct Map {
     int total_player_score;
 } Map;
 
+
 typedef enum PlayerState {
     PLAYER_WON,
     PLAYER_LOST_HIT_BLOCK,
     PLAYER_LOST_HIT_BORDER,
     PLAYER_LOST_INSUFFICIENT_FOOD,
-    PLAYER_STILL_PLAYING,
 
-    PLAYER_ON_MENU,
-    PLAYER_ON_TUTORIAL,
-    PLAYER_ON_ABOUT,
+    PLAYER_IN_GAME,
+    PLAYER_IN_MENU,
+    PLAYER_IN_TUTORIAL,
+    PLAYER_IN_ABOUT,
 } PlayerState;
+
+typedef struct States {
+    PlayerState player_state;
+    int current_tutorial_slide_index;
+} States;
 
 typedef enum BoardElement {
     EMPTY,

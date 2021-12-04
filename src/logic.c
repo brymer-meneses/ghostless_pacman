@@ -8,6 +8,9 @@
 #include "utils.h"
 #include "logic.h"
 
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+
 void render_map(Map *map, Assets* assets) {
 
     Sprite* grid =   &assets->game.grid;
@@ -73,8 +76,10 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
         case FOOD:
             map->total_player_score++;
             map->board[x][y] = EMPTY;
+            Mix_PlayChannel(-1, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
+            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
             return PLAYER_LOST_HIT_BLOCK;
             break;
         default: 
@@ -82,16 +87,19 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
     }
 
     if (!player_within_borders) {
+        Mix_PlayChannel(-1, assets->sounds.game_over, 0);
         return PLAYER_LOST_HIT_BORDER;
     } 
 
-    return PLAYER_STILL_PLAYING;
+    return PLAYER_IN_GAME;
 };
 
-PlayerState check_if_player_won(Position future_position, Map* map) {
+PlayerState check_if_player_won(Position future_position, Map* map, Assets* assets) {
     if (map->total_player_score == map->number_of_foods) {
+        Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return PLAYER_WON;
     } else {
+        Mix_PlayChannel(-1, assets->sounds.game_over, 0);
         return PLAYER_LOST_INSUFFICIENT_FOOD;
     }
 
@@ -99,9 +107,11 @@ PlayerState check_if_player_won(Position future_position, Map* map) {
 
 void fill_board_with_food(Map *map) {
     int total_foods_generated = 0;
+    int rand_x;
+    int rand_y;
     while (total_foods_generated < map->number_of_foods){
-         int rand_x =  rand() % 10;
-         int rand_y =  rand() % 10;
+         rand_x =  gen_random_num(0, 9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
@@ -111,9 +121,11 @@ void fill_board_with_food(Map *map) {
 
 void fill_board_with_blocks(Map *map) {
     int total_blocks_generated = 0;
+    int rand_x;
+    int rand_y;
     while (total_blocks_generated < map->number_of_blocks) {
-         int rand_x =  rand() % 10;
-         int rand_y =  rand() % 10;
+         rand_x =  gen_random_num(0, 9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
              map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
@@ -121,13 +133,14 @@ void fill_board_with_blocks(Map *map) {
     }
 }
 
-void move_pacman(Move move, Assets *assets, Map* map) {
+void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
     Sprite* pacman = &assets->game.pacman;
 
     Position current_position = query_pacman_position(pacman);
     Position future_position;
-    PlayerState player_state;
+
+    PlayerState future_player_state;
 
     BoardElement future_obstacle;
     switch (move) {
@@ -137,18 +150,11 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                player_state = check_if_player_won(future_position, map);
-                if (player_state == PLAYER_WON) { 
-                    // display player won prompt
-                    puts("You won!");
-                } else {
-                    // display player lost prompt
-                    puts("You lost!");
-                }
+                states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (player_state != PLAYER_STILL_PLAYING) break;
+                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
 
@@ -156,6 +162,7 @@ void move_pacman(Move move, Assets *assets, Map* map) {
             pacman->rotation = 270;
 
             pacman->rect.y -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_DOWN:
             future_position.x =  current_position.x +  0; 
@@ -163,25 +170,18 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                player_state = check_if_player_won(future_position, map);
-                if (player_state == PLAYER_WON) { 
-                    // display player won prompt
-                    puts("You won!");
-                } else {
-                    // display player lost prompt
-                    puts("You lost!");
-                }
+                states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (player_state != PLAYER_STILL_PLAYING) break;
+                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->flip = SDL_FLIP_VERTICAL;
             pacman->rotation = 90;
 
             pacman->rect.y += 44;
-
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_LEFT:
             future_position.x =  current_position.x + -1; 
@@ -192,21 +192,15 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                player_state = check_if_player_won(future_position, map);
-                if (player_state == PLAYER_WON) { 
-                    // display player won prompt
-                    puts("You won!");
-                } else {
-                    // display player lost prompt
-                    puts("You lost!");
-                }
+                states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (player_state != PLAYER_STILL_PLAYING) break;
+                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->rect.x -= 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_RIGHT:
             future_position.x =  current_position.x +  1; 
@@ -217,29 +211,48 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                player_state = check_if_player_won(future_position, map);
-                if (player_state == PLAYER_WON) { 
-                    // display player won prompt
-                    puts("You won!");
-                } else {
-                    puts("You lost!");
-                    // display player lost prompt
-                }
-                break;
+                states->player_state = check_if_player_won(future_position, map, assets);
             } else { 
-                player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (player_state != PLAYER_STILL_PLAYING) break;
+                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->rect.x += 44;
+            Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
 
     }
 
 }
 
+void reset_map(Map* map, Assets* assets) {
 
-Map* init_map() {
+    // make sure the board is empty
+    for (int row=0; row<10; row++) {
+        for (int col=0; col<10; col++) {
+            map->board[row][col] = EMPTY;
+        }
+    }
+
+    // reset the position of pacman
+    assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
+    assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
+
+    map->total_player_score = 0;
+    map->number_of_blocks = NUMBER_OF_BLOCKS;
+    map->number_of_foods = gen_random_num(2, 9);
+
+    int exit_coordinate_x = gen_random_num(1, 9);
+    int exit_coordinate_y = gen_random_num(1,9);
+
+    map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
+
+    fill_board_with_blocks(map);
+    fill_board_with_food(map);
+}
+
+
+Map* init_map(Assets *assets) {
 
     time_t t;
     srand((unsigned) time(&t));
@@ -249,24 +262,7 @@ Map* init_map() {
         puts("Memory allocation for struct Map failed");
     }
 
-    map->total_player_score = 0;
-    map->number_of_blocks = NUMBER_OF_BLOCKS;
-    map->number_of_foods = 2 + rand() % 9;
-
-    for (int row=0; row<10; row++) {
-        for (int col=0; col<10; col++) {
-            map->board[row][col] = EMPTY;
-        }
-    }
-
-    int exit_coordinate_x = 1 + rand() % 9;
-    int exit_coordinate_y = 1 + rand() % 9;
-    printf("exit coordinate %d %d\n", exit_coordinate_x, exit_coordinate_y);
-
-    map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
-
-    fill_board_with_blocks(map);
-    fill_board_with_food(map);
+    reset_map(map, assets);
 
     return map;
 }

@@ -4,7 +4,7 @@
 #include "assets.h"
 
 
-Assets *load_all_assets(SDL_Renderer *renderer, Map *map) { 
+Assets *load_all_assets(SDL_Renderer *renderer) { 
 
 
     Assets *assets = malloc(1 * sizeof(Assets));
@@ -33,25 +33,54 @@ Assets *load_all_assets(SDL_Renderer *renderer, Map *map) {
     assets->game.grid = grid;
     assets->game.exit = exit;
 
-    assets->game.blocks = (Sprite*) malloc(map->number_of_blocks * sizeof(Sprite));
-    assets->game.foods = (Sprite*) malloc(map->number_of_foods * sizeof(Sprite));
+    assets->game.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
+    assets->game.foods = (Sprite*) malloc(MAX_NUMBER_OF_FOOD * sizeof(Sprite));
 
-    for (int i=0; i<map->number_of_blocks; i++) {
+    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
         assets->game.blocks[i] = load_sprite(renderer, "../assets/box.png", 0 , 1, block_rect);
     }
 
-    for (int i=0; i<map->number_of_foods; i++) {
+    for (int i=0; i<MAX_NUMBER_OF_FOOD; i++) {
         assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
     }
 
 
-    SDL_Rect homescreen_rect = {0, 0, 640, 640};
-    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, homescreen_rect);
+    SDL_Rect screen_rect = {0, 0, 640, 640};
+    SDL_Rect prompt_rect = {108, 104, 423, 430};
+
+    // Load screen displays
+
+    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, screen_rect);
+    Sprite about_screen = load_sprite(renderer, "../assets/about.png", 0, 1, screen_rect);
+    Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
+    Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
+    Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
+    Sprite player_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
 
     assets->misc.homescreen = homescreen;
+    assets->misc.about_screen = about_screen;
+    assets->prompt.player_lost_hit_block = player_lost_hit_block;
+    assets->prompt.player_lost_hit_border = player_lost_hit_border;
+    assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
+    assets->prompt.player_won = player_won;
+
+    assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
+
+    // Load tutorial slides
+    char filename[31];
+    for (int i=0; i<NUMBER_OF_TUTORIAL_SLIDES; i++) {
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, screen_rect);
+    }
+
 
     // Load game sounds
-    assets->sounds.background = Mix_LoadMUS("../assets/sounds/background_muzic.wav");
+    assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
+    assets->sounds.pacman_munch = Mix_LoadWAV("../assets/sounds/munch.wav");
+    assets->sounds.pacman_step = Mix_LoadWAV("../assets/sounds/step.wav");
+    assets->sounds.game_notification = Mix_LoadWAV("../assets/sounds/notif.wav");
+    assets->sounds.game_win = Mix_LoadWAV("../assets/sounds/win.wav");
+    assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");    
 
     return assets;
 }
@@ -66,8 +95,13 @@ void free_all_assets(Assets *assets) {
     SDL_DestroyTexture(assets->game.grid.texture);
     SDL_DestroyTexture(assets->misc.homescreen.texture);
 
-    // Free all music
-    Mix_FreeMusic(assets->sounds.background);
+    // Free all sounds
+    Mix_FreeMusic(assets->sounds.background_music);
+    Mix_FreeChunk(assets->sounds.pacman_munch);
+    Mix_FreeChunk(assets->sounds.pacman_step);
+    Mix_FreeChunk(assets->sounds.game_notification);
+    Mix_FreeChunk(assets->sounds.game_win);
+    Mix_FreeChunk(assets->sounds.game_over);
     Mix_CloseAudio();
 }
 
