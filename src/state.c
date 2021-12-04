@@ -27,6 +27,10 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      */
     Sprite homescreen = assets->misc.homescreen;
     Sprite player_lost_hit_block = assets->prompt.player_lost_hit_block;
+    Sprite player_lost_hit_border = assets->prompt.player_lost_hit_border;
+    Sprite player_lost_insufficient_food = assets->prompt.player_lost_insufficient_food;
+    Sprite player_won = assets->prompt.player_won;
+
     switch (state) {
         case PLAYER_ON_MENU:
             render_sprite(&homescreen);
@@ -39,15 +43,20 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
             render_map(map, assets);
             break;
         case PLAYER_WON:
+            render_map(map, assets);
+            render_sprite(&player_won);
             break;
         case PLAYER_LOST_HIT_BLOCK:
             render_map(map, assets);
             render_sprite(&player_lost_hit_block);
             break;
         case PLAYER_LOST_HIT_BORDER:
-            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
+            render_map(map, assets);
+            render_sprite(&player_lost_hit_border);
             break;
         case PLAYER_LOST_INSUFFICIENT_FOOD:
+            render_map(map, assets);
+            render_sprite(&player_lost_insufficient_food);
             break;
     }
 }

@@ -46,7 +46,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
 
     SDL_Rect homescreen_rect = {0, 0, 640, 640};
-    SDL_Rect prompt_rect = {108.35, 104.95, 423.3, 430.1};
+    SDL_Rect prompt_rect = {108, 104, 423, 430};
 
     // Load screen displays
 
