@@ -65,9 +65,13 @@ typedef struct Assets {
         Sprite wrong_key_during_instructions;
     } prompt;
 
+    // Struct for sounds
+
     struct { 
-        Mix_Music* background;
-        Mix_Chunk* pacman_chomp;
+        Mix_Music* background_music;
+        Mix_Chunk* pacman_munch;
+        Mix_Chunk* game_win;
+        Mix_Chunk* game_over;
     } sounds;
 
 
