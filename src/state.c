@@ -41,9 +41,11 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
         case PLAYER_WON:
             break;
         case PLAYER_LOST_HIT_BLOCK:
+            render_map(map, assets);
             render_sprite(&player_lost_hit_block);
             break;
         case PLAYER_LOST_HIT_BORDER:
+            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
             break;
         case PLAYER_LOST_INSUFFICIENT_FOOD:
             break;

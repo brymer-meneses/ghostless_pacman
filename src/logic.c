@@ -79,6 +79,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
             Mix_PlayChannel(-1, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
+            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
             return PLAYER_LOST_HIT_BLOCK;
             break;
         default: 
@@ -86,6 +87,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
     }
 
     if (!player_within_borders) {
+        Mix_PlayChannel(-1, assets->sounds.game_over, 0);
         return PLAYER_LOST_HIT_BORDER;
     } 
 
