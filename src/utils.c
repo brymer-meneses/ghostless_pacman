@@ -96,3 +96,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
     return sprite;
 }
 
+int gen_random_num(int min, int max) {
+
+    return rand() % (max + 1 - min) + min;
+}

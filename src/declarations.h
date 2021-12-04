@@ -17,6 +17,8 @@
 #define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 8)
 #define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 8)
 
+#define MAX_NUMBER_OF_FOOD 9
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_image.h"

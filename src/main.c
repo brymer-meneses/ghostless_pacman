@@ -21,12 +21,11 @@ int main (int argc, char *argv[]) {
     // Set the background color
     SDL_SetRenderDrawColor(renderer, 236, 239, 244, 1);
      
-    // Initialize map which will be used in the game
-    Map *map = init_map();
-
     // Load all game assets
-    Assets *assets = load_all_assets(renderer, map);
+    Assets *assets = load_all_assets(renderer);
 
+    // Initialize map which will be used in the game
+    Map *map = init_map(assets);
      
     PlayerState player_state = PLAYER_ON_MENU;
 

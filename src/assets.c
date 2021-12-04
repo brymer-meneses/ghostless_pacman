@@ -4,7 +4,7 @@
 #include "assets.h"
 
 
-Assets *load_all_assets(SDL_Renderer *renderer, Map *map) { 
+Assets *load_all_assets(SDL_Renderer *renderer) { 
 
 
     Assets *assets = malloc(1 * sizeof(Assets));
@@ -33,14 +33,14 @@ Assets *load_all_assets(SDL_Renderer *renderer, Map *map) {
     assets->game.grid = grid;
     assets->game.exit = exit;
 
-    assets->game.blocks = (Sprite*) malloc(map->number_of_blocks * sizeof(Sprite));
-    assets->game.foods = (Sprite*) malloc(map->number_of_foods * sizeof(Sprite));
+    assets->game.blocks = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
+    assets->game.foods = (Sprite*) malloc(MAX_NUMBER_OF_FOOD * sizeof(Sprite));
 
-    for (int i=0; i<map->number_of_blocks; i++) {
+    for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
         assets->game.blocks[i] = load_sprite(renderer, "../assets/box.png", 0 , 1, block_rect);
     }
 
-    for (int i=0; i<map->number_of_foods; i++) {
+    for (int i=0; i<MAX_NUMBER_OF_FOOD; i++) {
         assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
     }
 

@@ -83,11 +83,8 @@ void handle_keypress(SDL_Event event, PlayerState *player_state, Map* map, Asset
                     break;
                 case SDL_SCANCODE_M:
                     *player_state = PLAYER_ON_MENU;
-                    // reset the position of pacman
-                    assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
-                    assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
                     // reset the map
-                    reset_map(map);
+                    reset_map(map, assets);
                 default:
                     // TODO: Warn the user if the input is invalid
                     // perhaps add some instructions?

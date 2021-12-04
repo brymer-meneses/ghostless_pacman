@@ -102,8 +102,8 @@ void fill_board_with_food(Map *map) {
     int rand_x;
     int rand_y;
     while (total_foods_generated < map->number_of_foods){
-         rand_x =  rand() % 10;
-         rand_y =  rand() % 10;
+         rand_x =  gen_random_num(0, 9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
@@ -116,8 +116,8 @@ void fill_board_with_blocks(Map *map) {
     int rand_x;
     int rand_y;
     while (total_blocks_generated < map->number_of_blocks) {
-         rand_x =  rand() % 10;
-         rand_y =  rand() % 10;
+         rand_x =  gen_random_num(0, 9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
              map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
@@ -242,23 +242,25 @@ void move_pacman(Move move, Assets *assets, Map* map) {
 
 }
 
-void reset_map(Map* map) {
+void reset_map(Map* map, Assets* assets) {
 
-    time_t t;
-    srand((unsigned) time(&t));
-
+    // make sure the board is empty
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             map->board[row][col] = EMPTY;
         }
     }
 
+    // reset the position of pacman
+    assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
+    assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
+
     map->total_player_score = 0;
     map->number_of_blocks = NUMBER_OF_BLOCKS;
-    map->number_of_foods = 2 + rand() % 9;
+    map->number_of_foods = gen_random_num(2, 9);
 
-    int exit_coordinate_x = 1 + rand() % 9;
-    int exit_coordinate_y = 1 + rand() % 9;
+    int exit_coordinate_x = gen_random_num(1, 9);
+    int exit_coordinate_y = gen_random_num(1,9);
 
     map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
 
@@ -267,14 +269,17 @@ void reset_map(Map* map) {
 }
 
 
-Map* init_map() {
+Map* init_map(Assets *assets) {
+
+    time_t t;
+    srand((unsigned) time(&t));
 
     Map* map = malloc(1 * sizeof(Map));
     if (!map) {
         puts("Memory allocation for struct Map failed");
     }
 
-    reset_map(map);
+    reset_map(map, assets);
 
     return map;
 }
