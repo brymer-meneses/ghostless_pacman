@@ -21,10 +21,12 @@ if (UNIX)
     include_directories(${PROJECT_NAME} 
         ${SDL2_INCLUDE_DIRS} 
         ${SDL2_IMAGE_INCLUDE_DIRS}
+        ${SDL2_MIXER_INCLUDE_DIRS}
     )
     target_link_libraries(${PROJECT_NAME} 
         ${SDL2_LIBRARIES} 
         ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_MIXER_LIBRARIES}
     )
 endif ()
 
