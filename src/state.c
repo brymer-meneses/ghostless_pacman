@@ -25,6 +25,7 @@ void handle_state( PlayerState state, Map *map, Assets *assets) {
      *       GameSprites *game_sprites
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
+    
     Sprite homescreen = assets->misc.homescreen;
     Sprite about_screen = assets->misc.about_screen;
     Sprite player_lost_hit_block = assets->prompt.player_lost_hit_block;

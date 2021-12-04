@@ -96,6 +96,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
 
 PlayerState check_if_player_won(Position future_position, Map* map, Assets* assets) {
     if (map->total_player_score == map->number_of_foods) {
+        Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return PLAYER_WON;
     } else {
         Mix_PlayChannel(-1, assets->sounds.game_over, 0);
