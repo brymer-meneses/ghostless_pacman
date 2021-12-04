@@ -91,7 +91,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
         return PLAYER_LOST_HIT_BORDER;
     } 
 
-    return PLAYER_STILL_PLAYING;
+    return PLAYER_IN_GAME;
 };
 
 PlayerState check_if_player_won(Position future_position, Map* map, Assets* assets) {
@@ -133,7 +133,7 @@ void fill_board_with_blocks(Map *map) {
     }
 }
 
-void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state) {
+void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
     Sprite* pacman = &assets->game.pacman;
 
@@ -150,10 +150,11 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                future_player_state = check_if_player_won(future_position, map, assets);
+                states->player_state = check_if_player_won(future_position, map, assets);
+                break;
             } else { 
                 future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (future_player_state != PLAYER_STILL_PLAYING) break;
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
 
@@ -169,10 +170,11 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                future_player_state = check_if_player_won(future_position, map, assets);
+                states->player_state = check_if_player_won(future_position, map, assets);
+                break;
             } else { 
                 future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (future_player_state != PLAYER_STILL_PLAYING) break;
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->flip = SDL_FLIP_VERTICAL;
@@ -190,11 +192,11 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                future_player_state = check_if_player_won(future_position, map, assets);
+                states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
                 future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (future_player_state != PLAYER_STILL_PLAYING) break;
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->rect.x -= 44;
@@ -209,10 +211,10 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                *player_state = check_if_player_won(future_position, map, assets);
+                states->player_state = check_if_player_won(future_position, map, assets);
             } else { 
-                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (future_player_state != PLAYER_STILL_PLAYING) break;
+                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                if (states->player_state != PLAYER_IN_GAME) break;
             }
 
             pacman->rect.x += 44;
@@ -220,8 +222,6 @@ void move_pacman(Move move, Assets *assets, Map* map, PlayerState *player_state)
             break;
 
     }
-    // Update `player_state` located on `main.c`
-    *player_state = future_player_state;
 
 }
 

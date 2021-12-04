@@ -64,12 +64,12 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
     assets->prompt.player_won = player_won;
 
-    assets->misc.tutorial_slides = malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
+    assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
 
     // Load tutorial slides
     char filename[31];
-    for (int i=1; i<=NUMBER_OF_TUTORIAL_SLIDES; i++) {
-        sprintf(filename, "../assets/tutorial/slide_%d.png", i);
+    for (int i=0; i<NUMBER_OF_TUTORIAL_SLIDES; i++) {
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
         assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, screen_rect);
     }
 

@@ -91,17 +91,23 @@ typedef struct Map {
     int total_player_score;
 } Map;
 
+
 typedef enum PlayerState {
     PLAYER_WON,
     PLAYER_LOST_HIT_BLOCK,
     PLAYER_LOST_HIT_BORDER,
     PLAYER_LOST_INSUFFICIENT_FOOD,
-    PLAYER_STILL_PLAYING,
 
-    PLAYER_ON_MENU,
-    PLAYER_ON_TUTORIAL,
-    PLAYER_ON_ABOUT,
+    PLAYER_IN_GAME,
+    PLAYER_IN_MENU,
+    PLAYER_IN_TUTORIAL,
+    PLAYER_IN_ABOUT,
 } PlayerState;
+
+typedef struct States {
+    PlayerState player_state;
+    int current_tutorial_slide_index;
+} States;
 
 typedef enum BoardElement {
     EMPTY,
