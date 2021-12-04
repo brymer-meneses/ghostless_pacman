@@ -8,14 +8,14 @@
 #include "utils.h"
 #include "logic.h"
 
-void render_map(Map *map, GameSprites *game_sprites) {
+void render_map(Map *map, Assets* assets) {
 
-    Sprite* grid = &game_sprites->grid;
-    Sprite* pacman = &game_sprites->pacman;
-    Sprite* exit = &game_sprites->exit;
+    Sprite* grid =   &assets->game.grid;
+    Sprite* pacman = &assets->game.pacman;
+    Sprite* exit =   &assets->game.exit;
 
-    Sprite* foods = game_sprites->foods;
-    Sprite* blocks = game_sprites->blocks;
+    Sprite* foods =   assets->game.foods;
+    Sprite* blocks =  assets->game.blocks;
 
     render_sprite(grid);
     render_sprite(pacman);
@@ -121,9 +121,9 @@ void fill_board_with_blocks(Map *map) {
     }
 }
 
-void move_pacman(Move move, GameSprites* all_sprites, Map* map) {
+void move_pacman(Move move, Assets *assets, Map* map) {
 
-    Sprite* pacman = &all_sprites->pacman;
+    Sprite* pacman = &assets->game.pacman;
 
     Position current_position = query_pacman_position(pacman);
     Position future_position;
@@ -268,9 +268,7 @@ Map* init_map() {
     fill_board_with_blocks(map);
     fill_board_with_food(map);
 
-
-
-
     return map;
 }
+
 

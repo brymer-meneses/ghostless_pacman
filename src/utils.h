@@ -1,23 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include "declarations.h"
 
-typedef struct Sprite {
-    SDL_Renderer        *renderer;
-    SDL_Texture         *texture;
-    SDL_Rect            rect;
-    SDL_RendererFlip    flip;
-    float               rotation;
-    int                 total_frames;
-    int                 frame_size;
-} Sprite;
-
-typedef struct Position {
-    int x;
-    int y;
-} Position;
 
 
 

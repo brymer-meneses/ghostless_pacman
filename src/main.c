@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "logic.h"
 #include "state.h"
+#include "assets.h"
 #include "declarations.h"
 
 
@@ -20,9 +21,8 @@ int main (int argc, char *argv[]) {
     // Initialize map which will be used in the game
     Map *map = init_map();
 
-    GameSprites game_sprites = load_all_game_sprites(renderer, map);
-    MiscSprites misc_sprites = load_all_misc_sprites(renderer);
-    PromptSprites prompt_sprites = load_all_prompt_sprites(renderer);
+    Assets *assets = load_all_assets(renderer, map);
+
      
     PlayerState player_state = PLAYER_ON_MENU;
 
@@ -33,11 +33,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &player_state, map, &game_sprites);
+                handle_keypress(event, &player_state, map, assets);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(player_state, map, &game_sprites, &misc_sprites, &prompt_sprites);
+        handle_state(player_state, map, assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 
