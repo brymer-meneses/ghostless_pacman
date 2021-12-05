@@ -139,10 +139,12 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                 case SDL_SCANCODE_RIGHT:
                     if (is_not_on_the_last_slide) 
                         states->current_tutorial_slide_index += 1;
+                        Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
                 case SDL_SCANCODE_LEFT:
                     if (is_not_on_the_first_slide)  
                         states->current_tutorial_slide_index -= 1;
+                        Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
                 case SDL_SCANCODE_M:
                     states->player_state = PLAYER_IN_MENU;
