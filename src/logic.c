@@ -153,11 +153,7 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
                 states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-<<<<<<< HEAD
-                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-=======
                 states->player_state = check_player_status(future_position, future_obstacle, map, assets);
->>>>>>> ddd702c9ddcb0eb9771573b3b0907fdfdbd58f6e
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
@@ -177,11 +173,7 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
                 states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-<<<<<<< HEAD
-                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-=======
                 states->player_state = check_player_status(future_position, future_obstacle, map, assets);
->>>>>>> ddd702c9ddcb0eb9771573b3b0907fdfdbd58f6e
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
@@ -203,11 +195,7 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
                 states->player_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-<<<<<<< HEAD
-                future_player_state = check_player_status(future_position, future_obstacle, map, assets);
-=======
                 states->player_state = check_player_status(future_position, future_obstacle, map, assets);
->>>>>>> ddd702c9ddcb0eb9771573b3b0907fdfdbd58f6e
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
