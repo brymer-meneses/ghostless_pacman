@@ -54,17 +54,17 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
     Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, screen_rect);
     Sprite about_screen = load_sprite(renderer, "../assets/about.png", 0, 1, screen_rect);
-    Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
-    Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
-    Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
-    Sprite player_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
+    Sprite game_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
+    Sprite game_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
 
     assets->misc.homescreen = homescreen;
     assets->misc.about_screen = about_screen;
-    assets->prompt.player_lost_hit_block = player_lost_hit_block;
-    assets->prompt.player_lost_hit_border = player_lost_hit_border;
-    assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
-    assets->prompt.player_won = player_won;
+    assets->prompt.game_lost_hit_block = game_lost_hit_block;
+    assets->prompt.game_lost_hit_border = game_lost_hit_border;
+    assets->prompt.game_lost_insufficient_food = game_lost_insufficient_food;
+    assets->prompt.game_won = game_won;
 
     assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
 

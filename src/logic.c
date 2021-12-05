@@ -29,7 +29,7 @@ void render_map(Map *map, Assets* assets) {
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            BoardElement element = map->board[row][col];
+            enum BoardElement element = map->board[row][col];
                 switch (element) {
                     case EMPTY:
                     case PACMAN:
@@ -64,7 +64,7 @@ Position query_pacman_position(Sprite* pacman) {
 };
 
 
-PlayerState check_player_status(Position future_position, BoardElement future_obstacle, Map *map, Assets* assets) {
+enum GameState check_player_status(Position future_position, enum BoardElement future_obstacle, Map *map, Assets* assets) {
     int x = future_position.x;
     int y = future_position.y;
 
@@ -80,7 +80,7 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
             break;
         case BLOCK:
             Mix_PlayChannel(-1, assets->sounds.game_over, 0);
-            return PLAYER_LOST_HIT_BLOCK;
+            return GAME_LOST_HIT_BLOCK;
             break;
         default: 
             break;
@@ -88,19 +88,19 @@ PlayerState check_player_status(Position future_position, BoardElement future_ob
 
     if (!player_within_borders) {
         Mix_PlayChannel(-1, assets->sounds.game_over, 0);
-        return PLAYER_LOST_HIT_BORDER;
+        return GAME_LOST_HIT_BORDER;
     } 
 
-    return PLAYER_IN_GAME;
+    return GAME_IN_PROGRESS;
 };
 
-PlayerState check_if_player_won(Position future_position, Map* map, Assets* assets) {
+enum GameState check_if_player_won(Position future_position, Map* map, Assets* assets) {
     if (map->total_player_score == map->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
-        return PLAYER_WON;
+        return GAME_WON;
     } else {
         Mix_PlayChannel(-1, assets->sounds.game_over, 0);
-        return PLAYER_LOST_INSUFFICIENT_FOOD;
+        return GAME_LOST_INSUFFICIENT_FOOD;
     }
 
 }
@@ -133,16 +133,14 @@ void fill_board_with_blocks(Map *map) {
     }
 }
 
-void move_pacman(Move move, Assets *assets, Map* map, States *states) {
+void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
 
     Sprite* pacman = &assets->game.pacman;
 
     Position current_position = query_pacman_position(pacman);
     Position future_position;
 
-    PlayerState future_player_state;
-
-    BoardElement future_obstacle;
+    enum BoardElement future_obstacle;
     switch (move) {
         case MOVE_UP:
             future_position.x =  current_position.x +  0; 
@@ -150,10 +148,10 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                states->player_state = check_if_player_won(future_position, map, assets);
+                states->game_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
@@ -170,10 +168,10 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                states->player_state = check_if_player_won(future_position, map, assets);
+                states->game_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
@@ -192,10 +190,10 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                states->player_state = check_if_player_won(future_position, map, assets);
+                states->game_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
-                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 
@@ -211,9 +209,9 @@ void move_pacman(Move move, Assets *assets, Map* map, States *states) {
 
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
-                states->player_state = check_if_player_won(future_position, map, assets);
+                states->game_state = check_if_player_won(future_position, map, assets);
             } else { 
-                states->player_state = check_player_status(future_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(future_position, future_obstacle, map, assets);
                 if (states->player_state != PLAYER_IN_GAME) break;
             }
 

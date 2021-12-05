@@ -30,8 +30,17 @@ int main (int argc, char *argv[]) {
     States states = {
         // Set the initial state of the player
         .player_state = PLAYER_IN_MENU, 
+
+        // Set the initial state of the game when th player enters th game from 
+        // the menu.
+        // DEBUG: change this to GAME_IN_FOOD_INPUT
+        .game_state = GAME_IN_PROGRESS,
+
         // Set the initial index for the tutorial slides 
         .current_tutorial_slide_index = 0,
+
+        // Set the initial wrong key state
+        .wrong_key_state = WRONG_KEY_NONE,
     };
 
     // Play background music
