@@ -26,7 +26,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
 
     SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
-    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
+    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
 
 
     assets->game.pacman = pacman;
@@ -41,7 +41,9 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
     for (int i=0; i<MAX_NUMBER_OF_FOOD; i++) {
-        assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
+        assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 40 , 5, food_rect);
+        // randomize the start of the animation by setting the current frame to different values
+        assets->game.foods[i].current_frame = i;
     }
 
 

@@ -32,6 +32,7 @@ typedef struct Sprite {
     float               rotation;
     int                 total_frames;
     int                 frame_size;
+    int                 current_frame;
 } Sprite;
 
 typedef struct Position {

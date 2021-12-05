@@ -66,7 +66,7 @@ void render_sprite(Sprite *sprite) {
         SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &sprite->rect);
     } else {
         Uint32 ticks = SDL_GetTicks();
-        Uint32 current_frame = ( ticks/ SPRITE_UPDATE_DELAY ) % sprite->total_frames;
+        Uint32 current_frame = ( ticks/ SPRITE_UPDATE_DELAY  + sprite->current_frame) % sprite->total_frames;
         SDL_Rect clip_rect = { current_frame * sprite->frame_size, 0, sprite->rect.w, sprite->rect.h };
         SDL_RenderCopyEx(sprite->renderer, sprite->texture, &clip_rect, &sprite->rect, sprite->rotation, NULL, sprite->flip);
     }
@@ -91,6 +91,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
     sprite.frame_size = sprite_frame_size;
     sprite.total_frames = total_frames;
     sprite.texture = image_texture;
+    sprite.current_frame = 0;
     sprite.rect = rect;
 
     return sprite;
