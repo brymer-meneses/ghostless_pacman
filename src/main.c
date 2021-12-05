@@ -25,7 +25,7 @@ int main (int argc, char *argv[]) {
     Assets *assets = load_all_assets(renderer);
 
     // Initialize map which will be used in the game
-    Map *map = init_map(assets);
+    Map *map = init_map(assets, 2);
      
     States states = {
         // Set the initial state of the player
@@ -33,20 +33,21 @@ int main (int argc, char *argv[]) {
 
         // Set the initial state of the game when th player enters th game from 
         // the menu.
-        // DEBUG: change this to GAME_IN_FOOD_INPUT
-        .game_state = GAME_IN_PROGRESS,
+        .game_state = GAME_IN_FOOD_NUMBER_INPUT,
 
         // Set the initial index for the tutorial slides 
         .current_tutorial_slide_index = 0,
 
         // Set the initial wrong key state
         .wrong_key_state = WRONG_KEY_NONE,
+
+        // Set the initial number of foods. This value will change later on.
+        .current_number_of_foods_picked = 1,
     };
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
 
-    printf("%d", states.player_state);
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
         SDL_Event event;

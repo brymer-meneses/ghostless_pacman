@@ -223,7 +223,7 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
 
 }
 
-void reset_map(Map* map, Assets* assets) {
+void reset_map(Map* map, Assets* assets, int number_of_foods) {
 
     // make sure the board is empty
     for (int row=0; row<10; row++) {
@@ -240,7 +240,7 @@ void reset_map(Map* map, Assets* assets) {
 
     map->total_player_score = 0;
     map->number_of_blocks = NUMBER_OF_BLOCKS;
-    map->number_of_foods = gen_random_num(2, 9);
+    map->number_of_foods = number_of_foods;
 
     int exit_coordinate_x = gen_random_num(1, 9);
     int exit_coordinate_y = gen_random_num(1,9);
@@ -252,7 +252,7 @@ void reset_map(Map* map, Assets* assets) {
 }
 
 
-Map* init_map(Assets *assets) {
+Map* init_map(Assets *assets, int number_of_foods) {
 
     time_t t;
     srand((unsigned) time(&t));
@@ -262,7 +262,7 @@ Map* init_map(Assets *assets) {
         puts("Memory allocation for struct Map failed");
     }
 
-    reset_map(map, assets);
+    reset_map(map, assets, number_of_foods);
 
     return map;
 }

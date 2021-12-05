@@ -69,10 +69,19 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
 
     // Load tutorial slides
-    char filename[31];
+    char tutorial_filename[31];
     for (int i=0; i<NUMBER_OF_TUTORIAL_SLIDES; i++) {
-        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
-        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, screen_rect);
+        sprintf(tutorial_filename, "../assets/tutorial/slide_%d.png", i+1);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, tutorial_filename, 0, 1, screen_rect);
+    }
+
+    assets->misc.food_input_prompts = (Sprite *) malloc(9 * sizeof(Sprite));
+    
+    SDL_Rect food_input_rect = {.x = 61, .y=66, .w=518, .h=507};
+    char food_input_filename[27];
+    for (int i = 0; i < 9; i++) {
+        sprintf(food_input_filename, "../assets/food_input/%d.png", i);
+        assets->misc.food_input_prompts[i] = load_sprite(renderer, food_input_filename, 0, 1, food_input_rect);
     }
 
 

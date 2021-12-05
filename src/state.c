@@ -39,7 +39,6 @@ void handle_state(States* states, Map *map, Assets *assets) {
     enum GameState game_state =states->game_state;
     enum WrongKeyState wrong_key_state = states->wrong_key_state;
 
-
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
 
     switch (player_state) {
@@ -55,6 +54,10 @@ void handle_state(States* states, Map *map, Assets *assets) {
         case PLAYER_IN_GAME:
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
+                    // C is a zero based language that's why we have to subtract 1 
+                    // when accessing its array. This is also the reason why we have to 
+                    // set the initial number of foods selected to 1, since it will be decremented to 0.
+                    render_sprite(&assets->misc.food_input_prompts[states->current_number_of_foods_picked-1]);
                     break;
                 case GAME_WON:
                     render_map(map, assets);
@@ -124,6 +127,42 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
         case PLAYER_IN_GAME:
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
+                    switch (event.key.keysym.scancode) {
+                        case SDL_SCANCODE_2:
+                            states->current_number_of_foods_picked = 2;
+                            break;
+                        case SDL_SCANCODE_3:
+                            states->current_number_of_foods_picked = 3;
+                            break;
+                        case SDL_SCANCODE_4:
+                            states->current_number_of_foods_picked = 4;
+                            break;
+                        case SDL_SCANCODE_5:
+                            states->current_number_of_foods_picked = 5;
+                            break;
+                        case SDL_SCANCODE_6:
+                            states->current_number_of_foods_picked = 6;
+                            break;
+                        case SDL_SCANCODE_7:
+                            states->current_number_of_foods_picked = 7;
+                            break;
+                        case SDL_SCANCODE_8:
+                            states->current_number_of_foods_picked = 8;
+                            break;
+                        case SDL_SCANCODE_9:
+                            states->current_number_of_foods_picked = 9;
+                            break;
+                        default:
+                            states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
+                    }
+                    switch (event.key.keysym.scancode) {
+                        case SDL_SCANCODE_RETURN:
+                            reset_map(map, assets, states->current_number_of_foods_picked);
+                            states->game_state = GAME_IN_PROGRESS;
+                            break;
+                        default:
+                            states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
+                    }
                     break;
                 case GAME_IN_PROGRESS:
                     switch (event.key.keysym.scancode) {
@@ -141,8 +180,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             break;
                         case SDL_SCANCODE_M:
                             states->player_state = PLAYER_IN_MENU;
-                            // reset the map
-                            reset_map(map, assets);
+                            states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
+                            states->current_number_of_foods_picked = 1;
                         default:
                             states->wrong_key_state = WRONG_KEY_IN_GAME;
                             break;
@@ -155,15 +194,13 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                     switch (event.key.keysym.scancode) {
                         case SDL_SCANCODE_R:
                             states->player_state = PLAYER_IN_GAME;
-                            // DEBUG: change this to GAME_IN_FOOD_NUMBER_INPUT
-                            states->game_state = GAME_IN_PROGRESS;
-                            reset_map(map, assets);
+                            states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
+                            states->current_number_of_foods_picked = 1;
                             break;
                         case SDL_SCANCODE_M:
                             states->player_state = PLAYER_IN_MENU;
-                            // DEBUG: change this to GAME_IN_FOOD_NUMBER_INPUT
-                            states->game_state = GAME_IN_PROGRESS;
-                            reset_map(map, assets);
+                            states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
+                            states->current_number_of_foods_picked = 1;
                             break;
                         case SDL_SCANCODE_X:
                             // quit box
@@ -173,6 +210,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             break;
                         }
                         break;
+                    break;
             };
             break;
         case PLAYER_IN_MENU:
