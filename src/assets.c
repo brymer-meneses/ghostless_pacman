@@ -50,7 +50,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
     SDL_Rect screen_rect = {0, 0, 640, 641};
     SDL_Rect prompt_rect = {108, 104, 423, 430};
-    SDL_Rect notification_rect = {.x=43, .y=640, 554, 98};
+    SDL_Rect notification_rect = {43, 540, 554, 98};
 
     // Load screen displays
 

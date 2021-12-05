@@ -101,3 +101,19 @@ int gen_random_num(int min, int max) {
 
     return rand() % (max + 1 - min) + min;
 }
+
+void show_notification(Sprite* sprite) {
+    render_sprite(sprite);
+    if (sprite->rect.y > 535) {
+        sprite->rect.y -= 10;
+        puts("sksk");
+    }
+}
+
+void close_notification(Sprite* sprite) {
+    render_sprite(sprite);
+    if (sprite->rect.y < 535) {
+        sprite->rect.y += 10;
+        puts("adad");
+    }
+}

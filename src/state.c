@@ -88,7 +88,10 @@ void handle_state(States* states, Map *map, Assets *assets) {
         case WRONG_KEY_IN_GAME:
             break;
         case WRONG_KEY_IN_TUTORIAL:
-            // here
+            render_sprite(&assets->prompt.wrong_key_in_tutorial);
+            // show_notification(&assets->prompt.wrong_key_in_tutorial);
+            // SDL_Delay(1000);
+            puts("afaf");
             break;
         case WRONG_KEY_IN_FOOD_INPUT:
             break;
@@ -218,6 +221,11 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                     break;
                 default:
                     states->wrong_key_state = WRONG_KEY_IN_TUTORIAL;
+                    switch (event.key.keysym.scancode) {
+                        default: 
+                            close_notification(&assets->prompt.wrong_key_in_tutorial);
+                            break;
+                    }
                     break;
             }
             break;
