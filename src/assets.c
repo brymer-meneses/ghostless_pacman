@@ -45,7 +45,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
 
-    SDL_Rect screen_rect = {0, 0, 640, 640};
+    SDL_Rect screen_rect = {0, 0, 640, 641};
     SDL_Rect prompt_rect = {108, 104, 423, 430};
 
     // Load screen displays
