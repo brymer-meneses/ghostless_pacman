@@ -13,14 +13,14 @@
 
 void render_map(Map *map, Assets* assets) {
 
-    Sprite* grid =   &assets->game.grid;
+    Sprite* main =   &assets->game.main;
     Sprite* pacman = &assets->game.pacman;
     Sprite* exit =   &assets->game.exit;
 
     Sprite* foods =   assets->game.foods;
     Sprite* blocks =  assets->game.blocks;
 
-    render_sprite(grid);
+    render_sprite(main);
     render_sprite(pacman);
     render_sprite(exit);
 
@@ -36,20 +36,20 @@ void render_map(Map *map, Assets* assets) {
                         continue;
                         break;
                     case FOOD:
-                        foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 +  (44 * col);
-                        foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 +  (44 * row);
+                        foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  +  (44 * col);
+                        foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X  +  (44 * row);
                         render_sprite(&foods[current_food_index]);
                         current_food_index++;
                         break;
                     case BLOCK:
-                        blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
-                        blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  + (44 * col);
+                        blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X  + (44 * row);
                         render_sprite(&blocks[current_block_index]);
                         current_block_index++;
                         break;
                     case EXIT:
-                        exit->rect.y = ELEMENT_INITIAL_POSITION_Y + 5 + (44 * col);
-                        exit->rect.x = ELEMENT_INITIAL_POSITION_X + 5 + (44 * row);
+                        exit->rect.y = ELEMENT_INITIAL_POSITION_Y  + (44 * col);
+                        exit->rect.x = ELEMENT_INITIAL_POSITION_X  + (44 * row);
                         break;
                 }
         }
@@ -58,8 +58,8 @@ void render_map(Map *map, Assets* assets) {
 
 Position query_pacman_position(Sprite* pacman) {
     Position pos;
-    pos.x = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / 44;
-    pos.y = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / 44;
+    pos.x = (pacman->rect.x - PACMAN_INITIAL_POSITION_X) / 44;
+    pos.y = (pacman->rect.y - PACMAN_INITIAL_POSITION_Y) / 44;
     return pos;
 };
 
@@ -146,18 +146,19 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y + -1;
 
+            pacman->flip = SDL_FLIP_NONE;
+            pacman->rotation = 270;
+
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
                 states->game_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
                 states->game_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (states->player_state != PLAYER_IN_GAME) break;
+                if (states->game_state != GAME_IN_PROGRESS) 
+                    break;
             }
 
-
-            pacman->flip = SDL_FLIP_NONE;
-            pacman->rotation = 270;
 
             pacman->rect.y -= 44;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
@@ -166,17 +167,18 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             future_position.x =  current_position.x +  0; 
             future_position.y =  current_position.y +  1;
 
+            pacman->flip = SDL_FLIP_VERTICAL;
+            pacman->rotation = 90;
+
             future_obstacle = map->board[future_position.x][future_position.y];
             if (future_obstacle == EXIT) { 
                 states->game_state = check_if_player_won(future_position, map, assets);
                 break;
             } else { 
                 states->game_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (states->player_state != PLAYER_IN_GAME) break;
+                if (states->game_state != GAME_IN_PROGRESS) 
+                    break;
             }
-
-            pacman->flip = SDL_FLIP_VERTICAL;
-            pacman->rotation = 90;
 
             pacman->rect.y += 44;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
@@ -194,7 +196,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
                 break;
             } else { 
                 states->game_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (states->player_state != PLAYER_IN_GAME) break;
+                if (states->game_state != GAME_IN_PROGRESS) 
+                    break;
             }
 
             pacman->rect.x -= 44;
@@ -212,7 +215,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
                 states->game_state = check_if_player_won(future_position, map, assets);
             } else { 
                 states->game_state = check_player_status(future_position, future_obstacle, map, assets);
-                if (states->player_state != PLAYER_IN_GAME) break;
+                if (states->game_state != GAME_IN_PROGRESS) 
+                    break;
             }
 
             pacman->rect.x += 44;
@@ -233,8 +237,8 @@ void reset_map(Map* map, Assets* assets, int number_of_foods) {
     }
 
     // reset the position of pacman
-    assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
-    assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
+    assets->game.pacman.rect.x = PACMAN_INITIAL_POSITION_X;
+    assets->game.pacman.rect.y = PACMAN_INITIAL_POSITION_Y;
     assets->game.pacman.flip = SDL_FLIP_NONE;
     assets->game.pacman.rotation = 0;
 

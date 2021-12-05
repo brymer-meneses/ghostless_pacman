@@ -19,7 +19,7 @@ int main (int argc, char *argv[]) {
     SDL_Renderer* renderer = create_renderer(window);
 
     // Set the background color
-    SDL_SetRenderDrawColor(renderer, 236, 239, 244, 1);
+    SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
      
     // Load all game assets
     Assets *assets = load_all_assets(renderer);

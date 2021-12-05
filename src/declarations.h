@@ -4,19 +4,16 @@
 #define WINDOW_HEIGHT 640
 #define WINDOW_WIDTH 640
 
-// Ensure that the grid is centered
-#define GRID_SIZE 450
-
-#define GRID_POSITION_X ((WINDOW_WIDTH - GRID_SIZE)/2)
-#define GRID_POSITION_Y ((WINDOW_HEIGHT - GRID_SIZE)/2)
-
 #define SPRITE_UPDATE_DELAY 100
 
 #define NUMBER_OF_BLOCKS 10
 #define NUMBER_OF_TUTORIAL_SLIDES 7
 
-#define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 8)
-#define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 8)
+#define ELEMENT_INITIAL_POSITION_X (95 + 20)
+#define ELEMENT_INITIAL_POSITION_Y (95 + 10)
+
+#define PACMAN_INITIAL_POSITION_X (ELEMENT_INITIAL_POSITION_X - 5)
+#define PACMAN_INITIAL_POSITION_Y (ELEMENT_INITIAL_POSITION_Y - 5)
 
 #define MAX_NUMBER_OF_FOOD 9
 
@@ -44,7 +41,7 @@ typedef struct Assets {
 
     struct {
         Sprite pacman;
-        Sprite grid;
+        Sprite main;
         Sprite exit;
         Sprite* blocks;
         Sprite* foods ;
