@@ -237,6 +237,8 @@ void reset_map(Map* map, Assets* assets) {
     // reset the position of pacman
     assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
     assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
+    assets->game.pacman.flip = SDL_FLIP_NONE;
+    assets->game.pacman.rotation = 0;
 
     map->total_player_score = 0;
     map->number_of_blocks = NUMBER_OF_BLOCKS;
