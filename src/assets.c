@@ -45,10 +45,34 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
 
-    SDL_Rect homescreen_rect = {0, 0, 640, 640};
-    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, homescreen_rect);
+    SDL_Rect screen_rect = {0, 0, 640, 640};
+    SDL_Rect prompt_rect = {108, 104, 423, 430};
+
+    // Load screen displays
+
+    Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, screen_rect);
+    Sprite about_screen = load_sprite(renderer, "../assets/about.png", 0, 1, screen_rect);
+    Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
+    Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
+    Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
+    Sprite player_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
 
     assets->misc.homescreen = homescreen;
+    assets->misc.about_screen = about_screen;
+    assets->prompt.player_lost_hit_block = player_lost_hit_block;
+    assets->prompt.player_lost_hit_border = player_lost_hit_border;
+    assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
+    assets->prompt.player_won = player_won;
+
+    assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
+
+    // Load tutorial slides
+    char filename[31];
+    for (int i=0; i<NUMBER_OF_TUTORIAL_SLIDES; i++) {
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, screen_rect);
+    }
+
 
     // Load game sounds
     assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
