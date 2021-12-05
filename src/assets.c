@@ -26,7 +26,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
 
     SDL_Rect block_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
-    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=27, .w=23};
+    SDL_Rect food_rect = {.x =ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
 
 
     assets->game.pacman = pacman;
@@ -41,7 +41,9 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
     for (int i=0; i<MAX_NUMBER_OF_FOOD; i++) {
-        assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 0 , 1, food_rect);
+        assets->game.foods[i] = load_sprite(renderer, "../assets/food.png", 40 , 5, food_rect);
+        // randomize the start of the animation by setting the current frame to different values
+        assets->game.foods[i].current_frame = i;
     }
 
 
@@ -52,17 +54,27 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
     Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, screen_rect);
     Sprite about_screen = load_sprite(renderer, "../assets/about.png", 0, 1, screen_rect);
-    Sprite player_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
-    Sprite player_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
-    Sprite player_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
-    Sprite player_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
+    Sprite game_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
+    Sprite game_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
 
     assets->misc.homescreen = homescreen;
     assets->misc.about_screen = about_screen;
-    assets->prompt.player_lost_hit_block = player_lost_hit_block;
-    assets->prompt.player_lost_hit_border = player_lost_hit_border;
-    assets->prompt.player_lost_insufficient_food = player_lost_insufficient_food;
-    assets->prompt.player_won = player_won;
+    assets->prompt.game_lost_hit_block = game_lost_hit_block;
+    assets->prompt.game_lost_hit_border = game_lost_hit_border;
+    assets->prompt.game_lost_insufficient_food = game_lost_insufficient_food;
+    assets->prompt.game_won = game_won;
+
+    assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
+
+    // Load tutorial slides
+    char filename[31];
+    for (int i=0; i<NUMBER_OF_TUTORIAL_SLIDES; i++) {
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, screen_rect);
+    }
+
 
     // Load game sounds
     assets->sounds.background_music = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
@@ -71,6 +83,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->sounds.game_notification = Mix_LoadWAV("../assets/sounds/notif.wav");
     assets->sounds.game_win = Mix_LoadWAV("../assets/sounds/win.wav");
     assets->sounds.game_over = Mix_LoadWAV("../assets/sounds/game_over.wav");    
+
     return assets;
 }
 

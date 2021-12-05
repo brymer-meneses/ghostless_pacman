@@ -27,11 +27,26 @@ int main (int argc, char *argv[]) {
     // Initialize map which will be used in the game
     Map *map = init_map(assets);
      
-    PlayerState player_state = PLAYER_ON_MENU;
+    States states = {
+        // Set the initial state of the player
+        .player_state = PLAYER_IN_MENU, 
+
+        // Set the initial state of the game when th player enters th game from 
+        // the menu.
+        // DEBUG: change this to GAME_IN_FOOD_INPUT
+        .game_state = GAME_IN_PROGRESS,
+
+        // Set the initial index for the tutorial slides 
+        .current_tutorial_slide_index = 0,
+
+        // Set the initial wrong key state
+        .wrong_key_state = WRONG_KEY_NONE,
+    };
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
 
+    printf("%d", states.player_state);
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
         SDL_Event event;
@@ -39,11 +54,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &player_state, map, assets);
+                handle_keypress(event, &states, map, assets);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(player_state, map, assets);
+        handle_state(&states, map, assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 

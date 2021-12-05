@@ -13,6 +13,7 @@
 #define SPRITE_UPDATE_DELAY 100
 
 #define NUMBER_OF_BLOCKS 10
+#define NUMBER_OF_TUTORIAL_SLIDES 7
 
 #define ELEMENT_INITIAL_POSITION_X (GRID_POSITION_X + 8)
 #define ELEMENT_INITIAL_POSITION_Y (GRID_POSITION_Y + 8)
@@ -31,6 +32,7 @@ typedef struct Sprite {
     float               rotation;
     int                 total_frames;
     int                 frame_size;
+    int                 current_frame;
 } Sprite;
 
 typedef struct Position {
@@ -50,22 +52,21 @@ typedef struct Assets {
 
 
     struct { 
-        Sprite slide_1;
-        Sprite slide_2;
-        Sprite slide_3;
-        Sprite slide_4;
+        Sprite* tutorial_slides;
         Sprite homescreen;
         Sprite about_screen;
     } misc;
 
     struct { 
-        Sprite player_won;
-        Sprite player_lost_hit_block;
-        Sprite player_lost_hit_border;
-        Sprite player_lost_insufficient_food;
-        Sprite wrong_key_during_game;
-        Sprite wrong_key_during_menu;
-        Sprite wrong_key_during_instructions;
+        Sprite game_won;
+        Sprite game_in_food_input;
+        Sprite game_lost_hit_block;
+        Sprite game_lost_hit_border;
+        Sprite game_lost_insufficient_food;
+        Sprite wrong_key_in_game;
+        Sprite wrong_key_in_menu;
+        Sprite wrong_key_in_about_game;
+        Sprite wrong_key_in_food_input;
     } prompt;
 
     // Struct for sounds
@@ -93,32 +94,54 @@ typedef struct Map {
     int total_player_score;
 } Map;
 
-typedef enum PlayerState {
-    PLAYER_WON,
-    PLAYER_LOST_HIT_BLOCK,
-    PLAYER_LOST_HIT_BORDER,
-    PLAYER_LOST_INSUFFICIENT_FOOD,
-    PLAYER_STILL_PLAYING,
 
-    PLAYER_ON_MENU,
-    PLAYER_ON_TUTORIAL,
-    PLAYER_ON_ABOUT,
-} PlayerState;
+enum PlayerState {
+    PLAYER_IN_GAME,
+    PLAYER_IN_MENU,
+    PLAYER_IN_TUTORIAL,
+    PLAYER_IN_ABOUT,
+};
 
-typedef enum BoardElement {
+enum GameState { 
+    GAME_WON,
+    GAME_LOST_HIT_BLOCK,
+    GAME_LOST_HIT_BORDER,
+    GAME_LOST_INSUFFICIENT_FOOD,
+    GAME_IN_PROGRESS,
+    GAME_IN_FOOD_NUMBER_INPUT,
+};
+
+enum WrongKeyState { 
+    WRONG_KEY_NONE,
+    WRONG_KEY_IN_MENU,
+    WRONG_KEY_IN_GAME,
+    WRONG_KEY_IN_GAME_PROMPTS,
+    WRONG_KEY_IN_ABOUT_GAME,
+    WRONG_KEY_IN_TUTORIAL,
+    WRONG_KEY_IN_FOOD_INPUT,
+};
+
+typedef struct States {
+    enum PlayerState         player_state;
+    enum GameState           game_state;
+    enum WrongKeyState       wrong_key_state;
+    int                 current_tutorial_slide_index;
+} States;
+
+enum BoardElement {
     EMPTY,
     PACMAN,
     FOOD,
     BLOCK,
     EXIT,
-} BoardElement;
+};
 
-typedef enum Move {
+enum Move {
     MOVE_UP,
     MOVE_DOWN,
     MOVE_LEFT,
     MOVE_RIGHT,
-} Move;
+};
 
 
 
