@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "utils.h"
 #include "declarations.h"
 #include "logic.h"
@@ -49,15 +50,20 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
 
     SDL_Rect screen_rect = {0, 0, 640, 641};
     SDL_Rect prompt_rect = {108, 104, 423, 430};
+    SDL_Rect notification_rect = {.x=43, .y=640, 554, 98};
 
     // Load screen displays
 
     Sprite homescreen = load_sprite(renderer, "../assets/homescreen.png", 0, 1, screen_rect);
     Sprite about_screen = load_sprite(renderer, "../assets/about.png", 0, 1, screen_rect);
-    Sprite game_lost_hit_block = load_sprite(renderer, "../assets/overBlock.png", 0, 1, prompt_rect);
-    Sprite game_lost_hit_border = load_sprite(renderer, "../assets/overOut.png", 0, 1, prompt_rect);
-    Sprite game_lost_insufficient_food = load_sprite(renderer, "../assets/overMiss.png", 0, 1, prompt_rect);
-    Sprite game_won = load_sprite(renderer, "../assets/win.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_block = load_sprite(renderer, "../assets/results_visuals/GameOver_BlockHit.png", 0, 1, prompt_rect);
+    Sprite game_lost_hit_border = load_sprite(renderer, "../assets/results_visuals/GameOver_BorderHit.png" , 0, 1, prompt_rect);
+    Sprite game_lost_insufficient_food = load_sprite(renderer, "../assets/results_visuals/GameOver_FoodMiss.png", 0, 1, prompt_rect);
+    Sprite game_won = load_sprite(renderer, "../assets/results_visuals/Win.png", 0, 1, prompt_rect);
+
+    // Load notifications
+
+    Sprite wrong_key_in_tutorial = load_sprite(renderer, "../assets/notification_visuals/Left_Right_Arrow Keys_Reminder.png", 0, 1, notification_rect);
 
     assets->misc.homescreen = homescreen;
     assets->misc.about_screen = about_screen;
@@ -65,6 +71,8 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.game_lost_hit_border = game_lost_hit_border;
     assets->prompt.game_lost_insufficient_food = game_lost_insufficient_food;
     assets->prompt.game_won = game_won;
+
+    assets->prompt.wrong_key_in_tutorial = wrong_key_in_tutorial;
 
     assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
 

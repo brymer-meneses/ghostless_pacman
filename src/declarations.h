@@ -57,6 +57,8 @@ typedef struct Assets {
         Sprite about_screen;
     } misc;
 
+    // Struct for prompts
+
     struct { 
         Sprite game_won;
         Sprite game_in_food_input;
@@ -67,6 +69,7 @@ typedef struct Assets {
         Sprite wrong_key_in_menu;
         Sprite wrong_key_in_about_game;
         Sprite wrong_key_in_food_input;
+        Sprite wrong_key_in_tutorial;
     } prompt;
 
     // Struct for sounds
