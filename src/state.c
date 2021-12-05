@@ -157,8 +157,10 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                     }
                     switch (event.key.keysym.scancode) {
                         case SDL_SCANCODE_RETURN:
-                            reset_map(map, assets, states->current_number_of_foods_picked);
-                            states->game_state = GAME_IN_PROGRESS;
+                            if (states->current_number_of_foods_picked != 1) {
+                                reset_map(map, assets, states->current_number_of_foods_picked);
+                                states->game_state = GAME_IN_PROGRESS;
+                            }
                             break;
                         default:
                             states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
