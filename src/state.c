@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "stdbool.h"
 
 #include "utils.h"
@@ -57,26 +58,31 @@ void handle_state(States* states, Map *map, Assets *assets) {
                     // C is a zero based language that's why we have to subtract 1 
                     // when accessing its array. This is also the reason why we have to 
                     // set the initial number of foods selected to 1, since it will be decremented to 0.
-                    render_sprite(&assets->misc.food_input_prompts[states->current_number_of_foods_picked-1]);
+                    //render_sprite(&assets->misc.food_input_prompts[states->current_number_of_foods_picked-1]);
                     break;
                 case GAME_WON:
                     render_map(map, assets);
                     render_sprite(&game_won);
+                    //render_sprite(&assets->misc.score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BLOCK:
                     render_map(map, assets);
                     render_sprite(&game_lost_hit_block);
+                    //render_sprite(&assets->misc.score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BORDER:
                     render_map(map, assets);
                     render_sprite(&game_lost_hit_border);
+                    //render_sprite(&assets->misc.score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_INSUFFICIENT_FOOD:
                     render_map(map, assets);
                     render_sprite(&game_lost_insufficient_food);
+                    //render_sprite(&assets->misc.score_visuals[map->total_player_score]);
                     break;
                 case GAME_IN_PROGRESS:
                     render_map(map, assets);
+                    //render_sprite(&assets->misc.score_visuals[map->total_player_score]);
                     break;
             }
             break;

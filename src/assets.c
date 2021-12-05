@@ -66,7 +66,6 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.game_lost_insufficient_food = game_lost_insufficient_food;
     assets->prompt.game_won = game_won;
 
-    assets->misc.tutorial_slides = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
 
     // Load tutorial slides
     char tutorial_filename[31];
@@ -79,10 +78,18 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     
     SDL_Rect food_input_rect = {.x = 61, .y=66, .w=518, .h=507};
     char food_input_filename[27];
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 10; i++) {
         sprintf(food_input_filename, "../assets/food_input/%d.png", i);
         assets->misc.food_input_prompts[i] = load_sprite(renderer, food_input_filename, 0, 1, food_input_rect);
-    }
+    };
+
+    assets->misc.score_visuals = (Sprite *) malloc(10 * sizeof(Sprite));
+    
+    char score_visuals_filename[30];
+    for (int i = 0; i < 10; i++) {
+        sprintf(score_visuals_filename, "../assets/score_visuals/%d.png", i);
+        assets->misc.score_visuals[i] = load_sprite(renderer, score_visuals_filename, 0, 1, screen_rect);
+    };
 
 
     // Load game sounds

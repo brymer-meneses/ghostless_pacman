@@ -54,6 +54,7 @@ typedef struct Assets {
     struct { 
         Sprite* tutorial_slides;
         Sprite* food_input_prompts;
+        Sprite* score_visuals;
         Sprite homescreen;
         Sprite about_screen;
     } misc;
