@@ -21,7 +21,6 @@ void render_map(Map *map, Assets* assets) {
     Sprite* blocks =  assets->game.blocks;
 
     render_sprite(main);
-    render_sprite(pacman);
     render_sprite(exit);
 
     int current_food_index = 0;
@@ -32,8 +31,11 @@ void render_map(Map *map, Assets* assets) {
             enum BoardElement element = map->board[row][col];
                 switch (element) {
                     case EMPTY:
+                        break;
                     case PACMAN:
-                        continue;
+                        pacman->rect.x = PACMAN_INITIAL_POSITION_X + (45 * row);
+                        pacman->rect.y = PACMAN_INITIAL_POSITION_Y + (45 * col);
+                        render_sprite(pacman);
                         break;
                     case FOOD:
                         foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  +  (44 * col);
@@ -160,7 +162,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             }
 
 
-            pacman->rect.y -= 44;
+            map->board[current_position.x][current_position.y] = EMPTY;
+            map->board[future_position.x][future_position.y] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_DOWN:
@@ -180,7 +183,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
                     break;
             }
 
-            pacman->rect.y += 44;
+            map->board[current_position.x][current_position.y] = EMPTY;
+            map->board[future_position.x][future_position.y] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_LEFT:
@@ -200,7 +204,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
                     break;
             }
 
-            pacman->rect.x -= 44;
+            map->board[current_position.x][current_position.y] = EMPTY;
+            map->board[future_position.x][future_position.y] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_RIGHT:
@@ -219,7 +224,8 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
                     break;
             }
 
-            pacman->rect.x += 44;
+            map->board[current_position.x][current_position.y] = EMPTY;
+            map->board[future_position.x][future_position.y] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
 
@@ -235,6 +241,8 @@ void reset_map(Map* map, Assets* assets, int number_of_foods) {
             map->board[row][col] = EMPTY;
         }
     }
+
+    map->board[0][0] = PACMAN;
 
     // reset the position of pacman
     assets->game.pacman.rect.x = PACMAN_INITIAL_POSITION_X;

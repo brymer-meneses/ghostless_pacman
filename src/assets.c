@@ -13,14 +13,14 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     }
 
     // SDL_Rect is a struct that holds
-    SDL_Rect pacman_rect        = {.x=PACMAN_INITIAL_POSITION_X,  .y=PACMAN_INITIAL_POSITION_Y, .h=34, .w=34};
+    SDL_Rect pacman_rect        = {.x=PACMAN_INITIAL_POSITION_X,  .y=PACMAN_INITIAL_POSITION_Y, .h=35, .w=35};
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect exit_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=33, .w=23};
     SDL_Rect fullscreen_rect    = {.x=0,   .y=0,   .h=640, .w=640};
     SDL_Rect prompt_rect        = {.x=108, .y=104, .h=423, .w=430};
     SDL_Rect food_input_rect    = {.x=61,  .y=66,  .h=518, .w=507};
-    SDL_Rect score_visuals_rect    = {.x=450,  .y=20,  .h=39, .w=156};
+    SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39, .w=156};
 
     // Load all sprites used for the game
     assets->game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
