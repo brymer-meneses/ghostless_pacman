@@ -96,7 +96,7 @@ void handle_state(States* states, Map *map, Assets *assets) {
         case WRONG_KEY_IN_GAME:
             break;
         case WRONG_KEY_IN_TUTORIAL:
-            notification();
+            // notification();
             break;
         case WRONG_KEY_IN_FOOD_INPUT:
             break;

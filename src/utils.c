@@ -105,18 +105,18 @@ int gen_random_num(int min, int max) {
     return rand() % (max + 1 - min) + min;
 }
 
-void notification(){
+// void notification(){
     
-    SDL_Event event;
-    Uint32 start_tick;
-    int interval;
-    start_tick = SDL_GetTicks();
+//     SDL_Event event;
+//     Uint32 start_tick;
+//     int interval;
+//     start_tick = SDL_GetTicks();
     
-    interval = ;
+//     interval = 3;
 
-    while ((SDL_GetTicks() - start_tick)<interval){
-        puts("exceed");
-    }
-    SDL_Delay(1000)
-    puts("in");
-}
+//     while ((SDL_GetTicks() - start_tick)<interval){
+//         puts("exceed");
+//     }
+//     SDL_Delay(1000);
+//     puts("in");
+// }
