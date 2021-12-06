@@ -1,3 +1,5 @@
+#include "stdio.h"
+
 #include "utils.h"
 #include "declarations.h"
 #include "logic.h"

@@ -23,6 +23,9 @@ void init_SDL() {
     // Initialize SDL audio system and mixer
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT , 2, 2048);
+
+    // Initializing everything
+    SDL_Init(SDL_INIT_EVERYTHING);
 }
 
 
@@ -100,4 +103,20 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 int gen_random_num(int min, int max) {
 
     return rand() % (max + 1 - min) + min;
+}
+
+void notification(){
+    
+    SDL_Event event;
+    Uint32 start_tick;
+    int interval;
+    start_tick = SDL_GetTicks();
+    
+    interval = 1;
+
+    while ((SDL_GetTicks() - start_tick)<interval){
+        puts("exceed");
+    }
+    SDL_Delay(1000);
+    puts("in");
 }
