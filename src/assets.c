@@ -37,13 +37,6 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
     assets->prompt.game_won                    = load_sprite(renderer, "../assets/results/won.png", 0, 1, prompt_rect);
 
-    // Memory allocation for an array containing sprites
-    assets->misc.tutorial_slides    = (Sprite *) malloc(NUMBER_OF_TUTORIAL_SLIDES * sizeof(Sprite));
-    assets->misc.food_input_prompts = (Sprite *) malloc(9 * sizeof(Sprite));
-    assets->misc.score_visuals      = (Sprite *) malloc(10 * sizeof(Sprite));
-    assets->game.blocks             = (Sprite*) malloc(NUMBER_OF_BLOCKS * sizeof(Sprite));
-    assets->game.foods              = (Sprite*) malloc(MAX_NUMBER_OF_FOOD * sizeof(Sprite));
-
     char tutorial_filename[31];
     char food_input_filename[35];
     char score_visuals_filename[30];

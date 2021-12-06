@@ -43,15 +43,15 @@ typedef struct Assets {
         Sprite pacman;
         Sprite main;
         Sprite exit;
-        Sprite* blocks;
-        Sprite* foods ;
+        Sprite blocks[10];
+        Sprite foods[9];
     } game;
 
 
     struct { 
-        Sprite* tutorial_slides;
-        Sprite* food_input_prompts;
-        Sprite* score_visuals;
+        Sprite tutorial_slides[7];
+        Sprite food_input_prompts[9];
+        Sprite score_visuals[10];
         Sprite homescreen;
         Sprite about_screen;
     } misc;
