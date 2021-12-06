@@ -233,6 +233,51 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
 
 }
 
+bool check_for_impossible_win_scenario(Map* map) {
+
+    for (int row=0; row<10; row++) {
+        for (int col=0; col<10; col++) {
+            if (map->board[row][col] == FOOD || map->board[row][col] == EXIT) { 
+                /* 
+                 *  We define `impassable_adjacent_neighbors` as the number of
+                 *  spaces adjacent around a food or an exit that is impossible
+                 *  to be passed. This includes adjacent block or touching the game
+                 *  border.
+                 *
+                 *  Legend: 
+                 *      - x : block
+                 *      - * : food
+                 *      - - : border
+                 *
+                 *  Example:
+                 *      x
+                 *       *
+                 *      ---
+                 *  This ammounts to 4 impassable_adjacent_neighbors. 
+                 *  
+                 */
+
+                int impassable_adjacent_neighbors = 0;
+                for (int i=-1; i<=1; i++) {
+                    for (int j=-1; j<=1; j++) {
+                        // Count the number of adjacent spaces exposed to the border
+                        if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
+                            impassable_adjacent_neighbors++;
+                        // Count the number of blocks or exit.
+                        } else if (map->board[row + i][col + j] == BLOCK || map->board[row + i][col + j] == EXIT) 
+                            impassable_adjacent_neighbors++;
+                        }
+                } 
+                // printf("row: %d col: %d has: %d\n", row, col, impassable_adjacent_neighbors);
+                if (impassable_adjacent_neighbors >= 4) 
+                    return false;
+                }
+            }
+
+        }
+    return true;
+}
+
 void reset_map(Map* map, Assets* assets, int number_of_foods) {
 
     // make sure the board is empty
@@ -261,6 +306,9 @@ void reset_map(Map* map, Assets* assets, int number_of_foods) {
 
     fill_board_with_blocks(map);
     fill_board_with_food(map);
+
+    bool is_win_scenario_possible = check_for_impossible_win_scenario(map);
+    if (!is_win_scenario_possible) reset_map(map, assets, number_of_foods);
 }
 
 
@@ -278,5 +326,4 @@ Map* init_map(Assets *assets, int number_of_foods) {
 
     return map;
 }
-
 
