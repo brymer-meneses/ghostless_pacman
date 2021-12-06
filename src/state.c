@@ -28,6 +28,7 @@ void handle_state(States* states, Map *map, Assets *assets) {
      */
 
     Sprite homescreen = assets->misc.homescreen;
+    Sprite highlight_start = assets->menu_choice_highlight.user_chose_start;
     Sprite about_screen = assets->misc.about_screen;
     Sprite game_lost_hit_block = assets->prompt.game_lost_hit_block;
     Sprite game_lost_hit_border = assets->prompt.game_lost_hit_border;
@@ -39,12 +40,21 @@ void handle_state(States* states, Map *map, Assets *assets) {
     enum PlayerState player_state = states->player_state;
     enum GameState game_state =states->game_state;
     enum WrongKeyState wrong_key_state = states->wrong_key_state;
+    enum CurrentMenuChoice current_menu_choice = states->current_menu_choice;
 
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
 
     switch (player_state) {
         case PLAYER_IN_MENU:
             render_sprite(&homescreen);
+            // switch (current_menu_choice) {
+            //     case USER_CHOSE_START:
+            //         render_sprite(&highlight_start);
+            //         puts("upper works");
+            //         break;
+            //     default:
+            //         break;
+            //     }
             break;
         case PLAYER_IN_TUTORIAL:
             render_sprite(&tutorial_slides[current_tutorial_slide_index]);
@@ -129,6 +139,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
 
     enum PlayerState player_state = states->player_state;
     enum GameState game_state = states->game_state;
+    enum CurrentMenuChoice current_menu_choice = states->current_menu_choice;
 
     switch (player_state) {
         case PLAYER_IN_GAME:
@@ -227,9 +238,43 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
             };
             break;
         case PLAYER_IN_MENU:
+            // switch (current_menu_choice) {
+            //     case MENU:
+            //         switch (event.key.keysym.scancode){
+            //             case SDL_SCANCODE_RETURN:
+            //                 states->player_state = PLAYER_IN_GAME;                 
+            //                 break;
+            //             default:
+            //                 break;
+            //         }
+            //         puts("chose start");
+            //         states->player_state = PLAYER_IN_GAME;
+            //         break;
+            //     default:
+            //         break;
+            // }
             switch (event.key.keysym.scancode) {
                 case SDL_SCANCODE_1:
-                    // render_sprite(&assets->highlight.user_chose_start);
+                    states->current_menu_choice = USER_CHOSE_START;
+                    // render_sprite(&assets->menu_choice_highlight.user_chose_start);
+                    // switch (current_menu_choice) {
+                    //     case USER_CHOSE_START:
+                    //         switch (event.key.keysym.scancode){
+                    //             case SDL_SCANCODE_RETURN:
+                    //                 states->player_state = PLAYER_IN_GAME;                 
+                    //                 break;
+                    //             default:
+                    //                 break;
+                    //         }
+                    //         puts("chose start");
+                    //         states->player_state = PLAYER_IN_GAME;
+                    //         break;
+                    //     default:
+                    //         break;
+                    // }
+
+                    // render_sprite(&assets->menu_choice_highlight.user_chose_start);
+                    puts("lower works");
                     states->player_state = PLAYER_IN_GAME;
                     break;
                 case SDL_SCANCODE_A:
