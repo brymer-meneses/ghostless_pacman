@@ -33,6 +33,12 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->misc.homescreen                    = load_sprite(renderer, "../assets/misc/homescreen.png", 0, 1, fullscreen_rect);
     assets->misc.about_screen                  = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
 
+    // Load menu highlights
+    assets->highlight.user_chose_start         = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_start.png", 0, 1, fullscreen_rect);
+    assets->highlight.user_chose_tutorial      = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_tutorial.png", 0, 1, fullscreen_rect);
+    assets->highlight.user_chose_exit          = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_exit.png", 0, 1, fullscreen_rect);
+    assets->highlight.user_chose_about         = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_about.png", 0, 1, fullscreen_rect);
+
     // Load game prompts
     assets->prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets->prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);

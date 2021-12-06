@@ -228,13 +228,14 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
             break;
         case PLAYER_IN_MENU:
             switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_0:
+                case SDL_SCANCODE_1:
+                    // render_sprite(&assets->highlight.user_chose_start);
                     states->player_state = PLAYER_IN_GAME;
                     break;
                 case SDL_SCANCODE_A:
                     states->player_state = PLAYER_IN_ABOUT;
                     break;
-                case SDL_SCANCODE_1:
+                case SDL_SCANCODE_2:
                     states->player_state = PLAYER_IN_TUTORIAL;
                     break;
                 default:

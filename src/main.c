@@ -39,6 +39,8 @@ int main (int argc, char *argv[]) {
     states.wrong_key_state = WRONG_KEY_NONE,
     // Set the initial number of foods. This value will change later on.
     states.current_number_of_foods_picked = 1;
+    // Set the initial menu choice
+    // states.menu_highlight = MENU_HIGHLIGHT;
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);

@@ -56,6 +56,13 @@ typedef struct Assets {
         Sprite about_screen;
     } misc;
 
+    struct {
+        Sprite user_chose_start;
+        Sprite user_chose_tutorial;
+        Sprite user_chose_exit;
+        Sprite user_chose_about;
+    } highlight;
+
     struct { 
         Sprite game_won;
         Sprite game_in_food_input;
@@ -124,6 +131,7 @@ typedef struct States {
     enum PlayerState         player_state;
     enum GameState           game_state;
     enum WrongKeyState       wrong_key_state;
+    // enum MenuHighlight       menu_highlight;
     int                      current_tutorial_slide_index;
     int                      current_number_of_foods_picked;
 } States;
