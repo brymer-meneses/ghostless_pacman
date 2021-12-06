@@ -27,7 +27,7 @@ int main (int argc, char *argv[]) {
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
      
     // Load all game assets
-    Assets *assets = load_all_assets(renderer);
+    Assets assets = load_all_assets(renderer);
 
     // Initialize map which will be used in the game
     Map map;
@@ -48,7 +48,7 @@ int main (int argc, char *argv[]) {
     states.current_menu_choice = PLAYER_CHOSE_NONE;
 
     // Play background music
-    Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
+    Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
     bool user_wants_to_quit = false;
     while (!user_wants_to_quit) {
@@ -57,17 +57,17 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                register_keypress(event, &states, &map, assets);
+                register_keypress(event, &states, &map, &assets);
         }
         SDL_RenderClear(renderer);
     
-        render_state(&states, &map, assets);
+        render_state(&states, &map, &assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 
     }
 
-    free_all_assets(assets);
+    free_all_assets(&assets);
     IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
