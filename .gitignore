@@ -15,6 +15,7 @@ external/
 bin/
 
 *.dll
+*.cache
 
 ghostless-pacman
 ghostless-pacman.exe

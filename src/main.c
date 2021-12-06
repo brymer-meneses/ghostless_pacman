@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "stdbool.h"
 #include "stdlib.h"
+#include "time.h"
 
 // Project-wide Headers
 #include "utils.h"
@@ -12,6 +13,10 @@
 
 
 int main (int argc, char *argv[]) {
+
+    // Set a seed for the map
+    time_t t;
+    srand((unsigned) time(&t));
 
     init_SDL();
 
@@ -25,7 +30,7 @@ int main (int argc, char *argv[]) {
     Assets *assets = load_all_assets(renderer);
 
     // Initialize map which will be used in the game
-    Map *map = init_map(assets, 2);
+    Map map;
      
     States states;
     // Set the initial state of the player
@@ -40,7 +45,7 @@ int main (int argc, char *argv[]) {
     // Set the initial number of foods. This value will change later on.
     states.current_number_of_foods_picked = 1;
     // Set the initial menu choice
-    // states.menu_highlight = MENU_HIGHLIGHT;
+    states.current_menu_choice = PLAYER_CHOSE_NONE;
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
@@ -52,11 +57,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &states, map, assets);
+                handle_keypress(event, &states, &map, assets);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(&states, map, assets);
+        handle_state(&states, &map, assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 

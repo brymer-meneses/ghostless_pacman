@@ -28,7 +28,6 @@ void handle_state(States* states, Map *map, Assets *assets) {
      */
 
     Sprite homescreen = assets->misc.homescreen;
-    Sprite highlight_start = assets->menu_choice_highlight.user_chose_start;
     Sprite about_screen = assets->misc.about_screen;
     Sprite game_lost_hit_block = assets->prompt.game_lost_hit_block;
     Sprite game_lost_hit_border = assets->prompt.game_lost_hit_border;
@@ -40,21 +39,28 @@ void handle_state(States* states, Map *map, Assets *assets) {
     enum PlayerState player_state = states->player_state;
     enum GameState game_state =states->game_state;
     enum WrongKeyState wrong_key_state = states->wrong_key_state;
-    enum CurrentMenuChoice current_menu_choice = states->current_menu_choice;
+    enum MenuChoiceState current_menu_choice = states->current_menu_choice;
 
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
 
     switch (player_state) {
         case PLAYER_IN_MENU:
-            render_sprite(&homescreen);
-            // switch (current_menu_choice) {
-            //     case USER_CHOSE_START:
-            //         render_sprite(&highlight_start);
-            //         puts("upper works");
-            //         break;
-            //     default:
-            //         break;
-            //     }
+            switch (current_menu_choice) {
+                case PLAYER_CHOSE_START:
+                    render_sprite(&assets->menu.player_chose_start);
+                    break;
+                case PLAYER_CHOSE_ABOUT:
+                    render_sprite(&assets->menu.player_chose_about);
+                    break;
+                case PLAYER_CHOSE_EXIT:
+                    render_sprite(&assets->menu.player_chose_exit);
+                    break;
+                case PLAYER_CHOSE_TUTORIAL:
+                    render_sprite(&assets->menu.player_chose_tutorial);
+                    break;
+                case PLAYER_CHOSE_NONE:
+                    render_sprite(&assets->menu.player_chose_none);
+                }
             break;
         case PLAYER_IN_TUTORIAL:
             render_sprite(&tutorial_slides[current_tutorial_slide_index]);
@@ -106,7 +112,7 @@ void handle_state(States* states, Map *map, Assets *assets) {
         case WRONG_KEY_IN_GAME:
             break;
         case WRONG_KEY_IN_TUTORIAL:
-            notification();
+            // notification();
             break;
         case WRONG_KEY_IN_FOOD_INPUT:
             break;
@@ -139,38 +145,46 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
 
     enum PlayerState player_state = states->player_state;
     enum GameState game_state = states->game_state;
-    enum CurrentMenuChoice current_menu_choice = states->current_menu_choice;
+    enum MenuChoiceState current_menu_choice = states->current_menu_choice;
 
     switch (player_state) {
         case PLAYER_IN_GAME:
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
-                    switch (event.key.keysym.scancode) {
-                        case SDL_SCANCODE_2:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_2:
+                        case SDLK_KP_2:
                             states->current_number_of_foods_picked = 2;
                             break;
-                        case SDL_SCANCODE_3:
+                        case SDLK_3:
+                        case SDLK_KP_3:
                             states->current_number_of_foods_picked = 3;
                             break;
-                        case SDL_SCANCODE_4:
+                        case SDLK_4:
+                        case SDLK_KP_4:
                             states->current_number_of_foods_picked = 4;
                             break;
-                        case SDL_SCANCODE_5:
+                        case SDLK_5:
+                        case SDLK_KP_5:
                             states->current_number_of_foods_picked = 5;
                             break;
-                        case SDL_SCANCODE_6:
+                        case SDLK_6:
+                        case SDLK_KP_6:
                             states->current_number_of_foods_picked = 6;
                             break;
-                        case SDL_SCANCODE_7:
+                        case SDLK_7:
+                        case SDLK_KP_7:
                             states->current_number_of_foods_picked = 7;
                             break;
-                        case SDL_SCANCODE_8:
+                        case SDLK_8:
+                        case SDLK_KP_8:
                             states->current_number_of_foods_picked = 8;
                             break;
-                        case SDL_SCANCODE_9:
+                        case SDLK_9:
+                        case SDLK_KP_9:
                             states->current_number_of_foods_picked = 9;
                             break;
-                        case SDL_SCANCODE_M:
+                        case SDLK_m:
                             states->player_state = PLAYER_IN_MENU;
                             states->current_number_of_foods_picked = 1;
                             break;
@@ -183,29 +197,29 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                                 reset_map(map, assets, states->current_number_of_foods_picked);
                                 states->game_state = GAME_IN_PROGRESS;
                             }
+                            states->current_number_of_foods_picked = 1;
                             break;
                         default:
                             states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
                     }
                     break;
                 case GAME_IN_PROGRESS:
-                    switch (event.key.keysym.scancode) {
-                        case SDL_SCANCODE_W:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_w:
                             move_pacman(MOVE_UP, assets, map, states);
                             break;
-                        case SDL_SCANCODE_A:
+                        case SDLK_a:
                             move_pacman(MOVE_LEFT, assets, map, states);
                             break;
-                        case SDL_SCANCODE_S:
+                        case SDLK_s:
                             move_pacman(MOVE_DOWN, assets, map, states);
                             break;
-                        case SDL_SCANCODE_D:
+                        case SDLK_d:
                             move_pacman(MOVE_RIGHT, assets, map, states);
                             break;
-                        case SDL_SCANCODE_M:
+                        case SDLK_m:
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
-                            states->current_number_of_foods_picked = 1;
                         default:
                             states->wrong_key_state = WRONG_KEY_IN_GAME;
                             break;
@@ -215,18 +229,16 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                 case GAME_LOST_HIT_BORDER:
                 case GAME_LOST_HIT_BLOCK:
                 case GAME_WON:
-                    switch (event.key.keysym.scancode) {
-                        case SDL_SCANCODE_R:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_r:
                             states->player_state = PLAYER_IN_GAME;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
-                            states->current_number_of_foods_picked = 1;
                             break;
-                        case SDL_SCANCODE_M:
+                        case SDLK_m:
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
-                            states->current_number_of_foods_picked = 1;
                             break;
-                        case SDL_SCANCODE_X:
+                        case SDLK_x:
                             // quit box
                             break;
                         default:
@@ -238,50 +250,41 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
             };
             break;
         case PLAYER_IN_MENU:
-            // switch (current_menu_choice) {
-            //     case MENU:
-            //         switch (event.key.keysym.scancode){
-            //             case SDL_SCANCODE_RETURN:
-            //                 states->player_state = PLAYER_IN_GAME;                 
-            //                 break;
-            //             default:
-            //                 break;
-            //         }
-            //         puts("chose start");
-            //         states->player_state = PLAYER_IN_GAME;
-            //         break;
-            //     default:
-            //         break;
-            // }
-            switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_1:
-                    states->current_menu_choice = USER_CHOSE_START;
-                    // render_sprite(&assets->menu_choice_highlight.user_chose_start);
-                    // switch (current_menu_choice) {
-                    //     case USER_CHOSE_START:
-                    //         switch (event.key.keysym.scancode){
-                    //             case SDL_SCANCODE_RETURN:
-                    //                 states->player_state = PLAYER_IN_GAME;                 
-                    //                 break;
-                    //             default:
-                    //                 break;
-                    //         }
-                    //         puts("chose start");
-                    //         states->player_state = PLAYER_IN_GAME;
-                    //         break;
-                    //     default:
-                    //         break;
-                    // }
-
-                    // render_sprite(&assets->menu_choice_highlight.user_chose_start);
-                    puts("lower works");
-                    states->player_state = PLAYER_IN_GAME;
+            switch (event.key.keysym.sym) {
+                case SDLK_1:
+                case SDLK_KP_1:
+                    states->current_menu_choice = PLAYER_CHOSE_START;
                     break;
-                case SDL_SCANCODE_A:
-                    states->player_state = PLAYER_IN_ABOUT;
+                case SDLK_a:
+                    states->current_menu_choice = PLAYER_CHOSE_ABOUT;
                     break;
-                case SDL_SCANCODE_2:
-                    states->player_state = PLAYER_IN_TUTORIAL;
+                case SDLK_2:
+                case SDLK_KP_2:
+                    states->current_menu_choice = PLAYER_CHOSE_TUTORIAL;
+                    break;
+                case SDLK_3:
+                case SDLK_KP_3:
+                    states->current_menu_choice = PLAYER_CHOSE_EXIT;
+                    break;
+                case SDLK_RETURN:
+                    switch (states->current_menu_choice) {
+                        case PLAYER_CHOSE_ABOUT:
+                            states->player_state = PLAYER_IN_ABOUT;
+                            break;
+                        case PLAYER_CHOSE_TUTORIAL:
+                            states->player_state = PLAYER_IN_TUTORIAL;
+                            break;
+                        case PLAYER_CHOSE_START:
+                            states->player_state = PLAYER_IN_GAME;
+                            break;
+                        case PLAYER_CHOSE_EXIT:
+                            // TODO: add a way to exit
+                            break;
+                        case PLAYER_CHOSE_NONE:
+                            break;
+                    }
+                    // Reset menu choice selection
+                    states->current_menu_choice = PLAYER_CHOSE_NONE;
                     break;
                 default:
                     states->wrong_key_state = WRONG_KEY_IN_MENU;
@@ -291,25 +294,24 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
             states->current_tutorial_slide_index = 0;
             break;
         case PLAYER_IN_TUTORIAL:
-            switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_RIGHT:
+            switch (event.key.keysym.sym) {
+                case SDLK_RIGHT:
                     if (is_not_on_the_last_slide) 
                         states->current_tutorial_slide_index += 1;
                         Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
-                case SDL_SCANCODE_LEFT:
+                case SDLK_LEFT:
                     if (is_not_on_the_first_slide)  
                         states->current_tutorial_slide_index -= 1;
                         Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
-                case SDL_SCANCODE_M:
+                case SDLK_m:
                     states->player_state = PLAYER_IN_MENU;
                     break;
-                case SDL_SCANCODE_0:
+                case SDLK_1:
                     states->player_state = PLAYER_IN_GAME;
                     break;
-                // handle exit
-                case SDL_SCANCODE_2:
+                case SDLK_x:
                     break;
                 default:
                     states->wrong_key_state = WRONG_KEY_IN_TUTORIAL;
@@ -317,8 +319,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
             }
             break;
         case PLAYER_IN_ABOUT:
-            switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_M:
+            switch (event.key.keysym.sym) {
+                case SDLK_m:
                     states->player_state = PLAYER_IN_MENU;
                     break;
                 default:

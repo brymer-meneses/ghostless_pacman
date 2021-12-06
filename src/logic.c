@@ -22,6 +22,7 @@ void render_map(Map *map, Assets* assets) {
 
     render_sprite(main);
     render_sprite(exit);
+    render_sprite(pacman);
 
     int current_food_index = 0;
     int current_block_index = 0;
@@ -35,7 +36,6 @@ void render_map(Map *map, Assets* assets) {
                     case PACMAN:
                         pacman->rect.x = PACMAN_INITIAL_POSITION_X + (45 * row);
                         pacman->rect.y = PACMAN_INITIAL_POSITION_Y + (45 * col);
-                        render_sprite(pacman);
                         break;
                     case FOOD:
                         foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  +  (44 * col);
@@ -112,8 +112,8 @@ void fill_board_with_food(Map *map) {
     int rand_x;
     int rand_y;
     while (total_foods_generated < map->number_of_foods){
-         rand_x =  gen_random_num(0, 9);
-         rand_y =  gen_random_num(0,9);
+         rand_x =  gen_random_num(1,8);
+         rand_y =  gen_random_num(1,8);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
@@ -126,8 +126,8 @@ void fill_board_with_blocks(Map *map) {
     int rand_x;
     int rand_y;
     while (total_blocks_generated < map->number_of_blocks) {
-         rand_x =  gen_random_num(0, 9);
-         rand_y =  gen_random_num(0,9);
+         rand_x =  gen_random_num(1,8);
+         rand_y =  gen_random_num(1,8);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
              map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
@@ -308,22 +308,7 @@ void reset_map(Map* map, Assets* assets, int number_of_foods) {
     fill_board_with_food(map);
 
     bool is_win_scenario_possible = check_for_impossible_win_scenario(map);
-    if (!is_win_scenario_possible) reset_map(map, assets, number_of_foods);
-}
-
-
-Map* init_map(Assets *assets, int number_of_foods) {
-
-    time_t t;
-    srand((unsigned) time(&t));
-
-    Map* map = malloc(1 * sizeof(Map));
-    if (!map) {
-        puts("Memory allocation for struct Map failed");
+    if (!is_win_scenario_possible) {
+        reset_map(map, assets, number_of_foods);
     }
-
-    reset_map(map, assets, number_of_foods);
-
-    return map;
 }
-

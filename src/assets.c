@@ -20,7 +20,7 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect exit_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=33, .w=23};
     SDL_Rect fullscreen_rect    = {.x=0,   .y=0,   .h=640, .w=640};
-    SDL_Rect prompt_rect        = {.x=108, .y=104, .h=423, .w=430};
+    SDL_Rect prompt_rect        = {.x=70, .y=70, .h=500, .w=500};
     SDL_Rect food_input_rect    = {.x=61,  .y=66,  .h=518, .w=507};
     SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39, .w=156};
 
@@ -30,14 +30,14 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
 
     // Load screen menus
-    assets->misc.homescreen                    = load_sprite(renderer, "../assets/misc/homescreen.png", 0, 1, fullscreen_rect);
     assets->misc.about_screen                  = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
 
     // Load menu highlights
-    assets->menu_choice_highlight.user_chose_start         = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_start.png", 0, 1, fullscreen_rect);
-    assets->menu_choice_highlight.user_chose_tutorial      = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_tutorial.png", 0, 1, fullscreen_rect);
-    assets->menu_choice_highlight.user_chose_exit          = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_exit.png", 0, 1, fullscreen_rect);
-    assets->menu_choice_highlight.user_chose_about         = load_sprite(renderer, "../assets/menu_option_highlights/menu_highlight_about.png", 0, 1, fullscreen_rect);
+    assets->menu.player_chose_start         = load_sprite(renderer, "../assets/menu/highlight_start.png", 0, 1, fullscreen_rect);
+    assets->menu.player_chose_tutorial      = load_sprite(renderer, "../assets/menu/highlight_tutorial.png", 0, 1, fullscreen_rect);
+    assets->menu.player_chose_exit          = load_sprite(renderer, "../assets/menu/highlight_exit.png", 0, 1, fullscreen_rect);
+    assets->menu.player_chose_about         = load_sprite(renderer, "../assets/menu/highlight_about.png", 0, 1, fullscreen_rect);
+    assets->menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
     // Load game prompts
     assets->prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);

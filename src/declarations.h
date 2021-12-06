@@ -57,11 +57,12 @@ typedef struct Assets {
     } misc;
 
     struct {
-        Sprite user_chose_start;
-        Sprite user_chose_tutorial;
-        Sprite user_chose_exit;
-        Sprite user_chose_about;
-    } menu_choice_highlight;
+        Sprite player_chose_start;
+        Sprite player_chose_tutorial;
+        Sprite player_chose_exit;
+        Sprite player_chose_about;
+        Sprite player_chose_none;
+    } menu;
 
     struct { 
         Sprite game_won;
@@ -127,18 +128,19 @@ enum WrongKeyState {
     WRONG_KEY_IN_FOOD_INPUT,
 };
 
-enum CurrentMenuChoice {
-    USER_CHOSE_START,
-    USER_CHOSE_TUTORIAL,
-    USER_CHOSE_ABOUT,
-    USER_CHOSE_EXIT
+enum MenuChoiceState {
+    PLAYER_CHOSE_START,
+    PLAYER_CHOSE_TUTORIAL,
+    PLAYER_CHOSE_ABOUT,
+    PLAYER_CHOSE_EXIT,
+    PLAYER_CHOSE_NONE,
 };
 
 typedef struct States {
     enum PlayerState         player_state;
     enum GameState           game_state;
     enum WrongKeyState       wrong_key_state;
-    enum CurrentMenuChoice   current_menu_choice;
+    enum MenuChoiceState     current_menu_choice;
     int                      current_tutorial_slide_index;
     int                      current_number_of_foods_picked;
 } States;
