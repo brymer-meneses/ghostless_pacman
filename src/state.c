@@ -7,7 +7,7 @@
 
 
 
-void handle_state(States* states, Map *map, Assets *assets) {
+void render_state(States* states, Map *map, Assets *assets) {
     /* 
      *   A function that handles the `state` of the game, the game changes
      *   `state` when the player hits a wall causing them to lose. This function handles
@@ -38,7 +38,7 @@ void handle_state(States* states, Map *map, Assets *assets) {
     // states
     enum PlayerState player_state = states->player_state;
     enum GameState game_state =states->game_state;
-    enum WrongKeyState wrong_key_state = states->wrong_key_state;
+    enum WrongInputState wrong_input_state = states->wrong_input_state;
     enum MenuChoiceState current_menu_choice = states->current_menu_choice;
 
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
@@ -103,27 +103,27 @@ void handle_state(States* states, Map *map, Assets *assets) {
             }
             break;
     }
-    switch (wrong_key_state) {
-        case WRONG_KEY_NONE:
+    switch (wrong_input_state) {
+        case WRONG_INPUT_NONE:
             // do nothing
             break;
-        case WRONG_KEY_IN_ABOUT_GAME:
+        case WRONG_INPUT_IN_ABOUT_GAME:
             break;
-        case WRONG_KEY_IN_GAME:
+        case WRONG_INPUT_IN_GAME:
             break;
-        case WRONG_KEY_IN_TUTORIAL:
-            // notification();
+        case WRONG_INPUT_IN_TUTORIAL:
+            render_reminder(&assets->reminders.wrong_input_in_tutorial, states, 2000, 535, 5);
             break;
-        case WRONG_KEY_IN_FOOD_INPUT:
+        case WRONG_INPUT_IN_FOOD_INPUT:
             break;
-        case WRONG_KEY_IN_MENU:
+        case WRONG_INPUT_IN_MENU:
             break;
-        case WRONG_KEY_IN_GAME_PROMPTS:
+        case WRONG_INPUT_IN_GAME_PROMPTS:
             break;
     }
 }
 
-void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
+void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
     /* 
      *   A function that handles the various keypresses of the user.
      *
@@ -189,7 +189,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             states->current_number_of_foods_picked = 1;
                             break;
                         default:
-                            states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
+                            states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                     }
                     switch (event.key.keysym.scancode) {
                         case SDL_SCANCODE_RETURN:
@@ -200,7 +200,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             states->current_number_of_foods_picked = 1;
                             break;
                         default:
-                            states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;
+                            states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                     }
                     break;
                 case GAME_IN_PROGRESS:
@@ -221,7 +221,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                         default:
-                            states->wrong_key_state = WRONG_KEY_IN_GAME;
+                            states->wrong_input_state = WRONG_INPUT_IN_GAME;
                             break;
                         }
                     break;
@@ -242,7 +242,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             // quit box
                             break;
                         default:
-                            states->wrong_key_state = WRONG_KEY_IN_GAME_PROMPTS;
+                            states->wrong_input_state = WRONG_INPUT_IN_GAME_PROMPTS;
+                            states->wrong_input_time = SDL_GetTicks();
                             break;
                         }
                         break;
@@ -287,7 +288,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                     states->current_menu_choice = PLAYER_CHOSE_NONE;
                     break;
                 default:
-                    states->wrong_key_state = WRONG_KEY_IN_MENU;
+                    states->wrong_input_state = WRONG_INPUT_IN_MENU;
+                    states->wrong_input_time = SDL_GetTicks();
                     break;
             };
             // reset tutorial slide
@@ -314,7 +316,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                 case SDLK_x:
                     break;
                 default:
-                    states->wrong_key_state = WRONG_KEY_IN_TUTORIAL;
+                    states->wrong_input_state = WRONG_INPUT_IN_TUTORIAL;
+                    states->wrong_input_time = SDL_GetTicks();
                     break;
             }
             break;
@@ -324,7 +327,8 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                     states->player_state = PLAYER_IN_MENU;
                     break;
                 default:
-                    states->wrong_key_state = WRONG_KEY_IN_ABOUT_GAME;
+                    states->wrong_input_state = WRONG_INPUT_IN_ABOUT_GAME;
+                    states->wrong_input_time = SDL_GetTicks();
                 }
         default:
             break;

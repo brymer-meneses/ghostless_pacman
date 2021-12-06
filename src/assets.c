@@ -19,10 +19,11 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect exit_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=33, .w=23};
-    SDL_Rect fullscreen_rect    = {.x=0,   .y=0,   .h=640, .w=640};
-    SDL_Rect prompt_rect        = {.x=70, .y=70, .h=500, .w=500};
-    SDL_Rect food_input_rect    = {.x=61,  .y=66,  .h=518, .w=507};
-    SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39, .w=156};
+    SDL_Rect fullscreen_rect    = {.x=0,    .y=0,   .h=640, .w=640};
+    SDL_Rect prompt_rect        = {.x=70,   .y=70,  .h=500, .w=500};
+    SDL_Rect food_input_rect    = {.x=61,   .y=66,  .h=518, .w=507};
+    SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39,  .w=156};
+    SDL_Rect reminder_rect      = {.x=43,   .y=700,   .h=98,  .w=554};
 
     // Load all sprites used for the game
     assets->game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
@@ -45,26 +46,24 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
     assets->prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
     assets->prompt.game_won                    = load_sprite(renderer, "../assets/results/won.png", 0, 1, prompt_rect);
 
-    char tutorial_filename[31];
-    char food_input_filename[35];
-    char score_visuals_filename[30];
+    char filename[35];
 
     // Populate the memory allocated sprite array with tutorial slides.
     for (int i = 0; i < NUMBER_OF_TUTORIAL_SLIDES; i++) {
-        sprintf(tutorial_filename, "../assets/tutorial/slide_%d.png", i+1);
-        assets->misc.tutorial_slides[i] = load_sprite(renderer, tutorial_filename, 0, 1, fullscreen_rect);
+        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
+        assets->misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
     }
 
     // Populate the memory allocated sprite array with food input prompts.
     for (int i = 0; i < 9; i++) {
-        sprintf(food_input_filename, "../assets/food_input_prompts/%d.png", i);
-        assets->misc.food_input_prompts[i] = load_sprite(renderer, food_input_filename, 0, 1, food_input_rect);
+        sprintf(filename, "../assets/food_input_prompts/%d.png", i);
+        assets->misc.food_input_prompts[i] = load_sprite(renderer, filename, 0, 1, food_input_rect);
     };
 
     // Populate the memory allocated sprite array with score visualization
     for (int i = 0; i < 10; i++) {
-        sprintf(score_visuals_filename, "../assets/score_visuals/%d.png", i);
-        assets->misc.score_visuals[i] = load_sprite(renderer, score_visuals_filename, 0, 1, score_visuals_rect);
+        sprintf(filename, "../assets/score_visuals/%d.png", i);
+        assets->misc.score_visuals[i] = load_sprite(renderer, filename, 0, 1, score_visuals_rect);
     };
 
     // Populate the memory allocated sprite array with blocks
@@ -78,6 +77,9 @@ Assets *load_all_assets(SDL_Renderer *renderer) {
         // randomize the start of the animation by setting the current frame to different values
         assets->game.foods[i].current_frame = i;
     }
+
+    // Load reminders
+    assets->reminders.wrong_input_in_tutorial = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
 
     // Load game sounds
     assets->sounds.background_music     = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");

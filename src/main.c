@@ -41,7 +41,7 @@ int main (int argc, char *argv[]) {
     // Set the initial index for the tutorial slides 
     states.current_tutorial_slide_index = 0;
     // Set the initial wrong key state
-    states.wrong_key_state = WRONG_KEY_NONE,
+    states.wrong_input_state = WRONG_INPUT_NONE,
     // Set the initial number of foods. This value will change later on.
     states.current_number_of_foods_picked = 1;
     // Set the initial menu choice
@@ -57,11 +57,11 @@ int main (int argc, char *argv[]) {
             if (event.type == SDL_QUIT) 
                 user_wants_to_quit = true; 
             else if (event.type == SDL_KEYDOWN) 
-                handle_keypress(event, &states, &map, assets);
+                register_keypress(event, &states, &map, assets);
         }
         SDL_RenderClear(renderer);
     
-        handle_state(&states, &map, assets);
+        render_state(&states, &map, assets);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(1000/60); 

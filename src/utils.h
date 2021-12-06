@@ -11,6 +11,8 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 void render_sprite(Sprite *sprite);
 
 int gen_random_num(int min, int max);
-void notification();
+
+void render_reminder(Sprite* sprite, States* states, Uint32 duration, int maximum_height, int climb_speed);
+
 
 #endif // !UTILS_H

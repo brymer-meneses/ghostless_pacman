@@ -96,7 +96,6 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
     sprite.texture = image_texture;
     sprite.current_frame = 0;
     sprite.rect = rect;
-
     return sprite;
 }
 
@@ -105,18 +104,16 @@ int gen_random_num(int min, int max) {
     return rand() % (max + 1 - min) + min;
 }
 
-void notification(){
-    
-    SDL_Event event;
-    Uint32 start_tick;
-    int interval;
-    start_tick = SDL_GetTicks();
-    
-    interval = 1;
 
-    while ((SDL_GetTicks() - start_tick)<interval){
-        puts("exceed");
+void render_reminder(Sprite* sprite, States* states, Uint32 duration, int maximum_height, int climb_speed){
+    render_sprite(sprite);
+    Uint32 time_until_reminder_goes_down = states->wrong_input_time + duration;
+
+    if (time_until_reminder_goes_down < SDL_GetTicks()) {
+        sprite->rect.y += climb_speed;
+    } else {
+        if (sprite->rect.y >= maximum_height) {
+            sprite->rect.y -= climb_speed;
+        }
     }
-    SDL_Delay(1000);
-    puts("in");
 }

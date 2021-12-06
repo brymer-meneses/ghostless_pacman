@@ -32,6 +32,11 @@ typedef struct Sprite {
     int                 current_frame;
 } Sprite;
 
+typedef struct Reminder {
+    Sprite              sprite;
+    Uint32              animation_runtime;
+} Reminder;
+
 typedef struct Position {
     int x;
     int y;
@@ -70,14 +75,17 @@ typedef struct Assets {
         Sprite game_lost_hit_block;
         Sprite game_lost_hit_border;
         Sprite game_lost_insufficient_food;
-        Sprite wrong_key_in_game;
-        Sprite wrong_key_in_menu;
-        Sprite wrong_key_in_about_game;
-        Sprite wrong_key_in_food_input;
     } prompt;
 
-    // Struct for sounds
+    struct {
+        Sprite wrong_input_in_game;
+        Sprite wrong_input_in_menu;
+        Sprite wrong_input_in_about_game;
+        Sprite wrong_input_in_food_input;
+        Sprite wrong_input_in_tutorial;
+    } reminders;
 
+    // Struct for sounds
     struct { 
         Mix_Music* background_music;
         Mix_Chunk* pacman_munch;
@@ -118,14 +126,14 @@ enum GameState {
     GAME_IN_FOOD_NUMBER_INPUT,
 };
 
-enum WrongKeyState { 
-    WRONG_KEY_NONE,
-    WRONG_KEY_IN_MENU,
-    WRONG_KEY_IN_GAME,
-    WRONG_KEY_IN_GAME_PROMPTS,
-    WRONG_KEY_IN_ABOUT_GAME,
-    WRONG_KEY_IN_TUTORIAL,
-    WRONG_KEY_IN_FOOD_INPUT,
+enum WrongInputState { 
+    WRONG_INPUT_NONE,
+    WRONG_INPUT_IN_MENU,
+    WRONG_INPUT_IN_GAME,
+    WRONG_INPUT_IN_GAME_PROMPTS,
+    WRONG_INPUT_IN_ABOUT_GAME,
+    WRONG_INPUT_IN_TUTORIAL,
+    WRONG_INPUT_IN_FOOD_INPUT,
 };
 
 enum MenuChoiceState {
@@ -139,10 +147,11 @@ enum MenuChoiceState {
 typedef struct States {
     enum PlayerState         player_state;
     enum GameState           game_state;
-    enum WrongKeyState       wrong_key_state;
+    enum WrongInputState     wrong_input_state;
     enum MenuChoiceState     current_menu_choice;
     int                      current_tutorial_slide_index;
     int                      current_number_of_foods_picked;
+    Uint32                   wrong_input_time;
 } States;
 
 enum BoardElement {
