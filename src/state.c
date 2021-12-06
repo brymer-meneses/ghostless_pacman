@@ -160,6 +160,7 @@ void handle_keypress(SDL_Event event, States *states, Map* map, Assets* assets) 
                             break;
                         case SDL_SCANCODE_M:
                             states->player_state = PLAYER_IN_MENU;
+                            states->current_number_of_foods_picked = 1;
                             break;
                         default:
                             states->wrong_key_state = WRONG_KEY_IN_FOOD_INPUT;

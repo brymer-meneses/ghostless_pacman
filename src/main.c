@@ -27,23 +27,18 @@ int main (int argc, char *argv[]) {
     // Initialize map which will be used in the game
     Map *map = init_map(assets, 2);
      
-    States states = {
-        // Set the initial state of the player
-        .player_state = PLAYER_IN_MENU, 
-
-        // Set the initial state of the game when th player enters th game from 
-        // the menu.
-        .game_state = GAME_IN_FOOD_NUMBER_INPUT,
-
-        // Set the initial index for the tutorial slides 
-        .current_tutorial_slide_index = 0,
-
-        // Set the initial wrong key state
-        .wrong_key_state = WRONG_KEY_NONE,
-
-        // Set the initial number of foods. This value will change later on.
-        .current_number_of_foods_picked = 1,
-    };
+    States states;
+    // Set the initial state of the player
+    states.player_state = PLAYER_IN_MENU;
+    // Set the initial state of the game when th player enters th game from 
+    // the menu.
+    states.game_state = GAME_IN_FOOD_NUMBER_INPUT;
+    // Set the initial index for the tutorial slides 
+    states.current_tutorial_slide_index = 0;
+    // Set the initial wrong key state
+    states.wrong_key_state = WRONG_KEY_NONE,
+    // Set the initial number of foods. This value will change later on.
+    states.current_number_of_foods_picked = 1;
 
     // Play background music
     Mix_FadeInMusic(assets->sounds.background_music, -1, 4000);
