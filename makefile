@@ -25,8 +25,7 @@ clean:
 	$(rm) "./bin"
 
 docs:
-	pandoc "./docs/manual.md" -o "./manual.pdf"; \
-	pandoc "./docs/readme.md" -o "./readme.pdf"
+	pandoc "./readme.md" -o "./readme.pdf"
 
 
 
