@@ -124,6 +124,7 @@ void render_state(States* states, Map *map, Assets *assets) {
             render_reminder(&assets->reminders.wrong_input_in_menu, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME_PROMPTS:
+            render_reminder(&assets->reminders.wrong_input_in_game_prompts, states, 2000, 535, 5);
             break;
     }
     if (states->show_quit_confirmation) {

@@ -79,11 +79,12 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     }
 
     // Load reminders
-    assets.reminders.wrong_input_in_menu        = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_tutorial    = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_about_game  = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_food_input  = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_game        = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_menu          = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_tutorial      = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_about_game    = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_food_input    = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_game          = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_game_prompts  = load_sprite(renderer, "../assets/reminders/wrong_input_in_game_prompts.png", 0, 1, reminder_rect);
 
     // Load game sounds
     assets.sounds.background_music     = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
