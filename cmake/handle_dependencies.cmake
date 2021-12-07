@@ -12,7 +12,7 @@ if (UNIX)
     
     FetchContent_MakeAvailable(SDL2_CMAKE)
 
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/external/cmake"})
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/external/cmake)
 
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)

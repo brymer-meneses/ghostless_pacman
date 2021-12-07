@@ -16,6 +16,7 @@ bin/
 
 *.dll
 *.cache
+*.pdf
 
 ghostless-pacman
 ghostless-pacman.exe
