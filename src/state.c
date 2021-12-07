@@ -264,7 +264,8 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                             break;
                         case SDLK_x:
-                            // quit box
+                            Mix_PlayChannel(0, assets->sounds.quit_sound, 0);
+                            render_reminder(&assets->reminders.quit_confirmation, states, 2000, 535, 5); //no display pa
                             break;
                         default:
                             states->wrong_input_state = WRONG_INPUT_IN_GAME_PROMPTS;

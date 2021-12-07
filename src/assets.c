@@ -20,23 +20,24 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect food_input_rect    = {.x=61,   .y=66,  .h=518, .w=507};
     SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39,  .w=156};
     SDL_Rect reminder_rect      = {.x=43,   .y=700,   .h=98,  .w=554};
+    SDL_Rect quit_rect          = {.x=43,   .y=700,   .h=136,  .w=554}; //
 
     // Load all sprites used for the game
     assets.game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
     assets.game.main   = load_sprite(renderer, "../assets/game_elements/main.png", 0, 1, fullscreen_rect);
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
 
-    // Loa.screen menus
-    assets.misc.about_screen                  = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
+    // Load screen menus
+    assets.misc.about_screen               = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
 
-    // Loa.menu highlights
+    // Load menu highlights
     assets.menu.player_chose_start         = load_sprite(renderer, "../assets/menu/highlight_start.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_tutorial      = load_sprite(renderer, "../assets/menu/highlight_tutorial.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_exit          = load_sprite(renderer, "../assets/menu/highlight_exit.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_about         = load_sprite(renderer, "../assets/menu/highlight_about.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
-    // Loa.game prompts
+    // Load game prompts
     assets.prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
@@ -75,11 +76,12 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     }
 
     // Load reminders
-    assets.reminders.wrong_input_in_menu = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_tutorial = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_about_game = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_food_input = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
-    assets.reminders.wrong_input_in_game = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_menu        = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_tutorial    = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_about_game  = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_food_input  = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_game        = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
+    assets.reminders.quit_confirmation          = load_sprite(renderer, "../assets/reminders/exit_confirm.png", 0, 1, quit_rect); //parang may mali (with line 23)
 
     // Load game sounds
     assets.sounds.background_music     = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");

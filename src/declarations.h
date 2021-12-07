@@ -83,6 +83,7 @@ typedef struct Assets {
         Sprite wrong_input_in_about_game;
         Sprite wrong_input_in_food_input;
         Sprite wrong_input_in_tutorial;
+        Sprite quit_confirmation; //may mali ba rito
     } reminders;
 
     // Struct for sounds
