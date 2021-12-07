@@ -121,6 +121,9 @@ void render_state(States* states, Map *map, Assets *assets) {
         case WRONG_INPUT_IN_GAME_PROMPTS:
             break;
     }
+    if (states->show_quit_confirmation) {
+        render_sprite(&assets->misc.quit_confirmation_prompt);
+    };
 }
 
 void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
@@ -239,7 +242,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                             break;
                         case SDLK_x:
-                            // quit box
+                            states->show_quit_confirmation = true;
                             break;
                         default:
                             states->wrong_input_state = WRONG_INPUT_IN_GAME_PROMPTS;
@@ -279,7 +282,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->player_state = PLAYER_IN_GAME;
                             break;
                         case PLAYER_CHOSE_EXIT:
-                            // TODO: add a way to exit
+                            states->show_quit_confirmation = true;
                             break;
                         case PLAYER_CHOSE_NONE:
                             break;
@@ -334,5 +337,17 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
             break;
     }
 
+    if (states->show_quit_confirmation) {
+        switch (event.key.keysym.sym) {
+            case SDLK_n:
+                states->show_quit_confirmation = false;
+                break;
+            case SDLK_y:
+                puts("INFO: game quitting, please wait.");
+                states->is_game_running = true;
+                break;
+        }
+
+    }
 }
 

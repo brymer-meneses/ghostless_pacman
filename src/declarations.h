@@ -17,6 +17,8 @@
 
 #define MAX_NUMBER_OF_FOOD 9
 
+#include  "stdbool.h"
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_image.h"
@@ -59,6 +61,7 @@ typedef struct Assets {
         Sprite score_visuals[10];
         Sprite homescreen;
         Sprite about_screen;
+        Sprite quit_confirmation_prompt;
     } misc;
 
     struct {
@@ -151,6 +154,8 @@ typedef struct States {
     enum MenuChoiceState     current_menu_choice;
     int                      current_tutorial_slide_index;
     int                      current_number_of_foods_picked;
+    bool                     show_quit_confirmation;
+    bool                     is_game_running;
     Uint32                   wrong_input_time;
 } States;
 

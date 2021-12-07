@@ -19,28 +19,32 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect prompt_rect        = {.x=70,   .y=70,  .h=500, .w=500};
     SDL_Rect food_input_rect    = {.x=61,   .y=66,  .h=518, .w=507};
     SDL_Rect score_visuals_rect = {.x=450,  .y=20,  .h=39,  .w=156};
-    SDL_Rect reminder_rect      = {.x=43,   .y=700,   .h=98,  .w=554};
+    SDL_Rect reminder_rect      = {.x=43,   .y=700, .h=98,  .w=554};
+    SDL_Rect quit_rect          = {.x=36,   .y=193, .h=253, .w=567};
 
     // Load all sprites used for the game
     assets.game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
     assets.game.main   = load_sprite(renderer, "../assets/game_elements/main.png", 0, 1, fullscreen_rect);
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
 
-    // Loa.screen menus
+    // Load screen menus
     assets.misc.about_screen                  = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
 
-    // Loa.menu highlights
+    // Load menu highlights
     assets.menu.player_chose_start         = load_sprite(renderer, "../assets/menu/highlight_start.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_tutorial      = load_sprite(renderer, "../assets/menu/highlight_tutorial.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_exit          = load_sprite(renderer, "../assets/menu/highlight_exit.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_about         = load_sprite(renderer, "../assets/menu/highlight_about.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
-    // Loa.game prompts
+    // Load game prompts
     assets.prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
     assets.prompt.game_won                    = load_sprite(renderer, "../assets/results/won.png", 0, 1, prompt_rect);
+
+    assets.misc.quit_confirmation_prompt =  load_sprite(renderer, "../assets/misc/quit_confirmation.png", 0, 1, quit_rect);
+
 
     char filename[35];
 
@@ -92,11 +96,26 @@ Assets load_all_assets(SDL_Renderer *renderer) {
 void free_all_assets(Assets *assets) { 
     // Free all sprites
     SDL_DestroyTexture(assets->game.pacman.texture);
-    SDL_DestroyTexture(assets->game.blocks->texture);
-    SDL_DestroyTexture(assets->game.foods->texture);
     SDL_DestroyTexture(assets->game.exit.texture);
     SDL_DestroyTexture(assets->game.main.texture);
-    SDL_DestroyTexture(assets->misc.homescreen.texture);
+    SDL_DestroyTexture(assets->game.blocks->texture);
+    SDL_DestroyTexture(assets->game.foods->texture);
+
+
+    SDL_DestroyTexture(assets->menu.player_chose_about.texture);
+    SDL_DestroyTexture(assets->menu.player_chose_start.texture);
+    SDL_DestroyTexture(assets->menu.player_chose_tutorial.texture);
+    SDL_DestroyTexture(assets->menu.player_chose_exit.texture);
+    SDL_DestroyTexture(assets->menu.player_chose_none.texture);
+
+    SDL_DestroyTexture(assets->prompt.game_in_food_input.texture);
+    SDL_DestroyTexture(assets->prompt.game_lost_hit_block.texture);
+    SDL_DestroyTexture(assets->prompt.game_lost_insufficient_food.texture);
+    SDL_DestroyTexture(assets->prompt.game_won.texture);
+
+    SDL_DestroyTexture(assets->misc.quit_confirmation_prompt.texture);
+    SDL_DestroyTexture(assets->misc.score_visuals->texture);
+    SDL_DestroyTexture(assets->misc.tutorial_slides->texture);
 
     // Free all sounds
     Mix_FreeMusic(assets->sounds.background_music);
@@ -105,7 +124,6 @@ void free_all_assets(Assets *assets) {
     Mix_FreeChunk(assets->sounds.game_notification);
     Mix_FreeChunk(assets->sounds.game_win);
     Mix_FreeChunk(assets->sounds.game_over);
-    Mix_CloseAudio();
 }
 
 

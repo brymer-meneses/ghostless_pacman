@@ -46,16 +46,19 @@ int main (int argc, char *argv[]) {
     states.current_number_of_foods_picked = 1;
     // Set the initial menu choice
     states.current_menu_choice = PLAYER_CHOSE_NONE;
+    states.show_quit_confirmation = false;
+    states.is_game_running = false;
 
     // Play background music
     Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
-    bool user_wants_to_quit = false;
-    while (!user_wants_to_quit) {
+    while (!states.is_game_running) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) 
-                user_wants_to_quit = true; 
+            if (event.type == SDL_QUIT) {
+                states.is_game_running = true; 
+                states.show_quit_confirmation = true;
+            }
             else if (event.type == SDL_KEYDOWN) 
                 register_keypress(event, &states, &map, &assets);
         }
@@ -72,5 +75,6 @@ int main (int argc, char *argv[]) {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
+    Mix_CloseAudio();
     return 0;
 }

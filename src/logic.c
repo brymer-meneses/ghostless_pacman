@@ -112,8 +112,8 @@ void fill_board_with_food(Map *map) {
     int rand_x;
     int rand_y;
     while (total_foods_generated < map->number_of_foods){
-         rand_x =  gen_random_num(1,8);
-         rand_y =  gen_random_num(1,8);
+         rand_x =  gen_random_num(0,9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
@@ -126,8 +126,8 @@ void fill_board_with_blocks(Map *map) {
     int rand_x;
     int rand_y;
     while (total_blocks_generated < map->number_of_blocks) {
-         rand_x =  gen_random_num(1,8);
-         rand_y =  gen_random_num(1,8);
+         rand_x =  gen_random_num(0,9);
+         rand_y =  gen_random_num(0,9);
          if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
              map->board[rand_x][rand_y] = BLOCK;
              total_blocks_generated++;
@@ -269,7 +269,7 @@ bool check_for_impossible_win_scenario(Map* map) {
                         }
                 } 
                 // printf("row: %d col: %d has: %d\n", row, col, impassable_adjacent_neighbors);
-                if (impassable_adjacent_neighbors >= 4) 
+                if (impassable_adjacent_neighbors >= 3) 
                     return false;
                 }
             }
