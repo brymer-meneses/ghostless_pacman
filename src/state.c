@@ -419,7 +419,12 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_EXIT;
                     break;
+
                 case SDLK_RETURN:
+                    // A separate switch is created for pressing 'Enter'. This allows the
+                    // user to change the chosen  option, even after pressing some other
+                    // number previously. Once 'Enter' is pressed, the game state will be
+                    // changed to GAME_IN_PROGRESS, which is the actual game proper.
                     switch (states->current_menu_choice) {
                         case PLAYER_CHOSE_ABOUT:
                             Mix_PlayChannel(1, assets->sounds.open_about_game, 0);

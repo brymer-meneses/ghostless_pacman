@@ -13,8 +13,21 @@
 
 void render_map(Map *map, Assets* assets) {
 
-    // A function that renders the map of the game
-    // including
+    /* A function that renders the map of the game including
+     * the main board which applies the concept of an array
+     * defining a 10-by-10 grid for the game. This function
+     * includes rendering the sprites or visual assets inside
+     * the said dimension, that is, Pacman itself, cherries,
+     * blocks, and the exit door.
+     * 
+     * params:
+     *      Assets* assets
+     *          - A pointer to the struct Assets that points
+     *            to the required assets
+     *      Map *map   
+     *          - A pointer to the struct Map that consists
+     *            the necessary items to render the map
+     */
 
     Sprite* main   =   &assets->game.main;
     Sprite* pacman = &assets->game.pacman;
@@ -62,6 +75,9 @@ void render_map(Map *map, Assets* assets) {
 }
 
 Position query_pacman_position(Sprite* pacman) {
+
+    /* A function that queries and returns the position of Pacman */
+
     Position pos;
     pos.x = (pacman->rect.x - PACMAN_INITIAL_POSITION_X) / 44;
     pos.y = (pacman->rect.y - PACMAN_INITIAL_POSITION_Y) / 44;
@@ -70,6 +86,13 @@ Position query_pacman_position(Sprite* pacman) {
 
 
 enum GameState check_player_status(Position future_position, enum BoardElement future_obstacle, Map *map, Assets* assets) {
+
+    /* A function that dictates the state of the game based on the
+     * current player status, specifically involving the blocks and
+     * food
+     * ...
+     */
+
     int x = future_position.x;
     int y = future_position.y;
 
