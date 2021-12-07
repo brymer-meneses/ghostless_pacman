@@ -250,6 +250,10 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
         case PLAYER_IN_GAME:
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
+                    // This case specifies that the player inputs a number from 2 to 9
+                    // as the desired number of food pieces on the game. An option to return
+                    // to menu is also offered by pressing 'M'. Otherwise, a wrong input
+                    // reminder will be shown.
                     switch (event.key.keysym.sym) {
                         case SDLK_2:
                         case SDLK_KP_2:
@@ -303,6 +307,11 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                             states->wrong_input_time = SDL_GetTicks();
                     }
+                    
+                    // A separate switch is created for pressing 'Enter'. This allows the
+                    // user to change the desired number, even after pressing some other
+                    // number previously. Once 'Enter' is pressed, the game state will be
+                    // changed to GAME_IN_PROGRESS, which is the actual game proper.
                     switch (event.key.keysym.scancode) {
                         case SDL_SCANCODE_RETURN:
                             Mix_PlayChannel(1, assets->sounds.start_game, 0);
@@ -317,6 +326,11 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                     }
                     break;
                 case GAME_IN_PROGRESS:
+                // This case is associated with the accepted keypresses during the actual game.
+                // That is, 'W' to move up, 'S' to move down, 'A' to move left, and 'D' to move
+                // right. Also, options to return to menu and to exit the game can be done by
+                // pressing 'M' or pressing 'X' respectively. Keypresses othere than these would
+                // trigger a wrong input reminder.
                     switch (event.key.keysym.sym) {
                         case SDLK_w:
                             move_pacman(MOVE_UP, assets, map, states);
@@ -334,6 +348,10 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
+                        case SDLK_x:
+                            Mix_PlayChannel(0, assets->sounds.quit_sound, 0);
+                            states->show_quit_confirmation = true;
+                            break;
                         default:
                             Mix_PlayChannel(0, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_GAME;
