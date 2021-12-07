@@ -84,7 +84,6 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     assets.reminders.wrong_input_in_about_game  = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
     assets.reminders.wrong_input_in_food_input  = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
     assets.reminders.wrong_input_in_game        = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
-    assets.reminders.quit_confirmation          = load_sprite(renderer, "../assets/reminders/exit_confirm.png", 0, 1, quit_rect); //parang may mali (with line 23)
 
     // Load game sounds
     assets.sounds.background_music     = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
