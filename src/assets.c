@@ -7,10 +7,18 @@
 
 
 Assets load_all_assets(SDL_Renderer *renderer) { 
+    //
+    //    A function that loads all visual and audio assets of the game
+    //
+    //    params:
+    //        SDL_Renderer renderer
+    //            - handles all the rendering needed to load images for the game
 
     Assets assets;
 
-    // SDL_Rect is a struct that holds
+    // SDL_Rect is a struct that holds the dimensions of an image asset
+    // and its position on the screen, relative to the top left
+
     SDL_Rect pacman_rect        = {.x=PACMAN_INITIAL_POSITION_X,  .y=PACMAN_INITIAL_POSITION_Y, .h=35, .w=35};
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
@@ -23,26 +31,31 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect quit_rect          = {.x=36,   .y=193, .h=253, .w=567};
 
     // Load all sprites used for the game
+
     assets.game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
     assets.game.main   = load_sprite(renderer, "../assets/game_elements/main.png", 0, 1, fullscreen_rect);
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
 
-    // Load screen menus
-    assets.misc.about_screen               = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
+    // Load menu highlights, based on the current menu option the user chooses
 
-    // Load menu highlights
     assets.menu.player_chose_start         = load_sprite(renderer, "../assets/menu/highlight_start.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_tutorial      = load_sprite(renderer, "../assets/menu/highlight_tutorial.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_exit          = load_sprite(renderer, "../assets/menu/highlight_exit.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_about         = load_sprite(renderer, "../assets/menu/highlight_about.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
-    // Load game prompts
+    // Load game prompts, based on the game results
+    
     assets.prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
     assets.prompt.game_won                    = load_sprite(renderer, "../assets/results/won.png", 0, 1, prompt_rect);
 
+
+    // Miscellaneous
+    //      Load screen upon choosing About the Game from the menu
+    assets.misc.about_screen               = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
+    //      Load prompt upon choosing Exit from the menu
     assets.misc.quit_confirmation_prompt =  load_sprite(renderer, "../assets/misc/quit_confirmation.png", 0, 1, quit_rect);
 
 
@@ -78,7 +91,8 @@ Assets load_all_assets(SDL_Renderer *renderer) {
         assets.game.foods[i].current_frame = i;
     }
 
-    // Load reminders
+    // Load reminders for wrong user input at various instances
+                 
     assets.reminders.wrong_input_in_menu          = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
     assets.reminders.wrong_input_in_tutorial      = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
     assets.reminders.wrong_input_in_about_game    = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
@@ -104,6 +118,10 @@ Assets load_all_assets(SDL_Renderer *renderer) {
 
 
 void free_all_assets(Assets *assets) { 
+
+    // A function that, as it says, frees all assets.
+    //      Assets have to be freed or destroyed to
+
     // Free all sprites
     SDL_DestroyTexture(assets->game.pacman.texture);
     SDL_DestroyTexture(assets->game.exit.texture);

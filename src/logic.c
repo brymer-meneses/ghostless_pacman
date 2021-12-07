@@ -13,6 +13,9 @@
 
 void render_map(Map *map, Assets* assets) {
 
+    // A function that renders the map of the game
+    // including
+
     Sprite* main   =   &assets->game.main;
     Sprite* pacman = &assets->game.pacman;
     Sprite* exit   =   &assets->game.exit;
