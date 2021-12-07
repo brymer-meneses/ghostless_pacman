@@ -112,12 +112,13 @@ enum GameState check_if_player_won(Position future_position, Map* map, Assets* a
 
 void fill_board_with_food(Map *map) {
     int total_foods_generated = 0;
-    int rand_x;
-    int rand_y;
+    int rand_x, rand_y;
     while (total_foods_generated < map->number_of_foods){
-         rand_x =  gen_random_num(0,9);
-         rand_y =  gen_random_num(0,9);
-         if (map->board[rand_x][rand_y] == EMPTY && rand_x != 0 && rand_y != 0) {
+         // Avoid generating blocks that are adjacent to the 
+         // border of the map.
+         rand_x =  gen_random_num(1,8);
+         rand_y =  gen_random_num(1,8);
+         if (map->board[rand_x][rand_y] == EMPTY) {
             map->board[rand_x][rand_y] = FOOD;
             total_foods_generated++;
         }
@@ -240,7 +241,8 @@ bool check_for_impossible_win_scenario(Map* map) {
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            if (map->board[row][col] == FOOD || map->board[row][col] == EXIT) { 
+            enum BoardElement element = map->board[row][col];
+            if (element == FOOD || element == EXIT) { 
                 /* 
                  *  We define `impassable_adjacent_neighbors` as the number of
                  *  spaces adjacent around a food or an exit that is impossible
@@ -266,7 +268,7 @@ bool check_for_impossible_win_scenario(Map* map) {
                         // Count the number of adjacent spaces exposed to the border
                         if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
                             impassable_adjacent_neighbors++;
-                        // Count the number of blocks or exit.
+                        // Count the number of adjacent blocks or exit.
                         } else if (map->board[row + i][col + j] == BLOCK || map->board[row + i][col + j] == EXIT) 
                             impassable_adjacent_neighbors++;
                         }
@@ -283,18 +285,18 @@ bool check_for_impossible_win_scenario(Map* map) {
 
 void reset_map(Map* map, Assets* assets, int number_of_foods) {
 
-    // make sure the board is empty
+    // Ensure the board is empty
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             map->board[row][col] = EMPTY;
         }
     }
 
+    // Reset the position of pacman
     map->board[0][0] = PACMAN;
-
-    // reset the position of pacman
     assets->game.pacman.rect.x = PACMAN_INITIAL_POSITION_X;
     assets->game.pacman.rect.y = PACMAN_INITIAL_POSITION_Y;
+    // Reset the rotation and flip of pacman
     assets->game.pacman.flip = SDL_FLIP_NONE;
     assets->game.pacman.rotation = 0;
 
