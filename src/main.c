@@ -1,7 +1,7 @@
 /*
- * This file, 'main.c', contains the start
+ * This file, 'main.c', contains the main loop of the game as well as the
+ * initialization of SDL and the termination of the game.
  */
-
 
 
 // Standard Library Imports
@@ -18,9 +18,10 @@
 #include "declarations.h"
 
 
-int main (int argc, char *argv[]) {
+int main () {
 
-    // Set a seed for the map
+    // Set a seed for the random number generator
+    // that is used in the game.
     time_t t;
     srand((unsigned) time(&t));
 
@@ -29,7 +30,7 @@ int main (int argc, char *argv[]) {
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
 
-    // Set the background color
+    // Set the background color to the color 
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
      
     // Load all game assets

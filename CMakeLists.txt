@@ -21,6 +21,7 @@ project(ghostless-pacman)
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin )
 
 # Compile all the C files and headers located in the src/ folder
+message("Compiling source files...")
 file(GLOB ALL_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.c"
     "${PROJECT_SOURCE_DIR}/src/*.h"
@@ -31,5 +32,7 @@ add_executable(${PROJECT_NAME} ${ALL_SRCS})
 # Handle the library dependencies the libraries. This ensures that 
 # the external libraries we used: SDL and SDL_image will be accessed by 
 # the game.
+
+message("Compilation complete")
 include(cmake/handle_dependencies.cmake)
 
