@@ -83,13 +83,16 @@ void render_state(States* states, Map *map, Assets *assets) {
 
     enum WrongInputState wrong_input_state = states->wrong_input_state;
 
-        // WrongInputState handles the events where the input of the user is not included
-        // to the certain keypresses accepted on some instances, such as:
+        // WrongInputState is associated with the events where the input of the user is
+        // not included to the certain keypresses accepted on some instances, such as:
         //
         //     In Menu
+        //
         //         WRONG_INPUT_IN_MENU
         //             - is called when the user keypress is not '1', '2', '3', or 'A'
-        //     In Game
+        //
+        //     In the Game
+        //
         //         WRONG_INPUT_IN_FOOD_INPUT
         //             - is called when the user chooses a number of food
         //               outside the range from 2 to 9
@@ -99,17 +102,35 @@ void render_state(States* states, Map *map, Assets *assets) {
         //             - is also called during the game, when the user presses
         //               keys other than 'M' to return to menu or 'X' to
         //               exit the game
+        //         WRONG_INPUT_IN_GAME_PROMPTS
+        //             - is called after the results of the game, displayed
+        //               through the game prompts, when the user presses
+        //               keys other than 'R' to restart, 'M' to return to
+        //               menu, or 'X' to exit
+        //
         //     In Tutorial (WRONG_INPUT_IN_TUTORIAL)
+        //
         //         WRONG_INPUT_IN_TUTORIAL
         //             - is called when the user presses keys other than
         //               '←' or '→' to navigate through the tutorial slides
         //             - is also called when the user presses keys other than
         //               'M' to return to menu
-        //     In About (WRONG_INPUT_IN_ABOUT_GAME)
+        //             
+        //              Note that in the last tutorial slide, the player is prompted to
+        //              choose again from some options. Hence, WRONG_INPUT_IN_TUTORIAL
+        //              is also called when the user presses keys other than '1' to
+        //              start the game, 'M' to return to menu, or 'X' to exit
+        //
+        //     In About the Game (WRONG_INPUT_IN_ABOUT_GAME)
+        //
         //             - is called when the user presses keys other than
         //               'M' to return to menu
 
     enum MenuChoiceState current_menu_choice = states->current_menu_choice;
+
+        // MenuChoiceState is associated to the menu option that the player chooses.
+        // Recall that in the menu, the player can choose from the options 'Start',
+        // 'Tutorial', 'About the Game', and 'Exit'.
 
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
 
@@ -422,6 +443,8 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                     states->player_state = PLAYER_IN_GAME;
                     break;
                 case SDLK_x:
+                    Mix_PlayChannel(0, assets->sounds.quit_sound, 0);
+                    states->show_quit_confirmation = true;
                     break;
                 default:
                     Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
