@@ -5,7 +5,8 @@
 #include "declarations.h"
 #include "logic.h"
 
-
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 
 void render_state(States* states, Map *map, Assets *assets) {
     /* 
@@ -108,15 +109,19 @@ void render_state(States* states, Map *map, Assets *assets) {
             // do nothing
             break;
         case WRONG_INPUT_IN_ABOUT_GAME:
+            render_reminder(&assets->reminders.wrong_input_in_about_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME:
+            render_reminder(&assets->reminders.wrong_input_in_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_TUTORIAL:
             render_reminder(&assets->reminders.wrong_input_in_tutorial, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_FOOD_INPUT:
+            render_reminder(&assets->reminders.wrong_input_in_food_input, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_MENU:
+            render_reminder(&assets->reminders.wrong_input_in_menu, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME_PROMPTS:
             break;
@@ -154,45 +159,59 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                     switch (event.key.keysym.sym) {
                         case SDLK_2:
                         case SDLK_KP_2:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 2;
                             break;
                         case SDLK_3:
                         case SDLK_KP_3:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 3;
                             break;
                         case SDLK_4:
                         case SDLK_KP_4:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 4;
                             break;
                         case SDLK_5:
                         case SDLK_KP_5:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 5;
                             break;
                         case SDLK_6:
                         case SDLK_KP_6:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 6;
                             break;
                         case SDLK_7:
                         case SDLK_KP_7:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 7;
                             break;
                         case SDLK_8:
                         case SDLK_KP_8:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 8;
                             break;
                         case SDLK_9:
                         case SDLK_KP_9:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->current_number_of_foods_picked = 9;
                             break;
                         case SDLK_m:
+                            Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                             states->player_state = PLAYER_IN_MENU;
                             states->current_number_of_foods_picked = 1;
                             break;
+                        case SDLK_RETURN: // to initially acknowlege return as proper input
+                            break;
                         default:
+                            Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
+                            states->wrong_input_time = SDL_GetTicks();
                     }
                     switch (event.key.keysym.scancode) {
                         case SDL_SCANCODE_RETURN:
+                            Mix_PlayChannel(1, assets->sounds.start_game, 0);
                             if (states->current_number_of_foods_picked != 1) {
                                 reset_map(map, assets, states->current_number_of_foods_picked);
                                 states->game_state = GAME_IN_PROGRESS;
@@ -200,7 +219,8 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->current_number_of_foods_picked = 1;
                             break;
                         default:
-                            states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
+                            // states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
+                            break;
                     }
                     break;
                 case GAME_IN_PROGRESS:
@@ -218,10 +238,13 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             move_pacman(MOVE_RIGHT, assets, map, states);
                             break;
                         case SDLK_m:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                         default:
+                            Mix_PlayChannel(0, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_GAME;
+                            states->wrong_input_time = SDL_GetTicks();
                             break;
                         }
                     break;
@@ -231,10 +254,12 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                 case GAME_WON:
                     switch (event.key.keysym.sym) {
                         case SDLK_r:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_GAME;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                             break;
                         case SDLK_m:
+                            Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
                             break;
@@ -254,28 +279,35 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
             switch (event.key.keysym.sym) {
                 case SDLK_1:
                 case SDLK_KP_1:
+                    Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_START;
                     break;
                 case SDLK_a:
+                    Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_ABOUT;
                     break;
                 case SDLK_2:
                 case SDLK_KP_2:
+                    Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_TUTORIAL;
                     break;
                 case SDLK_3:
                 case SDLK_KP_3:
+                    Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_EXIT;
                     break;
                 case SDLK_RETURN:
                     switch (states->current_menu_choice) {
                         case PLAYER_CHOSE_ABOUT:
+                            Mix_PlayChannel(1, assets->sounds.open_about_game, 0);
                             states->player_state = PLAYER_IN_ABOUT;
                             break;
                         case PLAYER_CHOSE_TUTORIAL:
+                            Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                             states->player_state = PLAYER_IN_TUTORIAL;
                             break;
                         case PLAYER_CHOSE_START:
+                            Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                             states->player_state = PLAYER_IN_GAME;
                             break;
                         case PLAYER_CHOSE_EXIT:
@@ -288,6 +320,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                     states->current_menu_choice = PLAYER_CHOSE_NONE;
                     break;
                 default:
+                    Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                     states->wrong_input_state = WRONG_INPUT_IN_MENU;
                     states->wrong_input_time = SDL_GetTicks();
                     break;
@@ -308,14 +341,17 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                         Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
                 case SDLK_m:
+                    Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                     states->player_state = PLAYER_IN_MENU;
                     break;
                 case SDLK_1:
+                    Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                     states->player_state = PLAYER_IN_GAME;
                     break;
                 case SDLK_x:
                     break;
                 default:
+                    Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                     states->wrong_input_state = WRONG_INPUT_IN_TUTORIAL;
                     states->wrong_input_time = SDL_GetTicks();
                     break;
@@ -324,9 +360,11 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
         case PLAYER_IN_ABOUT:
             switch (event.key.keysym.sym) {
                 case SDLK_m:
+                    Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                     states->player_state = PLAYER_IN_MENU;
                     break;
                 default:
+                    Mix_PlayChannel(0, assets->sounds.game_notification, 0);
                     states->wrong_input_state = WRONG_INPUT_IN_ABOUT_GAME;
                     states->wrong_input_time = SDL_GetTicks();
                 }

@@ -78,10 +78,10 @@ enum GameState check_player_status(Position future_position, enum BoardElement f
         case FOOD:
             map->total_player_score++;
             map->board[x][y] = EMPTY;
-            Mix_PlayChannel(-1, assets->sounds.pacman_munch, 0);
+            Mix_PlayChannel(2, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
-            Mix_PlayChannel(-1, assets->sounds.game_over, 0);
+            Mix_PlayChannel(2, assets->sounds.game_over, 0);
             return GAME_LOST_HIT_BLOCK;
             break;
         default: 
@@ -89,7 +89,7 @@ enum GameState check_player_status(Position future_position, enum BoardElement f
     }
 
     if (!player_within_borders) {
-        Mix_PlayChannel(-1, assets->sounds.game_over, 0);
+        Mix_PlayChannel(2, assets->sounds.game_over, 0);
         return GAME_LOST_HIT_BORDER;
     } 
 

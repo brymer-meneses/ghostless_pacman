@@ -90,6 +90,11 @@ typedef struct Assets {
         Mix_Music* background_music;
         Mix_Chunk* pacman_munch;
         Mix_Chunk* pacman_step;
+        Mix_Chunk* option_select;
+        Mix_Chunk* option_confirm;
+        Mix_Chunk* quit_sound;
+        Mix_Chunk* open_about_game;
+        Mix_Chunk* start_game;
         Mix_Chunk* game_notification;
         Mix_Chunk* game_win;
         Mix_Chunk* game_over;

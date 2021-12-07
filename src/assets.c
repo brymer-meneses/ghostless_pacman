@@ -75,13 +75,22 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     }
 
     // Load reminders
-    assets.reminders.wrong_input_in_tutorial = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_menu = load_sprite(renderer, "../assets/reminders/wrong_input_in_menu.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_tutorial = load_sprite(renderer, "../assets/reminders/wrong_input_in_tutorial.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_about_game = load_sprite(renderer, "../assets/reminders/wrong_input_in_about.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_food_input = load_sprite(renderer, "../assets/reminders/wrong_input_in_food_input.png", 0, 1, reminder_rect);
+    assets.reminders.wrong_input_in_game = load_sprite(renderer, "../assets/reminders/wrong_input_in_game.png", 0, 1, reminder_rect);
 
     // Load game sounds
     assets.sounds.background_music     = Mix_LoadMUS("../assets/sounds/background_muzic.mp3");
     assets.sounds.pacman_munch         = Mix_LoadWAV("../assets/sounds/munch.wav");
     assets.sounds.pacman_step          = Mix_LoadWAV("../assets/sounds/step.wav");
     assets.sounds.game_notification    = Mix_LoadWAV("../assets/sounds/notif.wav");
+    assets.sounds.option_select        = Mix_LoadWAV("../assets/sounds/select.wav");
+    assets.sounds.option_confirm       = Mix_LoadWAV("../assets/sounds/confirm.wav");
+    assets.sounds.open_about_game      = Mix_LoadWAV("../assets/sounds/open_about.wav");
+    assets.sounds.quit_sound           = Mix_LoadWAV("../assets/sounds/quit.wav");
+    assets.sounds.start_game           = Mix_LoadWAV("../assets/sounds/start_game.wav");
     assets.sounds.game_win             = Mix_LoadWAV("../assets/sounds/win.wav");
     assets.sounds.game_over            = Mix_LoadWAV("../assets/sounds/game_over.wav");    
 
