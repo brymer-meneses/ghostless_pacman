@@ -13,18 +13,18 @@
 
 void render_map(Map *map, Assets* assets) {
 
-    Sprite* main =   &assets->game.main;
+    Sprite* main   =   &assets->game.main;
     Sprite* pacman = &assets->game.pacman;
-    Sprite* exit =   &assets->game.exit;
+    Sprite* exit   =   &assets->game.exit;
 
-    Sprite* foods =   assets->game.foods;
+    Sprite* foods  =   assets->game.foods;
     Sprite* blocks =  assets->game.blocks;
 
     render_sprite(main);
     render_sprite(exit);
     render_sprite(pacman);
 
-    int current_food_index = 0;
+    int current_food_index  = 0;
     int current_block_index = 0;
 
     for (int row=0; row<10; row++) {

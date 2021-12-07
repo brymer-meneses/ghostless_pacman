@@ -206,7 +206,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->player_state = PLAYER_IN_MENU;
                             states->current_number_of_foods_picked = 1;
                             break;
-                        case SDLK_RETURN: // to initially acknowlege return as proper input
+                        case SDLK_RETURN:
                             break;
                         default:
                             Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
@@ -223,7 +223,6 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                             states->current_number_of_foods_picked = 1;
                             break;
                         default:
-                            // states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                             break;
                     }
                     break;
@@ -330,7 +329,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                     states->wrong_input_time = SDL_GetTicks();
                     break;
             };
-            // reset tutorial slide
+            // Reset tutorial slide
             states->current_tutorial_slide_index = 0;
             break;
         case PLAYER_IN_TUTORIAL:
@@ -390,4 +389,3 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
 
     }
 }
-

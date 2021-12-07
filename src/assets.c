@@ -135,5 +135,3 @@ void free_all_assets(Assets *assets) {
     Mix_FreeChunk(assets->sounds.game_win);
     Mix_FreeChunk(assets->sounds.game_over);
 }
-
-
