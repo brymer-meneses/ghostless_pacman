@@ -1,3 +1,10 @@
+/*
+ *  This file, `assets.c`, contains functions that handles the loading and 
+ *  freeing of all the assets in the game.
+ *  The term assets refers to images, music or sound effects that are used in the game.
+ */
+
+
 #include "stdio.h"
 
 #include "utils.h"
@@ -7,10 +14,20 @@
 
 
 Assets load_all_assets(SDL_Renderer *renderer) { 
+   /*
+    * A function that handles the loading of all assets required for the game.
+    * This includes loading the various images and sounds for the game.
+    *
+    * returns:
+    *     Assets assets
+    *         - A struct containing all the game assets.
+    */
 
     Assets assets;
 
-    // SDL_Rect is a struct that holds
+    // SDL_Rect is a struct that holds the `x` and `y` position
+    // as well as the `h` height and `w` width of any rendered in the screen.
+
     SDL_Rect pacman_rect        = {.x=PACMAN_INITIAL_POSITION_X,  .y=PACMAN_INITIAL_POSITION_Y, .h=35, .w=35};
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
@@ -22,7 +39,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect reminder_rect      = {.x=43,   .y=700, .h=98,  .w=554};
     SDL_Rect quit_rect          = {.x=36,   .y=193, .h=253, .w=567};
 
-    // Load all sprites used for the game
+    // Load all sprites used for running the main game
     assets.game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
     assets.game.main   = load_sprite(renderer, "../assets/game_elements/main.png", 0, 1, fullscreen_rect);
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
@@ -48,30 +65,30 @@ Assets load_all_assets(SDL_Renderer *renderer) {
 
     char filename[35];
 
-    // Populate the memory allocated sprite array with tutorial slides.
+    // Populate the sprite array with tutorial slides.
     for (int i = 0; i < NUMBER_OF_TUTORIAL_SLIDES; i++) {
         sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
         assets.misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
     }
 
-    // Populate the memory allocated sprite array with food input prompts.
+    // Populate the sprite array with food input prompts.
     for (int i = 0; i < 9; i++) {
         sprintf(filename, "../assets/food_input_prompts/%d.png", i);
         assets.misc.food_input_prompts[i] = load_sprite(renderer, filename, 0, 1, food_input_rect);
     };
 
-    // Populate the memory allocated sprite array with score visualization
+    // Populate the sprite array with score visualization
     for (int i = 0; i < 10; i++) {
         sprintf(filename, "../assets/score_visuals/%d.png", i);
         assets.misc.score_visuals[i] = load_sprite(renderer, filename, 0, 1, score_visuals_rect);
     };
 
-    // Populate the memory allocated sprite array with blocks
+    // Populate the sprite array with blocks
     for (int i=0; i<NUMBER_OF_BLOCKS; i++) {
         assets.game.blocks[i] = load_sprite(renderer, "../assets/game_elements/box.png", 0 , 1, block_rect);
     }
 
-    // Populate the memory allocated sprite array with food
+    // Populate the sprite array with food
     for (int i=0; i<MAX_NUMBER_OF_FOOD; i++) {
         assets.game.foods[i] = load_sprite(renderer, "../assets/game_elements/food.png", 40 , 5, food_rect);
         // randomize the start of the animation by setting the current frame to different values
@@ -103,6 +120,16 @@ Assets load_all_assets(SDL_Renderer *renderer) {
 }
 
 void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
+   /*
+    * A function that handles the release of the memory allocated for a
+    * sprite array.
+    *
+    * params:
+    *     Sprite* sprite 
+    *         - Pointer to a sprite array
+    *     size_t length_of_array
+    *         - The length of the array
+    */
     for (int i=0; i<length_of_array; i++) {
         SDL_DestroyTexture(sprite_array[i].texture);
     }
@@ -110,12 +137,20 @@ void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
 
 
 void free_all_assets(Assets *assets) { 
+   /*
+    * A function that handles the release of all memory allocated for all
+    * the assets used in the game. This includes freeing all the sounds
+    * and images used in the game.
+    *
+    * params:
+    *     Assets *assets
+    *         - Pointer to a assets struct
+    */
+
     // Free all sprites
     SDL_DestroyTexture(assets->game.pacman.texture);
     SDL_DestroyTexture(assets->game.exit.texture);
     SDL_DestroyTexture(assets->game.main.texture);
-    free_sprite_array(assets->game.foods, MAX_NUMBER_OF_FOOD);
-    free_sprite_array(assets->game.blocks, NUMBER_OF_BLOCKS);
 
     SDL_DestroyTexture(assets->menu.player_chose_about.texture);
     SDL_DestroyTexture(assets->menu.player_chose_start.texture);
@@ -132,7 +167,8 @@ void free_all_assets(Assets *assets) {
     free_sprite_array(assets->misc.tutorial_slides, NUMBER_OF_TUTORIAL_SLIDES);
     free_sprite_array(assets->misc.food_input_prompts, NUMBER_OF_FOOD_INPUT_PROMPTS);
     free_sprite_array(assets->misc.score_visuals, NUMBER_OF_SCORE_VISUALS);
-
+    free_sprite_array(assets->game.foods, MAX_NUMBER_OF_FOOD);
+    free_sprite_array(assets->game.blocks, NUMBER_OF_BLOCKS);
 
     // Free all sounds
     Mix_FreeMusic(assets->sounds.background_music);
@@ -141,4 +177,8 @@ void free_all_assets(Assets *assets) {
     Mix_FreeChunk(assets->sounds.game_notification);
     Mix_FreeChunk(assets->sounds.game_win);
     Mix_FreeChunk(assets->sounds.game_over);
+    Mix_FreeChunk(assets->sounds.option_confirm);
+    Mix_FreeChunk(assets->sounds.option_select);
+    Mix_FreeChunk(assets->sounds.quit_sound);
+    Mix_FreeChunk(assets->sounds.open_about_game);
 }
