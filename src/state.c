@@ -222,7 +222,7 @@ void render_state(States* states, Map *map, Assets *assets) {
     };
 }
 
-void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
+void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
     /* 
      *   A function that handles the various keypresses of the user.
      *
@@ -246,6 +246,17 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
     enum GameState game_state = states->game_state;
     enum MenuChoiceState current_menu_choice = states->current_menu_choice;
 
+    if (states->show_quit_confirmation) {
+        switch (event.key.keysym.sym) {
+            case SDLK_n:
+                states->show_quit_confirmation = false;
+                break;
+            case SDLK_y:
+                states->is_game_running = false;
+                break;
+        }
+        return;
+    }
     switch (player_state) {
         case PLAYER_IN_GAME:
             switch (game_state) {
@@ -468,15 +479,4 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
             break;
     }
 
-    if (states->show_quit_confirmation) {
-        switch (event.key.keysym.sym) {
-            case SDLK_n:
-                states->show_quit_confirmation = false;
-                break;
-            case SDLK_y:
-                states->is_game_running = false;
-                break;
-        }
-
-    }
 }

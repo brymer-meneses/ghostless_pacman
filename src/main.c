@@ -1,3 +1,9 @@
+/*
+ * This file, 'main.c', contains the start
+ */
+
+
+
 // Standard Library Imports
 #include "stdio.h"
 #include "stdbool.h"
@@ -60,7 +66,7 @@ int main (int argc, char *argv[]) {
                 states.show_quit_confirmation = true;
             }
             else if (event.type == SDL_KEYDOWN) 
-                register_keypress(event, &states, &map, &assets);
+                process_keypress(event, &states, &map, &assets);
         }
         SDL_RenderClear(renderer);
     

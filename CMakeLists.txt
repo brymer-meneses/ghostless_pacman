@@ -26,7 +26,7 @@ file(GLOB ALL_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.h"
     )
 add_executable(${PROJECT_NAME} ${ALL_SRCS})
-add_definitions(-g)
+# add_definitions(-g)
 
 # Handle the library dependencies the libraries. This ensures that 
 # the external libraries we used: SDL and SDL_image will be accessed by 
