@@ -28,7 +28,6 @@ void render_state(States* states, Map *map, Assets *assets) {
      *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
      */
 
-    Sprite homescreen = assets->misc.homescreen;
     Sprite about_screen = assets->misc.about_screen;
     Sprite game_lost_hit_block = assets->prompt.game_lost_hit_block;
     Sprite game_lost_hit_border = assets->prompt.game_lost_hit_border;
@@ -382,7 +381,6 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                 states->show_quit_confirmation = false;
                 break;
             case SDLK_y:
-                puts("INFO: game quitting, please wait.");
                 states->is_game_running = false;
                 break;
         }

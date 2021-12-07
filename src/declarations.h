@@ -8,6 +8,8 @@
 
 #define NUMBER_OF_BLOCKS 10
 #define NUMBER_OF_TUTORIAL_SLIDES 7
+#define NUMBER_OF_FOOD_INPUT_PROMPTS 9
+#define NUMBER_OF_SCORE_VISUALS 10
 
 #define ELEMENT_INITIAL_POSITION_X (95 + 20)
 #define ELEMENT_INITIAL_POSITION_Y (95 + 10)
@@ -50,16 +52,15 @@ typedef struct Assets {
         Sprite pacman;
         Sprite main;
         Sprite exit;
-        Sprite blocks[10];
-        Sprite foods[9];
+        Sprite blocks[NUMBER_OF_BLOCKS];
+        Sprite foods[MAX_NUMBER_OF_FOOD];
     } game;
 
 
     struct { 
-        Sprite tutorial_slides[7];
-        Sprite food_input_prompts[9];
-        Sprite score_visuals[10];
-        Sprite homescreen;
+        Sprite tutorial_slides[NUMBER_OF_TUTORIAL_SLIDES];
+        Sprite food_input_prompts[NUMBER_OF_FOOD_INPUT_PROMPTS];
+        Sprite score_visuals[NUMBER_OF_SCORE_VISUALS];
         Sprite about_screen;
         Sprite quit_confirmation_prompt;
     } misc;
@@ -74,7 +75,6 @@ typedef struct Assets {
 
     struct { 
         Sprite game_won;
-        Sprite game_in_food_input;
         Sprite game_lost_hit_block;
         Sprite game_lost_hit_border;
         Sprite game_lost_insufficient_food;

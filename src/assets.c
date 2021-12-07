@@ -102,15 +102,20 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     return assets;
 }
 
+void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
+    for (int i=0; i<length_of_array; i++) {
+        SDL_DestroyTexture(sprite_array[i].texture);
+    }
+}
+
 
 void free_all_assets(Assets *assets) { 
     // Free all sprites
     SDL_DestroyTexture(assets->game.pacman.texture);
     SDL_DestroyTexture(assets->game.exit.texture);
     SDL_DestroyTexture(assets->game.main.texture);
-    SDL_DestroyTexture(assets->game.blocks->texture);
-    SDL_DestroyTexture(assets->game.foods->texture);
-
+    free_sprite_array(assets->game.foods, MAX_NUMBER_OF_FOOD);
+    free_sprite_array(assets->game.blocks, NUMBER_OF_BLOCKS);
 
     SDL_DestroyTexture(assets->menu.player_chose_about.texture);
     SDL_DestroyTexture(assets->menu.player_chose_start.texture);
@@ -118,14 +123,16 @@ void free_all_assets(Assets *assets) {
     SDL_DestroyTexture(assets->menu.player_chose_exit.texture);
     SDL_DestroyTexture(assets->menu.player_chose_none.texture);
 
-    SDL_DestroyTexture(assets->prompt.game_in_food_input.texture);
     SDL_DestroyTexture(assets->prompt.game_lost_hit_block.texture);
     SDL_DestroyTexture(assets->prompt.game_lost_insufficient_food.texture);
     SDL_DestroyTexture(assets->prompt.game_won.texture);
 
     SDL_DestroyTexture(assets->misc.quit_confirmation_prompt.texture);
-    SDL_DestroyTexture(assets->misc.score_visuals->texture);
-    SDL_DestroyTexture(assets->misc.tutorial_slides->texture);
+
+    free_sprite_array(assets->misc.tutorial_slides, NUMBER_OF_TUTORIAL_SLIDES);
+    free_sprite_array(assets->misc.food_input_prompts, NUMBER_OF_FOOD_INPUT_PROMPTS);
+    free_sprite_array(assets->misc.score_visuals, NUMBER_OF_SCORE_VISUALS);
+
 
     // Free all sounds
     Mix_FreeMusic(assets->sounds.background_music);
