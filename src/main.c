@@ -47,16 +47,16 @@ int main (int argc, char *argv[]) {
     // Set the initial menu choice
     states.current_menu_choice = PLAYER_CHOSE_NONE;
     states.show_quit_confirmation = false;
-    states.is_game_running = false;
+    states.is_game_running = true;
 
     // Play background music
     Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
-    while (!states.is_game_running) {
+    while (states.is_game_running) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                states.is_game_running = true; 
+                states.is_game_running = false; 
                 states.show_quit_confirmation = true;
             }
             else if (event.type == SDL_KEYDOWN) 

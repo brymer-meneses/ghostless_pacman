@@ -383,7 +383,7 @@ void register_keypress(SDL_Event event, States *states, Map* map, Assets* assets
                 break;
             case SDLK_y:
                 puts("INFO: game quitting, please wait.");
-                states->is_game_running = true;
+                states->is_game_running = false;
                 break;
         }
 
