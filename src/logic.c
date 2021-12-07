@@ -1,3 +1,7 @@
+/*
+ */
+
+
 
 #include "stdbool.h"
 #include "stdlib.h"
@@ -45,7 +49,7 @@ void render_map(Map *map, Assets* assets) {
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            enum BoardElement element = map->board[row][col];
+            enum MapElement element = map->board[row][col];
                 switch (element) {
                     case EMPTY:
                         break;
@@ -85,7 +89,7 @@ Position query_pacman_position(Sprite* pacman) {
 };
 
 
-enum GameState check_player_status(Position future_position, enum BoardElement future_obstacle, Map *map, Assets* assets) {
+enum GameState check_player_status(Position future_position, enum MapElement future_obstacle, Map *map, Assets* assets) {
 
     /* A function that dictates the state of the game based on the
      * current player status, specifically involving the blocks and
@@ -169,7 +173,7 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
     Position current_position = query_pacman_position(pacman);
     Position future_position;
 
-    enum BoardElement future_obstacle;
+    enum MapElement future_obstacle;
     switch (move) {
         case MOVE_UP:
             future_position.x =  current_position.x +  0; 
@@ -264,7 +268,7 @@ bool check_for_impossible_win_scenario(Map* map) {
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            enum BoardElement element = map->board[row][col];
+            enum MapElement element = map->board[row][col];
             if (element == FOOD || element == EXIT) { 
                 /* 
                  *  We define `impassable_adjacent_neighbors` as the number of

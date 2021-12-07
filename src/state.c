@@ -36,101 +36,10 @@ void render_state(States* states, Map *map, Assets *assets) {
     Sprite* tutorial_slides = assets->misc.tutorial_slides;
 
     // States
-
     enum PlayerState player_state = states->player_state;
-
-        // PlayerState specifies the following current states of the user:
-        //      PLAYER_IN_MENU
-        //          - where the player can choose from the
-        //            options 'Start', 'Tutorial', 'About
-        //            the Game', and 'Exit'
-        //      PLAYER_IN_TUTORIAL
-        //          - where the player is instructed on
-        //            how to play the Pacman game
-        //      PLAYER_IN_ABOUT
-        //          - where proper acknowledgement and
-        //            credits are given space
-        //      PLAYER_IN_GAME
-        //          - where the game is initiated
-
     enum GameState game_state =states->game_state;
-
-        // GameState specifies the following, given that the player state is in-game:
-        //
-        //     GAME_IN_FOOD_NUMBER_INPUT
-        //         - where the player is prompted to choose the number of food
-        //           to be displayed in the game (from 2 to 9)
-        //
-        //     GAME_IN_PROGRESS
-        //         - where the player plays the game_lost_hit_block
-        //
-        //     GameState also covers the results of the game:
-        //
-        //         GAME_LOST_HIT_BLOCK
-        //         GAME_LOST_HIT_BORDER
-        //         GAME_LOST_INSUFFICIENT_FOOD
-        //         GAME_WON
-        //
-        //         Results can be one of the following:
-        //              Game Won
-        //                  - (1) when Pacman reaches the door after eating all food pieces,
-        //                        without hitting a block or moving out of the border
-        //              Game Lost
-        //                  - (2) when Pacman hits a block
-        //                  - (3) when Pacman moves out of the border
-        //                  - (4) when Pacman reaches the door,
-        //                    without eating all the food pieces
-
     enum WrongInputState wrong_input_state = states->wrong_input_state;
-
-        // WrongInputState is associated with the events where the input of the user is
-        // not included to the certain keypresses accepted on some instances, such as:
-        //
-        //     In Menu
-        //
-        //         WRONG_INPUT_IN_MENU
-        //             - is called when the user keypress is not '1', '2', '3', or 'A'
-        //
-        //     In the Game
-        //
-        //         WRONG_INPUT_IN_FOOD_INPUT
-        //             - is called when the user chooses a number of food
-        //               outside the range from 2 to 9
-        //         WRONG_INPUT_IN_GAME
-        //             - is called during the game, when the user presses
-        //               keys other than 'W', 'S', 'A', or 'D' to move Pacman
-        //             - is also called during the game, when the user presses
-        //               keys other than 'M' to return to menu or 'X' to
-        //               exit the game
-        //         WRONG_INPUT_IN_GAME_PROMPTS
-        //             - is called after the results of the game, displayed
-        //               through the game prompts, when the user presses
-        //               keys other than 'R' to restart, 'M' to return to
-        //               menu, or 'X' to exit
-        //
-        //     In Tutorial (WRONG_INPUT_IN_TUTORIAL)
-        //
-        //         WRONG_INPUT_IN_TUTORIAL
-        //             - is called when the user presses keys other than
-        //               '←' or '→' to navigate through the tutorial slides
-        //             - is also called when the user presses keys other than
-        //               'M' to return to menu
-        //             
-        //              Note that in the last tutorial slide, the player is prompted to
-        //              choose again from some options. Hence, WRONG_INPUT_IN_TUTORIAL
-        //              is also called when the user presses keys other than '1' to
-        //              start the game, 'M' to return to menu, or 'X' to exit
-        //
-        //     In About the Game (WRONG_INPUT_IN_ABOUT_GAME)
-        //
-        //             - is called when the user presses keys other than
-        //               'M' to return to menu
-
     enum MenuChoiceState current_menu_choice = states->current_menu_choice;
-
-        // MenuChoiceState is associated to the menu option that the player chooses.
-        // Recall that in the menu, the player can choose from the options 'Start',
-        // 'Tutorial', 'About the Game', and 'Exit'.
 
     int current_tutorial_slide_index = states->current_tutorial_slide_index;
 

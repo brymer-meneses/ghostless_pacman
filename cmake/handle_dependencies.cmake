@@ -53,8 +53,11 @@ if (WIN32)
         SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2_mixer
         )
     
+    message("Downloading dependencies...")
     FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_mixer)
     set(ARCH x86_64-w64-mingw32)
+
+    message("Downloading complete...")
 
     include_directories(
         ${PROJECT_NAME}
