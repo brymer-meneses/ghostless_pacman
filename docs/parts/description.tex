@@ -32,7 +32,7 @@ sign for the exit door, an exit door.\\
 
 More than these, the resource is also used to render other images such as the overall interface of the game, including the menus, prompts, and warnings. Visual assets have been originally constructed using an online software called \href{https://www.figma.com/}{Figma}.\\
 
-Another use of SDL is for the incorporation of sounds and music into the game. The audio assets used in the game are royalty-free and, if whose owner demands copyright, are given proper credit in About the Game.
+Another use of SDL is for the incorporation of sounds and music into the game. The audio assets used in the game are royalty-free and, if whose owner demands copyright, are given proper credit in About the Game.\\
 
 In terms of functions, below are some that have been integrated into the program as the project requires:
 
@@ -45,3 +45,7 @@ In terms of functions, below are some that have been integrated into the program
     \hspace{1em} These functions work hand-in-hand to check if the player reaches the exit sign after eating all the food pieces,
     or otherwise displays the player status of whether he or she wins or loses
 \end{enumerate}
+
+Another crucial function defined is \codeword{check_for_impossible_win_scenario}, which checks and ensures that any round in the game is winnable by preventing \codeword{impassable_adjacent_neighbors}, that is, no food piece or exit door is surrounded by blocks from all sides.\\
+
+The code also made use of header (.h) files to declare certain variables for the game. Some major concepts involved are for and while loops, structs, and switch cases.
