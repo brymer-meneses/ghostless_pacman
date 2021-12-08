@@ -28,7 +28,8 @@
 #include "SDL2/SDL_image.h"
 
 /*
- * Sprite is a struct that holds the 
+ * Sprite is a struct that holds related variables 
+ * which are necessary for displaying images in the window
  */
 typedef struct Sprite {
     SDL_Renderer        *renderer;
@@ -113,6 +114,10 @@ enum BoardElement {
     BLOCK,
     EXIT,
 };
+
+/*
+
+ */
 
 typedef struct Board { 
     // Pointer to a 10 by 10, two-dimensional array that contains 
@@ -264,6 +269,11 @@ typedef struct States {
     Uint32                   wrong_input_time; // Uint32 is a type defined by SDL
 } States;
 
+
+/*
+
+ */
+
 enum Move {
     MOVE_UP,
     MOVE_DOWN,
@@ -272,7 +282,8 @@ enum Move {
 };
 
 /*
- * Position is a struct that holds the `x` and `y` position of a MapElement
+ * MapPosition is a struct that holds the `row` and `col` position of a MapElement
+ * in the board
  */
 typedef struct MapPosition {
     int row;

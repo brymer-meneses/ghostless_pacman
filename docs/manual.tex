@@ -1,18 +1,39 @@
-
 \documentclass[11pt]{report}
-\usepackage{outline} 
-\usepackage{pmgraph} 
+
+
+\usepackage{
+        outline,
+        pmgraph,
+        graphicx,
+        verbatim,
+        hyperref,
+        enumitem,
+        float,
+        amsmath,
+        xcolor,
+        listings,
+        xparse
+}
+
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{blue}{#1}}%
+}
+
 \usepackage[normalem]{ulem}
-\usepackage{graphicx} 
-\usepackage{verbatim}
+
 \title{
-\includegraphics[width=3in]{upbag.png} \\
-\vspace*{1in}
-\textbf{Machine Project 1}
+    \includegraphics[width=3in]{upbag.png} \\
+    \vspace*{1in}
+    \textbf{Machine Project 1}
 }
 
 
-% \normalfont
 \author{Aaron Paul Gapud\\
         Brymer Bernard Meneses\\
 		\vspace*{0.5in} \\
@@ -26,14 +47,22 @@
 \setlength{\textwidth}{6.5in}   \setlength{\textheight}{8.5in}
 
 \setlength{\parindent}{1cm}
+\renewcommand\thesection{\Roman{section}} 
+\renewcommand\thesubsection{\roman{subsection}} 
 
 \date{}
 
 \begin{document}
-\maketitle
+\maketitle 
 \tableofcontents
+\newpage
 
-\section*{}
+\input{parts/introducion.tex}
+\input{parts/description.tex}
+\input{parts/algorithm.tex}
+\input{parts/error_handling.tex}
+\input{parts/manual.tex}
+\input{parts/compiling.tex}
 
 
 \end{document}

@@ -1,8 +1,3 @@
----
-author: Brymer Meneses and Aaron Paul Gapud
-title: Introduction to Ghostless Pacman
-geometry: margin=2cm
----
 
 ![](https://i.imgur.com/QEg8UpR.png)
 

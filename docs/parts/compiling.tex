@@ -1,0 +1,131 @@
+\section{Compiling}
+\subsection{Windows}
+\subsubsection{Installing CMake and GNU Make}
+
+
+To compile this application, you need to have \textbf{CMake}  and \textbf{GNU
+Make} on your system.  The easiest way to do this is by using the **scoop
+package manager**. **Scoop** is a package manager for windows that automates the
+installation of various software using commands. You can learn more about it
+here
+
+
+To do this open powershell run the following command.
+
+\begin{lstlisting}[language=bash]
+    iwr -useb get.scoop.sh | iex
+\end{lstlisting}
+
+If you get an error you might need to change the execution policy (i.e. enable Powershell), to do so run the following command and redo the command above.
+
+\begin{lstlisting}[language=bash]
+    Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+\end{lstlisting}
+
+Confirm that you have successfully installed scoop, by running the following command”
+
+\begin{lstlisting}[language=bash]
+    scoop --help
+\end{lstlisting}
+
+Once you see  you have successfully installed **scoop**.
+
+\begin{lstlisting}[language=bash]
+    scoop --help
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+     Usage: scoop <command> [<args>]
+
+     Some useful commands are:
+
+     alias       Manage scoop aliases
+     bucket      Manage Scoop buckets
+     cache       Show or clear the download cache
+\end{lstlisting}
+
+
+Now to install \textbf{CMake} and \textbf{GNU Make} run the following command:
+
+\begin{lstlisting}[language=bash]
+     scoop install cmake make 
+\end{lstlisting}
+ 
+To check whether the installation is successful for \textbf{GNU Make} run the following command:
+
+\begin{lstlisting}[language=bash]
+    make --help
+\end{lstlisting}
+
+You will be able to see the following:
+\begin{lstlisting}[language=bash]
+     Usage: make [options] [target] ...
+     Options:
+       -b, -m                      Ignored for compatibility.
+       -B, --always-make           Unconditionally make all targets.
+       -C DIRECTORY, --directory=DIRECTORY
+                                   Change to DIRECTORY before doing anything
+\end{lstlisting}
+    
+To check whether the installation is successful for **CMake** run the following command:
+
+\begin{lstlisting}[language=bash]
+    cmake --help
+\end{lstlisting}
+
+You will be able to see the following:
+
+\begin{lstlisting}[language=bash]
+Usage
+
+    cmake [options] <path-to-source>
+    cmake [options] <path-to-existing-build>
+    cmake [options] -S <path-to-source> -B <path-to-build>
+
+Specify a source directory to (re-)generate a build system for it in the
+current working directory.  Specify an existing build directory to
+re-generate its build system.
+\end{lstlisting}
+
+
+\subsubsection{Compiling the game}
+
+Once you have installed \textbf{CMake} and \textbf{GNU Make}, you may now
+compile the application. To do so, navigate to the \codeword{ghostless-pacman} folder and run.
+ 
+\begin{lstlisting}[language=bash]
+    make build
+\end{lstlisting}
+
+This command will automatically download external GUI libraries which were used
+in making the game. After that it will compile the program and place it to the
+\codeword{bin} folder.
+
+\subsubsection{Running the game}
+
+Now the only thing left is to run the application, you can navigate to the \codeword{bin}
+folder and open the \codeword{ghostless-pacman.exe} file which will run the game. Or you
+can run the following command to do this automatically:
+
+\begin{lstlisting}[language=bash]
+    make run
+\end{lstlisting}
+
+\textbf{NOTE}: It is important to avoid moving the executable since Windows will not
+be able to find the DLLs which are required for running the game.
+
+
+\subsubsection{Running the game}
+Use your distribution’s package manager to install the following packages:
+
+% \begin{itemize}
+%     \item SDL2
+%     \item SDL2_Mixer
+%     \item SDL2_Image
+% \end{itemize}
+
+Navigate to the the \codeword{ghostless-pacman} folder and run:
+
+\begin{lstlisting}[language=bash]
+    make build
+\end{lstlisting}
