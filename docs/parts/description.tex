@@ -11,30 +11,37 @@ to render animation, play sound, and showcase creatives.
     \centering
     \def\arraystretch{2.5}
     \begin{tabular}{ c c c }
-        \hline
+        \toprule
         Instruction & Definition & Representation \\
-        \hline
+        \midrule
         O & Pacman & \includegraphics[scale=0.1]{assets/pacman_sample.png} \\
         $*$ & Food & \includegraphics[scale=0.1]{assets/food_sample.png} \\
         X & Blocks & \includegraphics[scale=0.1]{assets/block_sample.png} \\
         \$ & Door & \includegraphics[scale=0.1]{assets/door_sample.png}\\
-        \hline
+        \bottomrule
     \end{tabular}
     \caption{The visual representation of symbols in the Ghostless Pacman game}
     \label{tab:1}
 \end{table}
 
-Pacman, instead of a a plain 'O' might definitely look more like Pacman. In fact, this Pacman actually munches. Rendering its animation is a feature of the said SDL
-library. The same feature allowed the program to display food pieces as
-something more delicious than asterisks or any other punctuation, that is,
-cherries. The game obstacles that look tougher than 'X', and instead of a dollar
-sign for the exit door, an exit door.\\
+Pacman, instead of a a plain `O' might definitely look more like Pacman. In
+fact, this Pacman actually munches. Rendering its animation is a feature of the
+said SDL library. The same feature allowed the program to display food pieces
+as something more delicious than asterisks or any other punctuation, that is,
+cherries. The game obstacles that look tougher than `X', and instead of a
+dollar sign for the exit door, an exit door.\\
 
-More than these, the resource is also used to render other images such as the overall interface of the game, including the menus, prompts, and warnings. Visual assets have been originally constructed using an online software called \href{https://www.figma.com/}{Figma}.\\
+More than these, the resource is also used to render other images such as the
+overall interface of the game, including the menus, prompts, and warnings.
+Visual assets have been originally constructed using an online software called
+\href{https://www.figma.com/}{Figma}.\\
 
-Another use of SDL is for the incorporation of sounds and music into the game. The audio assets used in the game are royalty-free and, if whose owner demands copyright, are given proper credit in About the Game.\\
+Another use of SDL is for the incorporation of sounds and music into the game.
+The audio assets used in the game are royalty-free and, if whose owner demands
+copyright, are given proper credit in About the Game.\\
 
-In terms of functions, below are some that have been integrated into the program as the project requires:
+In terms of functions, below are some that have been integrated into the
+program as the project requires:
 
 \begin{enumerate}
     \item \codeword{fill_board_with_foods}\\
@@ -46,6 +53,12 @@ In terms of functions, below are some that have been integrated into the program
     or otherwise displays the player status of whether he or she wins or loses
 \end{enumerate}
 
-Another crucial function defined is \codeword{check_for_impossible_win_scenario}, which checks and ensures that any round in the game is winnable by preventing \codeword{impassable_adjacent_neighbors}, that is, no food piece or exit door is surrounded by blocks from all sides.\\
+Another crucial function defined is
+\codeword{check_for_impossible_win_scenario}, which checks and ensures that any
+round in the game is winnable by preventing
+\codeword{impassable_adjacent_neighbors}, that is, no food piece or exit door
+is surrounded by blocks from all sides.\\
 
-The code also made use of header (.h) files to declare certain variables for the game. Some major concepts involved are for and while loops, structs, and switch cases.
+The code also made use of header (.h) files to declare certain variables for
+the game. Some major concepts involved are for and while loops, structs, and
+switch cases.

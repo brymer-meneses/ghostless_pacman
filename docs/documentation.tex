@@ -13,9 +13,15 @@
         xcolor,
         listings,
         xparse,
-        hyperref
+        hyperref,
+        booktabs,
 }
-
+\hypersetup{
+    linkcolor=blue,
+    colorlinks=true,
+    urlcolor=blue,
+    linkbordercolor = {white},
+}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -43,6 +49,10 @@
 
 \NewDocumentCommand{\codeword}{v}{%
     \texttt{\textcolor{black}{#1}}%
+}
+
+\NewDocumentCommand{\linkword}{v}{%
+    \texttt{\textcolor{blue}{#1}}%
 }
 \setlength{\parindent}{0pt} 
 
@@ -81,8 +91,9 @@
 \tableofcontents
 \newpage
 
-\input{parts/introducion.tex}
+\input{parts/introduction.tex}
 \input{parts/description.tex}
+\input{parts/definitions.tex}
 \input{parts/algorithm.tex}
 \input{parts/error_handling.tex}
 \input{parts/manual.tex}

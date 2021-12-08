@@ -1,14 +1,14 @@
 \section{Compiling}
 \subsection{Windows}
 
-\subsubsection{Installing Scoop}
-
-
 To compile this application, you need to have \textbf{CMake}  and \textbf{GNU
-Make} on your system.  The easiest way to do this is by using the \textbf{scoop
+Make} installed your system.  The easiest way to do this is by using the \textbf{scoop
 package manager}. \textbf{Scoop} is a package manager for windows that automates the
 installation of a plethora of applications through the command line. You can learn more about it
 \href{https://github.com/ScoopInstaller/Scoop}{here}.
+
+\subsubsection{Installing Scoop}
+
 
 To install scoop, open powershell and run the following command:
 
@@ -40,9 +40,10 @@ cache       Show or clear the download cache
 \end{lstlisting}
 
 \subsubsection{Installing Scoop}
-Once you see you have successfully installed \textbf{scoop}.
+Once you have successfully installed \textbf{scoop}.
 
-Now to install \textbf{CMake} and \textbf{GNU Make} run the following
+\subsubsection{Installing CMake and GNU Make}
+To install \textbf{CMake} and \textbf{GNU Make} run the following
 command:
 
 \begin{lstlisting}[language=bash]
@@ -106,7 +107,7 @@ in making the game. After that it will compile the program and place it to the
 
 Now the only thing left is to run the application, you can navigate to the \codeword{bin}
 folder and open the \codeword{ghostless-pacman.exe} file which will run the game. Or you
-can run the following command below, to do build and run the application automatically.
+can run the following command below, to compile and run the application automatically.
 
 \begin{lstlisting}[language=bash]
 make run
