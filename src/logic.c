@@ -315,7 +315,7 @@ bool check_for_impossible_win_scenario(Board* board) {
     return true;
 }
 
-void init_map(Board* board, Assets* assets, int number_of_foods) {
+void init_board(Board* board, Assets* assets, int number_of_foods) {
 
     // Ensure the board is empty
     for (int row=0; row<10; row++) {
@@ -354,6 +354,6 @@ void init_map(Board* board, Assets* assets, int number_of_foods) {
 
     // Initialize pacman again when an impossible win scenario may occur
     if (!is_win_scenario_possible) {
-        init_map(board, assets, number_of_foods);
+        init_board(board, assets, number_of_foods);
     }
 }

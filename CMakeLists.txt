@@ -33,6 +33,6 @@ add_executable(${PROJECT_NAME} ${ALL_SRCS})
 # the external libraries we used: SDL and SDL_image will be accessed by 
 # the game.
 
-message("Compilation complete")
 include(cmake/handle_dependencies.cmake)
+message("Compilation complete")
 
