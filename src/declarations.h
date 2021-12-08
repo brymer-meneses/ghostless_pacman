@@ -15,11 +15,33 @@
 #define NUMBER_OF_PAGES_IN_TUTORIAL 7
 #define NUMBER_OF_FOOD_INPUT_PROMPTS 9
 #define NUMBER_OF_SCORE_VISUALS 10
+#define MAX_NUMBER_OF_FOOD 9
 
+/*
+ * ELEMENT_INITIAL_POSITION_X and ELEMENT_INITIAL_POSITION_Y
+ * is the initial position of
+ */
 #define ELEMENT_INITIAL_POSITION_X (95 + 12)
 #define ELEMENT_INITIAL_POSITION_Y (95 + 6)
 
-#define MAX_NUMBER_OF_FOOD 9
+/*
+ *  MAX_ADJACENT_IMPASSABLE_NEIGHBORS is the maximum number of
+ *  adjacent spaces around a food piece or an exit that is impossible
+ *  to be passed through. This includes adjacent block or borders ajacent
+ *  to it.
+ *
+ *  Legend: 
+ *       x  block
+ *       *  food
+ *       -  border
+ *
+ *  Example:
+ *      x
+ *       *
+ *      ---
+ *  This amounts to 4 impassable_adjacent_neighbors. 
+ */
+#define MAX_ADJACENT_IMPASSABLE_NEIGHBORS 3
 
 #include "stdbool.h"
 
@@ -123,9 +145,9 @@ typedef struct Board {
     // Pointer to a 10 by 10, two-dimensional array that contains 
     // enums
     enum BoardElement array[10][10];
-    // Total number of foods generated in the map
+    // The total number of foods generated in the board
     int number_of_foods;
-    // Total number of blocks generated in the map
+    // Total total number of blocks generated in the board
     int number_of_blocks;
     // Current score of the player 
     int total_player_score;
@@ -271,18 +293,19 @@ typedef struct States {
 
 
 /*
-
+ * MOVE is an 
  */
 
-enum Move {
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
+enum PacmanMove {
+   MOVE_PACMAN_UP,
+   MOVE_PACMAN_DOWN,
+   MOVE_PACMAN_LEFT,
+   MOVE_PACMAN_RIGHT,
 };
 
 /*
- * Position is a struct that holds the `x` and `y` position of a BoardElement
+ * BoardPosition is a struct that holds the `x` and `y` position of a
+ * BoardElement
  */
 typedef struct BoardPosition {
     int row;

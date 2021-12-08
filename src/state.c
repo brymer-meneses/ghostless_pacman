@@ -23,13 +23,13 @@ void render_state(States* states, Board *board, Assets *assets) {
      *
      *   params: 
      *       States *states 
-     *           - A pointer to the struct `States`, which handles the different states of the
+     *             A pointer to the struct `States`, which handles the different states of the
      *             game. 
      *       Board *board
-     *          - A pointer to the struct Board, which encapsulates variables required 
+     *             A pointer to the struct Board, which encapsulates variables required 
      *            in the game itself.
-     *      Assets *assets
-     *           - A pointer to the struct `Assets`, which contains the images or sounds
+     *       Assets *assets
+     *             A pointer to the struct `Assets`, which contains the images or sounds
      *             used in the application.
      */
 
@@ -143,22 +143,22 @@ void render_state(States* states, Board *board, Assets *assets) {
         case WRONG_INPUT_NONE:
             break;
         case WRONG_INPUT_IN_ABOUT_GAME:
-            render_reminder(wrong_input_in_about_game, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_about_game, states, 3000, 535, 10);
             break;
         case WRONG_INPUT_IN_GAME:
-            render_reminder(wrong_input_in_game, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_game, states, 3000, 535, 10);
             break;
         case WRONG_INPUT_IN_TUTORIAL:
-            render_reminder(wrong_input_in_tutorial, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_tutorial, states, 3000, 535, 10);
             break;
         case WRONG_INPUT_IN_FOOD_INPUT:
-            render_reminder(wrong_input_in_food_input, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_food_input, states, 3000, 535, 10);
             break;
         case WRONG_INPUT_IN_MENU:
-            render_reminder(wrong_input_in_menu, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_menu, states, 3000, 535, 10);
             break;
         case WRONG_INPUT_IN_GAME_PROMPTS:
-            render_reminder(wrong_input_in_game_prompts, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_game_prompts, states, 3000, 535, 10);
             break;
     }
 
@@ -176,29 +176,29 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
      *
      *   params: 
      *       SDL_Event event 
-     *           - Specifies an `event` in the game like when the player presses
+     *             Specifies an `event` in the game like when the player presses
      *             the button `w` on their keyboard.
      *       State *states
-     *           - A pointer to the struct `States`, which tracks all the states
-     *              of the game.
+     *             A pointer to the struct `States`, which tracks all the states
+     *             of the game.
      *       Board *board    
-     *          - A pointer to the struct `Board`, which encapsulates variables required 
-     *            in the game.
+     *             A pointer to the struct `Board`, which encapsulates variables required 
+     *             in the game.
      *       Assets *assets
-     *           - A pointer to the struct `Assets`, which holds all the images or sounds
-     *              used in the game.
+     *             A pointer to the struct `Assets`, which holds all the images or sounds
+     *             used in the game.
      */
-    bool is_not_on_the_last_slide = states->current_tutorial_page != NUMBER_OF_PAGES_IN_TUTORIAL - 1;
-    bool is_not_on_the_first_slide = states->current_tutorial_page != 0;
+    bool is_not_on_the_last_slide   = states->current_tutorial_page != NUMBER_OF_PAGES_IN_TUTORIAL - 1;
+    bool is_not_on_the_first_slide  = states->current_tutorial_page != 0;
 
-    enum PlayerState player_state = states->player_state;
-    enum GameState game_state = states->game_state;
-    enum MenuChoiceState current_menu_choice = states->current_menu_choice;
+    enum PlayerState player_state               = states->player_state;
+    enum GameState game_state                   = states->game_state;
+    enum MenuChoiceState current_menu_choice    = states->current_menu_choice;
 
-    // 
-    SDL_Keycode player_keypress = event.key.keysym.sym;
+    SDL_Keycode player_keypress     = event.key.keysym.sym;
 
-    // Handle state when the exit prompt is shown in the screen
+    // The following if-statement handles the state when the exit prompt is
+    // shown in the screen.
     if (states->show_quit_confirmation) {
         switch (player_keypress) {
             case SDLK_n:
@@ -209,11 +209,23 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                 break;
         }
         // Early return ensures that the application will ignore every other 
-        // keypress aside from `n` and `y`.
+        // keypress aside from `n` and `y` when the quit confirmation prompt
+        // is shown in the screen.
         return;
     }
 
-    // SDLK_x refers to when SDL detect
+    // NOTE:
+    // SDLK_`x` refers to a keypress on the key `x`, while SDLK_KP_`x` refers
+    // to a keypress on the key `x` that is located on the "keypad". This is
+    // the reasoning why there is a double case to the switch statements
+    // when the player is on the food input prompt.
+
+    // NOTE:
+    // The copious amount of switch statements were due to the fact that the application
+    // had to take into consideration the different `states` that occur throughout the runtime
+    // of the application. These `states` listen to different keys, this is why there is a need
+    // to separate them.
+
     switch (player_state) {
         case PLAYER_IN_GAME:
             switch (game_state) {
@@ -269,8 +281,8 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                             states->current_number_of_foods_picked = 1;
                             break;
                         case SDLK_RETURN:
-                            // Handle when the user presses enter without entering
-                            // their desired food number.
+                            // The following if-else statement handles when the
+                            // user presses enter without entering their desired food number.
                             if (states->current_number_of_foods_picked != 1) {
 
                                 init_board(board, assets, states->current_number_of_foods_picked);
@@ -287,6 +299,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                             states->current_number_of_foods_picked = 1;
                             break;
                         default:
+                            // Play the wrong input sound and register a wrong key state
                             Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                             states->wrong_input_time = SDL_GetTicks();
@@ -301,16 +314,16 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                     // trigger a wrong input reminder.
                     switch (player_keypress) {
                         case SDLK_w:
-                            move_pacman(MOVE_UP, assets, board, states);
+                            move_pacman(MOVE_PACMAN_UP, assets, board, states);
                             break;
                         case SDLK_a:
-                            move_pacman(MOVE_LEFT, assets, board, states);
+                            move_pacman(MOVE_PACMAN_LEFT, assets, board, states);
                             break;
                         case SDLK_s:
-                            move_pacman(MOVE_DOWN, assets, board, states);
+                            move_pacman(MOVE_PACMAN_DOWN, assets, board, states);
                             break;
                         case SDLK_d:
-                            move_pacman(MOVE_RIGHT, assets, board, states);
+                            move_pacman(MOVE_PACMAN_RIGHT, assets, board, states);
                             break;
                         case SDLK_m:
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);
@@ -328,7 +341,8 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                         }
                     break;
                 // The following `game_states` all listen to the same
-                // keypresses, that's why they are grouped.
+                // keypresses, that's why they are grouped to avoid
+                // code duplication.
                 case GAME_LOST_INSUFFICIENT_FOOD:
                 case GAME_LOST_HIT_BORDER:
                 case GAME_LOST_HIT_BLOCK:

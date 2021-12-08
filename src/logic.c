@@ -17,7 +17,7 @@
 
 void render_board(Board *board, Assets* assets) {
 
-    /* 
+    /*
      * A function that renders the map of the game including
      * the main board which applies the concept of an array,
      * defining a 10-by-10 grid for the game. This function
@@ -25,12 +25,12 @@ void render_board(Board *board, Assets* assets) {
      * the said dimension, that is, Pacman itself, cherries,
      * blocks, and the exit door.
      * 
-     * params:
+     * params
      *      Assets* assets
-     *          - A pointer to the struct Assets that points
+     *            A pointer to the struct Assets that points
      *            to the required assets
      *      Board *board   
-     *          - A pointer to the struct Board that contains
+     *            A pointer to the struct Board that contains
      *            the necessary items to render the map
      */
 
@@ -82,12 +82,11 @@ void render_board(Board *board, Assets* assets) {
 BoardPosition calculate_pacman_position(Sprite* pacman) {
 
     /* 
-     * A helper function that calculates and returns the position of Pacman 
+     * A helper function that calculates and returns the position of Pacman.
      * 
-     * params:
+     * params
      *      Sprite *pacman
-     *          - a sprite containing pacman
-     *  
+     *          a pointer to a sprite containing pacman
      */
 
     BoardPosition position;
@@ -100,9 +99,26 @@ BoardPosition calculate_pacman_position(Sprite* pacman) {
 enum GameState check_player_status(BoardPosition next_position, enum BoardElement future_obstacle, Board *board, Assets* assets) {
 
     /* 
-     * A function that dictates the state of the game based on the
+     * A function that checks the state of the game based on the
      * current player status, specifically involving the blocks and
      * food
+     *
+     * params
+     *      BoardPosition next_position
+     *          A struct holding the next position of pacman
+     *      enum BoardElement future_obstace
+     *          An enum that represents the future obstacle that pacman will
+     *          encounter on its `next_position`
+     *      Board *board
+     *          A pointer to the struct board which stores all the variables
+     *          related to the game itself.
+     * returns
+     *      enum GameState
+     *          the `state` of the game when pacman moves into the `next_position`. 
+     *
+     * example
+     *      If pacman moves into a block on its `next_position`, this function
+     *      will return a `GAME_LOST_HIT_BLOCK` enum.
      */
 
     int row = next_position.row;
@@ -135,9 +151,6 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
 };
 
 enum GameState check_if_player_won(BoardPosition next_position, Board* board, Assets* assets) {
-    /*
-     *  
-     */
 
     // Check if the pacman has eaten all the foods
     if (board->total_player_score == board->number_of_foods) {
@@ -150,44 +163,7 @@ enum GameState check_if_player_won(BoardPosition next_position, Board* board, As
 
 }
 
-void fill_board_with_foods(Board *board) {
-    /*
-     *
-     */
-    int total_foods_generated = 0;
-    int rand_row, rand_col;
-    while (total_foods_generated < board->number_of_foods){
-        // Generates random number between 0-9
-         rand_row =  gen_random_num(0,9); 
-        // Generates random number between 0-9
-         rand_col =  gen_random_num(0,9);
-
-         if (board->array[rand_row][rand_col] == EMPTY) {
-
-            board->array[rand_row][rand_col] = FOOD;
-            total_foods_generated++;
-        }
-    }
-}
-
-void fill_board_with_blocks(Board *board) {
-    int total_blocks_generated = 0;
-    int rand_row;
-    int rand_col;
-    while (total_blocks_generated < board->number_of_blocks) {
-         // Prevents generating blocks that are adjacent to the 
-         // border of the map.
-         rand_row =  gen_random_num(1,8); // Generate random number between 1-8
-         rand_col =  gen_random_num(1,8); // Generate random number between 1-8
-         if (board->array[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
-
-             board->array[rand_row][rand_col] = BLOCK;
-             total_blocks_generated++;
-        }
-    }
-}
-
-void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
+void move_pacman(enum PacmanMove pacman_move, Assets *assets, Board* board, States *states) {
 
     Sprite* pacman = &assets->game.pacman;
 
@@ -197,8 +173,8 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
     BoardPosition next_position;
 
     enum BoardElement future_obstacle;
-    switch (move) {
-        case MOVE_UP:
+    switch (pacman_move) {
+        case MOVE_PACMAN_UP:
             next_position.row =  current_position.row -  1;
             next_position.col =  current_position.col +  0; 
 
@@ -220,7 +196,7 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
             board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
-        case MOVE_DOWN:
+        case MOVE_PACMAN_DOWN:
             next_position.row =  current_position.row +  1; 
             next_position.col =  current_position.col +  0;
 
@@ -241,7 +217,7 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
             board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
-        case MOVE_LEFT:
+        case MOVE_PACMAN_LEFT:
             next_position.row =  current_position.row + 0;
             next_position.col =  current_position.col - 1; 
 
@@ -262,7 +238,7 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
             board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
-        case MOVE_RIGHT:
+        case MOVE_PACMAN_RIGHT:
             next_position.col =  current_position.col + 1; 
             next_position.row =  current_position.row + 0;
 
@@ -286,8 +262,8 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
     };
 }
 
-bool check_for_impossible_win_scenario(Board* board) {
-    /*
+bool count_impassable_neighbors(Board* board, int row, int col) {
+    /* 
      * A function that checks for instances when
      * the randomly generated map is impossibe to be won.
      *  
@@ -298,58 +274,131 @@ bool check_for_impossible_win_scenario(Board* board) {
      * returns:
      *      true
      *          - if there is a possibility that the randomly
-     *            generated map contains an impossible win
+     *            generated board contains an impossible win
      *            scenario.
      *      false
      *          - if the conditions are not met.
+     *  NOTE:
+     *
+     *  We define `impassable_adjacent_neighbors` as the number of
+     *  adjacent spaces around a food piece or an exit that is impossible
+     *  to be passed through. This includes adjacent block or touching the
+     *  borders.
+     *
+     *  Legend: 
+     *      - x : block
+     *      - * : food
+     *      - - : border
+     *
+     *  Example:
+     *      x
+     *       *
+     *      ---
+     *  This amounts to 4 impassable_adjacent_neighbors. 
      */
 
-    for (int row=0; row<10; row++) {
-        for (int col=0; col<10; col++) {
-            enum BoardElement element = board->array[row][col];
-            if (element == FOOD || element == EXIT) { 
-                /* 
-                 *  We define `impassable_adjacent_neighbors` as the number of
-                 *  adjacent spaces around a food piece or an exit that is impossible
-                 *  to be passed through. This includes adjacent block or touching the
-                 *  borders.
-                 *
-                 *  Legend: 
-                 *      - x : block
-                 *      - * : food
-                 *      - - : border
-                 *
-                 *  Example:
-                 *      x
-                 *       *
-                 *      ---
-                 *  This amounts to 4 impassable_adjacent_neighbors. 
-                 *  
-                 */
-
-                int impassable_adjacent_neighbors = 0;
-                for (int i=-1; i<=1; i++) {
-                    for (int j=-1; j<=1; j++) {
-                        // Counts the number of adjacent spaces exposed to the border
-                        if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
-                            impassable_adjacent_neighbors++;
-                        // Counts the number of adjacent blocks or exit
-                        } else if (board->array[row + i][col + j] == BLOCK || board->array[row + i][col + j] == EXIT) 
-                            impassable_adjacent_neighbors++;
-                        }
-                } 
-                if (impassable_adjacent_neighbors >= 4) 
-                    return false;
-                }
+    int impassable_adjacent_neighbors = 0;
+    for (int i=-1; i<=1; i++) {
+        for (int j=-1; j<=1; j++) {
+            // Counts the number of adjacent spaces exposed to the border
+            if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
+                impassable_adjacent_neighbors++;
+            // Counts the number of adjacent blocks or exit
+            } else if (board->array[row + i][col + j] == BLOCK || board->array[row + i][col + j] == EXIT) 
+                impassable_adjacent_neighbors++;
             }
+    } 
+    return impassable_adjacent_neighbors;
+}
 
+void fill_board_with_foods(Board *board) {
+    /* 
+     * A function that randomly fills the board with food
+     * 
+     * params
+     *       Board *board
+     *          A pointer to the struct Board
+     *
+     */
+    int total_foods_generated = 0;
+    int rand_row, rand_col;
+    int number_of_impassable_neighbors;
+    while (total_foods_generated < board->number_of_foods){
+         // Generates random number between 0-9
+         rand_row =  gen_random_num(0,9); 
+         rand_col =  gen_random_num(0,9);
+
+         number_of_impassable_neighbors = count_impassable_neighbors(board, rand_row, rand_col);
+
+         if (
+            board->array[rand_row][rand_col] == EMPTY &&
+            number_of_impassable_neighbors <= MAX_ADJACENT_IMPASSABLE_NEIGHBORS
+         ) {
+            board->array[rand_row][rand_col] = FOOD;
+            total_foods_generated++;
         }
-    return true;
+    }
+}
+
+void fill_board_with_blocks(Board *board) {
+    /*
+     * A function that fills the board with blocks
+     * 
+     * params
+     *       Board *board
+     *          A pointer to the struct Board
+     *
+     */
+    int total_blocks_generated = 0;
+    int rand_row;
+    int rand_col;
+    while (total_blocks_generated < board->number_of_blocks) {
+
+         // NOTE:
+         //   To decrease the chances of an impossible win scenario, the following
+         //   restricts the random generation of row and column index wihin the 
+         //   range [1,8].
+         rand_row =  gen_random_num(1,8); // Generate random number between 1-8
+         rand_col =  gen_random_num(1,8); // Generate random number between 1-8
+         if (board->array[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
+
+             board->array[rand_row][rand_col] = BLOCK;
+             total_blocks_generated++;
+        }
+    }
+}
+
+void fill_board_with_exit(Board *board) {
+    /*
+     * A function that fills the board with an exit
+     * 
+     * params
+     *       Board *board
+     *          A pointer to the struct Board
+     */
+
+    // NOTE: 
+    //  Restricting the random number generated for row and col
+    //  to the range [1, 9] ensures that that pacman will not be
+    //  adjacent to the exit.
+
+    // Generate random number between 1-9
+    int rand_row = gen_random_num(1,9); 
+    int rand_col = gen_random_num(1,9); 
+    int number_impassable_neighbors = count_impassable_neighbors(board, rand_col, rand_row);
+
+    while (number_impassable_neighbors > MAX_ADJACENT_IMPASSABLE_NEIGHBORS) {
+        rand_row = gen_random_num(1,9); 
+        rand_col = gen_random_num(1,9); 
+        number_impassable_neighbors = count_impassable_neighbors(board, rand_col, rand_row);
+    } 
+
+    board->array[rand_row][rand_col] = EXIT;
 }
 
 void init_board(Board* board, Assets* assets, int number_of_foods) {
 
-    // Ensures the board is empty
+    // Reset the board array
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             board->array[row][col] = EMPTY;
@@ -360,32 +409,17 @@ void init_board(Board* board, Assets* assets, int number_of_foods) {
     board->array[0][0] = PACMAN;
     assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
     assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
+
     // Reset the rotation and flip of pacman
     assets->game.pacman.flip = SDL_FLIP_NONE;
     assets->game.pacman.rotation = 0;
 
+    // Reset the board
     board->total_player_score = 0;
     board->number_of_blocks = NUMBER_OF_BLOCKS;
     board->number_of_foods = number_of_foods;
 
-    // NOTE: Restricting the random number generated for row and col
-    //       of the exit coordinate ensures that pacman will not be
-    //       adjacent to the exit.
-
-    // Generate random number between 1-9 and assign it
-    int exit_coordinate_row = gen_random_num(1,9); 
-    // Generate random number between 1-9 and assign it
-    int exit_coordinate_col = gen_random_num(1,9); 
-
-    board->array[exit_coordinate_row][exit_coordinate_col] = EXIT;
-
     fill_board_with_blocks(board);
+    fill_board_with_exit(board);
     fill_board_with_foods(board);
-
-    bool is_win_scenario_possible = check_for_impossible_win_scenario(board);
-
-    // Initialize pacman again when an impossible win scenario may occur
-    if (!is_win_scenario_possible) {
-        init_board(board, assets, number_of_foods);
-    }
 }

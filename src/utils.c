@@ -13,6 +13,10 @@
 #include "SDL2/SDL_mixer.h"
 
 void init_SDL() {
+    /*
+     *  A helper function that handles the initialization of SDL.
+     */
+
     // Turn on anti-aliasing by default
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
@@ -66,6 +70,16 @@ SDL_Renderer* create_renderer(SDL_Window* window) {
 }
 
 void render_sprite(Sprite *sprite) {
+    /*
+     * This function handles the rendering of `sprites` in the screen
+     *
+     * params
+     *      Sprite *sprite
+     *          A pointer to the struct Sprite that represents the image
+     *          you want to display in the screen.
+     * example
+     *          doing render_sprite(pacman) will render pacman on the screen.
+     */
 
     bool is_sprite_static = sprite->total_frames == 1;
 

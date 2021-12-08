@@ -18,9 +18,9 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     * A function that handles the loading of all assets required for the game.
     * This includes loading various images and sounds for the game.
     *
-    * returns:
+    * returns
     *     Assets assets
-    *         - A struct containing all the game assets.
+    *         A struct containing all the game assets.
     */
 
     Assets assets;

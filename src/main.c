@@ -25,6 +25,7 @@ int main () {
     time_t t;
     srand((unsigned) time(&t));
 
+    // Initialize SDL
     init_SDL();
 
     SDL_Window* window = create_window();
@@ -40,7 +41,7 @@ int main () {
     // Load all game assets
     Assets assets = load_all_assets(renderer);
 
-    // Initialize map which will be used in the game
+    // Initialize board which will be used in the game
     Board board;
      
     States states;
@@ -76,7 +77,7 @@ int main () {
         // Clears the previous `states` in the window.
         SDL_RenderClear(renderer);
     
-        // Render the current `state` of the gmae
+        // Render the current `state` of the application
         render_state(&states, &board, &assets);
         SDL_RenderPresent(renderer);
 
@@ -84,7 +85,8 @@ int main () {
         SDL_Delay(1000/60); 
     }
 
-    // Free all resources and allocated memory
+    // Free all resources and allocated memory used throughout
+    // the applicaion.
     SDL_FreeSurface(icon);
     free_all_assets(&assets);
     IMG_Quit();
