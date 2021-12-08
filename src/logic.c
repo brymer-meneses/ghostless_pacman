@@ -1,5 +1,5 @@
 /*
- * This file, `logic.c`, contains functions that handles the different
+ * This file, `logic.c`, contains functions that handle the different
  * processes in the game itself
  */
 
@@ -19,7 +19,7 @@ void render_board(Board *board, Assets* assets) {
 
     /* 
      * A function that renders the map of the game including
-     * the main board which applies the concept of an array
+     * the main board which applies the concept of an array,
      * defining a 10-by-10 grid for the game. This function
      * includes rendering the sprites or visual assets inside
      * the said dimension, that is, Pacman itself, cherries,
@@ -82,7 +82,7 @@ void render_board(Board *board, Assets* assets) {
 BoardPosition calculate_pacman_position(Sprite* pacman) {
 
     /* 
-     * A helper function that calculate and returns the position of Pacman 
+     * A helper function that calculates and returns the position of Pacman 
      * 
      * params:
      *      Sprite *pacman
@@ -103,7 +103,6 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
      * A function that dictates the state of the game based on the
      * current player status, specifically involving the blocks and
      * food
-     * params:
      */
 
     int row = next_position.row;
@@ -136,7 +135,7 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
 };
 
 enum GameState check_if_player_won(BoardPosition next_position, Board* board, Assets* assets) {
-    // Check if the pacman has eaten all the fruit
+    // Checks if the pacman has eaten all the food
     if (board->total_player_score == board->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return GAME_WON;
@@ -151,9 +150,9 @@ void fill_board_with_foods(Board *board) {
     int total_foods_generated = 0;
     int rand_row, rand_col;
     while (total_foods_generated < board->number_of_foods){
-        // Generate random number between 0-9
+        // Generates random number between 0-9
          rand_row =  gen_random_num(0,9); 
-        // Generate random number between 0-9
+        // Generates random number between 0-9
          rand_col =  gen_random_num(0,9);
 
          if (board->array[rand_row][rand_col] == EMPTY) {
@@ -169,7 +168,7 @@ void fill_board_with_blocks(Board *board) {
     int rand_row;
     int rand_col;
     while (total_blocks_generated < board->number_of_blocks) {
-         // Avoid generating blocks that are adjacent to the 
+         // Prevents generating blocks that are adjacent to the 
          // border of the map.
          rand_row =  gen_random_num(1,8); // Generate random number between 1-8
          rand_col =  gen_random_num(1,8); // Generate random number between 1-8
@@ -283,7 +282,7 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
 bool check_for_impossible_win_scenario(Board* board) {
     /*
      * A function that checks for instances when
-     * the randomly generated map is impossibe to win.
+     * the randomly generated map is impossibe to be won.
      *  
      * params:
      *      Board *board
@@ -295,7 +294,7 @@ bool check_for_impossible_win_scenario(Board* board) {
      *            generated map contains an impossible win
      *            scenario.
      *      false
-     *          - if the above condition is not met.
+     *          - if the conditions are not met.
      */
 
     for (int row=0; row<10; row++) {
@@ -304,9 +303,9 @@ bool check_for_impossible_win_scenario(Board* board) {
             if (element == FOOD || element == EXIT) { 
                 /* 
                  *  We define `impassable_adjacent_neighbors` as the number of
-                 *  spaces adjacent around a food or an exit that is impossible
-                 *  to be passed. This includes adjacent block or touching the game
-                 *  border.
+                 *  adjacent spaces around a food piece or an exit that is impossible
+                 *  to be passed through. This includes adjacent block or touching the
+                 *  borders.
                  *
                  *  Legend: 
                  *      - x : block
@@ -317,22 +316,21 @@ bool check_for_impossible_win_scenario(Board* board) {
                  *      x
                  *       *
                  *      ---
-                 *  This ammounts to 4 impassable_adjacent_neighbors. 
+                 *  This amounts to 4 impassable_adjacent_neighbors. 
                  *  
                  */
 
                 int impassable_adjacent_neighbors = 0;
                 for (int i=-1; i<=1; i++) {
                     for (int j=-1; j<=1; j++) {
-                        // Count the number of adjacent spaces exposed to the border
+                        // Counts the number of adjacent spaces exposed to the border
                         if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
                             impassable_adjacent_neighbors++;
-                        // Count the number of adjacent blocks or exit.
+                        // Counts the number of adjacent blocks or exit
                         } else if (board->array[row + i][col + j] == BLOCK || board->array[row + i][col + j] == EXIT) 
                             impassable_adjacent_neighbors++;
                         }
                 } 
-                // printf("row: %d col: %d has: %d\n", row, col, impassable_adjacent_neighbors);
                 if (impassable_adjacent_neighbors >= 4) 
                     return false;
                 }
@@ -344,7 +342,7 @@ bool check_for_impossible_win_scenario(Board* board) {
 
 void init_board(Board* board, Assets* assets, int number_of_foods) {
 
-    // Ensure the board is empty
+    // Ensures the board is empty
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
             board->array[row][col] = EMPTY;
@@ -364,7 +362,7 @@ void init_board(Board* board, Assets* assets, int number_of_foods) {
     board->number_of_foods = number_of_foods;
 
     // NOTE: Restricting the random number generated for row and col
-    //       of the exit coordinate, ensures that pacman will not be
+    //       of the exit coordinate ensures that pacman will not be
     //       adjacent to the exit.
 
     // Generate random number between 1-9 and assign it
