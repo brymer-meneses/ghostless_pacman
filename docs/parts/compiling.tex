@@ -1,76 +1,74 @@
 \section{Compiling}
 \subsection{Windows}
-\subsubsection{Installing CMake and GNU Make}
+
+\subsubsection{Installing Scoop}
 
 
 To compile this application, you need to have \textbf{CMake}  and \textbf{GNU
-Make} on your system.  The easiest way to do this is by using the **scoop
-package manager**. **Scoop** is a package manager for windows that automates the
-installation of various software using commands. You can learn more about it
-here
+Make} on your system.  The easiest way to do this is by using the \textbf{scoop
+package manager}. \textbf{Scoop} is a package manager for windows that automates the
+installation of a plethora of applications through the command line. You can learn more about it
+\href{https://github.com/ScoopInstaller/Scoop}{here}.
 
-
-To do this open powershell run the following command.
+To install scoop, open powershell and run the following command:
 
 \begin{lstlisting}[language=bash]
-    iwr -useb get.scoop.sh | iex
+iwr -useb get.scoop.sh | iex
 \end{lstlisting}
 
 If you get an error you might need to change the execution policy (i.e. enable Powershell), to do so run the following command and redo the command above.
 
 \begin{lstlisting}[language=bash]
-    Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 \end{lstlisting}
 
-Confirm that you have successfully installed scoop, by running the following command”
+Confirm that you have successfully installed scoop, by running the following command
 
 \begin{lstlisting}[language=bash]
-    scoop --help
+scoop --help
 \end{lstlisting}
 
-Once you see  you have successfully installed **scoop**.
+If the installation was successful, you will be able to see the following:
+\begin{lstlisting}
+Usage: scoop <command> [<args>]
 
-\begin{lstlisting}[language=bash]
-    scoop --help
+Some useful commands are:
+
+alias       Manage scoop aliases
+bucket      Manage Scoop buckets
+cache       Show or clear the download cache
 \end{lstlisting}
 
-\begin{lstlisting}[language=bash]
-     Usage: scoop <command> [<args>]
+\subsubsection{Installing Scoop}
+Once you see you have successfully installed \textbf{scoop}.
 
-     Some useful commands are:
-
-     alias       Manage scoop aliases
-     bucket      Manage Scoop buckets
-     cache       Show or clear the download cache
-\end{lstlisting}
-
-
-Now to install \textbf{CMake} and \textbf{GNU Make} run the following command:
+Now to install \textbf{CMake} and \textbf{GNU Make} run the following
+command:
 
 \begin{lstlisting}[language=bash]
-     scoop install cmake make 
+ scoop install cmake make 
 \end{lstlisting}
  
 To check whether the installation is successful for \textbf{GNU Make} run the following command:
 
 \begin{lstlisting}[language=bash]
-    make --help
+make --help
 \end{lstlisting}
 
 You will be able to see the following:
-\begin{lstlisting}[language=bash]
-     Usage: make [options] [target] ...
-     Options:
-       -b, -m                      Ignored for compatibility.
-       -B, --always-make           Unconditionally make all targets.
-       -C DIRECTORY, --directory=DIRECTORY
+\begin{lstlisting}
+ Usage: make [options] [target] ...
+ Options:
+   -b, -m                      Ignored for compatibility.
+   -B, --always-make           Unconditionally make all targets.
+   -C DIRECTORY, --directory=DIRECTORY
                                    Change to DIRECTORY before doing anything
 \end{lstlisting}
     
-To check whether the installation is successful for **CMake** run the following command:
+To check whether the installation is successful for \textbf{CMake} run the following command:
 
 \begin{lstlisting}[language=bash]
-    cmake --help
+cmake --help
 \end{lstlisting}
 
 You will be able to see the following:
@@ -87,14 +85,17 @@ current working directory.  Specify an existing build directory to
 re-generate its build system.
 \end{lstlisting}
 
-
 \subsubsection{Compiling the game}
 
+This project is configured to only work with
+the MingGW Compiler, so make that it is installed on your computer.
+
 Once you have installed \textbf{CMake} and \textbf{GNU Make}, you may now
-compile the application. To do so, navigate to the \codeword{ghostless-pacman} folder and run.
+compile the application. To do so, navigate to the \codeword{ghostless-pacman}
+folder and run.
  
 \begin{lstlisting}[language=bash]
-    make build
+make build
 \end{lstlisting}
 
 This command will automatically download external GUI libraries which were used
@@ -105,27 +106,33 @@ in making the game. After that it will compile the program and place it to the
 
 Now the only thing left is to run the application, you can navigate to the \codeword{bin}
 folder and open the \codeword{ghostless-pacman.exe} file which will run the game. Or you
-can run the following command to do this automatically:
+can run the following command below, to do build and run the application automatically.
 
 \begin{lstlisting}[language=bash]
-    make run
+make run
 \end{lstlisting}
 
-\textbf{NOTE}: It is important to avoid moving the executable since Windows will not
+Note that, it is important to avoid moving the executable since Windows will not
 be able to find the DLLs which are required for running the game.
 
+Hooray! You have now compiled and run the application.
 
-\subsubsection{Running the game}
+\subsection{Linux}
+
 Use your distribution’s package manager to install the following packages:
 
-% \begin{itemize}
-%     \item SDL2
-%     \item SDL2_Mixer
-%     \item SDL2_Image
-% \end{itemize}
+\begin{itemize}
+    \item cmake
+    \item make
+    \item SDL2
+    \item SDL2 Mixer
+    \item SDL2 Image
+\end{itemize}
 
-Navigate to the the \codeword{ghostless-pacman} folder and run:
+Then navigate to the \codeword{ghostless-pacman} folder and run:
 
 \begin{lstlisting}[language=bash]
-    make build
+make run
 \end{lstlisting}
+
+Hooray! You have now compiled and run the application.

@@ -3,6 +3,8 @@
 *.fdb_latexmk
 *.log
 *.toc
+*.out
 *.synctex.gz
 *main.pdf
+*.synctex(busy)
 *__pycache__/
