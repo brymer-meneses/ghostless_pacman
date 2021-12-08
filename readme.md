@@ -8,6 +8,24 @@ geometry: margin=2cm
 
 # Introduction
 
+## Compilation
+
+# Description
+
+The program mainly utilized the concept of arrays to return a working 10-by-10 game board. To improve user experience, visual and audio elements were added to the program interface. This feature is the significant purpose of using a library called *SDL* or *[Simple DirectMedia Layer](https://www.libsdl.org/)*.
+
+![Image of Pacman, in the Ghostless Pacman game](https://i.imgur.com/wP7ynGR.png)
+
+Here is Pacman, who looks more like Pacman than a plain 'O'. In fact, this Pacman actually munches. Rendering its animation is a feature of the said SDL library. The same feature allowed the program to display food pieces as something more delicious than asterisks or any other punctuation.
+
+![Image of Food, in the Ghostless Pacman game](https://i.imgur.com/jppJPvC.png)
+
+![Image of Block, in the Ghostless Pacman game](https://i.imgur.com/10PmFAi.png)
+
+Likewise, instead of a dollar for the exit door
+
+# Algorithm
+
 ## I. Pre-play Algorithm
 
 1. Application launches
@@ -72,20 +90,16 @@ To recall, below is a list of these occurrences:
   - In the last slide, the program displays a reminder when the user presses keys other than '1' to start the game, 'M' to return to menu, or 'X' to exit
 - In _About the Game_, the program displays a reminder when the user presses keys other than 'M' to return to menu
 
-> Choose Start!
-> Enter the number of food you want Pacman to eat.
-> Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn.
-> You have to eat all the pieces before going to the door.
-> Don’t miss one! Don’t hit a block or get out of the box!
-> But do all that you can to win in the Ghostless Pacman.
-> And remember, you can always play again.
-
-## Compilation
-
-# Description
-
-# Algorithm
-
-# Error handling
-
 # Manual
+
+Upon opening the application, the user can navigate through it intuitively. The program also provides instructions and reminders within itself. Nonetheless, here is a quick guide.
+
+> Choose from the menu:
+> 
+> 1. Press 1 to *Start.* You will be prompted to pick a food number from 2-9. Hit enter, and the game begins! Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn. You have to eat all the pieces before going to the door. Don’t miss one! Don’t hit a block or get out of the box! After a game, you can always play again.
+> 
+> 2. Press 2 to *Tutorial.* Navigate through the slides by using arrow left (←) and arrow right (→)
+> 
+> 3. Press 3 to *Exit.* Confirm by pressing Y, or deny by pressing N.
+> 
+> 4. *(Extra!)* Press A to know what's *About the Game.*
