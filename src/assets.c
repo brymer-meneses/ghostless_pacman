@@ -28,7 +28,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     // SDL_Rect is a struct that holds the `x` and `y` position
     // as well as the `h` height and `w` width of any rendered in the screen.
 
-    SDL_Rect pacman_rect        = {.x=PACMAN_INITIAL_POSITION_X,  .y=PACMAN_INITIAL_POSITION_Y, .h=35, .w=35};
+    SDL_Rect pacman_rect        = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=35, .w=35};
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect food_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
     SDL_Rect exit_rect          = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=33, .w=23};

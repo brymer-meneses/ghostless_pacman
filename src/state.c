@@ -285,7 +285,7 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                         case SDLK_RETURN:
                             Mix_PlayChannel(1, assets->sounds.start_game, 0);
                             if (states->current_number_of_foods_picked != 1) {
-                                reset_map(map, assets, states->current_number_of_foods_picked);
+                                init_map(map, assets, states->current_number_of_foods_picked);
                                 states->game_state = GAME_IN_PROGRESS;
                             }
                             states->current_number_of_foods_picked = 1;
