@@ -162,7 +162,7 @@ enum PlayerState {
  *         to be displayed in the game (from 2 to 9)
  *
  *   GAME_IN_PROGRESS
- *       - where the player plays the game_lost_hit_block
+ *       - where the player plays the game
  *
  *   GameState also covers the results of the game:
  *
@@ -231,7 +231,7 @@ enum GameState {
  *
  *     In About the Game (WRONG_INPUT_IN_ABOUT_GAME)
  *
- *             - is registerd when the user presses keys other than
+ *             - is registered when the user presses keys other than
  *               'M' to return to menu
  */
 enum WrongInputState { 
