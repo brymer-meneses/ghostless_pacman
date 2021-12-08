@@ -1,7 +1,7 @@
 /*
- *  This file, `assets.c`, contains functions that handles the loading and 
+ *  This file, `assets.c`, contains functions that handle the loading and 
  *  freeing of all the assets in the game.
- *  The term assets refers to images, music or sound effects that are used in the game.
+ *  The term 'asset' refers to images, music or sound effects that are used in the game.
  */
 
 
@@ -16,7 +16,7 @@
 Assets load_all_assets(SDL_Renderer *renderer) { 
    /*
     * A function that handles the loading of all assets required for the game.
-    * This includes loading the various images and sounds for the game.
+    * This includes loading various images and sounds for the game.
     *
     * returns:
     *     Assets assets
@@ -26,7 +26,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     Assets assets;
 
     // SDL_Rect is a struct that holds the `x` and `y` position
-    // as well as the `h` height and `w` width of any element rendered in the
+    // as well as the `h` height and `w` width of any element rendered on the
     // screen.
 
     SDL_Rect pacman_rect        = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=35, .w=35};
@@ -75,7 +75,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
         assets.misc.tutorial_pages[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
     }
 
-    // Populate the sprite array with food input prompts.
+    // Populate the sprite array with food input prompts
     for (int i = 0; i < 9; i++) {
         sprintf(filename, "../assets/food_input_prompts/%d.png", i);
         assets.misc.food_input_prompts[i] = load_sprite(renderer, filename, 0, 1, food_input_rect);
