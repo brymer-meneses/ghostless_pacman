@@ -34,6 +34,12 @@ void render_board(Board *board, Assets* assets) {
      *            the necessary items to render the map
      */
 
+    // NOTE:
+    //  Changing `y` and `x` of the struct SDL_Rect that is a member of the
+    //  struct Sprite, will cause the image encapsulatd in the Sprite to move
+    //  depending on how much you increase or decrease these variables.
+    //
+
     Sprite* main   =   &assets->game.main;
     Sprite* pacman =   &assets->game.pacman;
     Sprite* exit   =   &assets->game.exit;
@@ -262,22 +268,17 @@ void move_pacman(enum PacmanMove pacman_move, Assets *assets, Board* board, Stat
     };
 }
 
-bool count_impassable_neighbors(Board* board, int row, int col) {
+int count_impassable_neighbors(Board* board, int row, int col) {
     /* 
-     * A function that checks for instances when
-     * the randomly generated map is impossibe to be won.
+     * A function that calculates the number of impassable neighbors
+     * there are in the given `row` and `col` variables.
      *  
      * params:
      *      Board *board
      *          - a pointer to the struct `Board` which
      *            contains the variables regarding the game
      * returns:
-     *      true
-     *          - if there is a possibility that the randomly
-     *            generated board contains an impossible win
-     *            scenario.
-     *      false
-     *          - if the conditions are not met.
+     *      
      *  NOTE:
      *
      *  We define `impassable_adjacent_neighbors` as the number of
