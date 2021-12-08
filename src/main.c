@@ -30,9 +30,14 @@ int main () {
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
 
+    // Initialize application icon 
+    SDL_Surface* icon = IMG_Load("../assets/game_elements/pacman_solo.png");
+    SDL_SetWindowIcon(window, icon);
+    // ?
+
     // Set the background color to the color 
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
-     
+    
     // Load all game assets
     Assets assets = load_all_assets(renderer);
 
@@ -57,7 +62,7 @@ int main () {
     states.is_game_running = true;
 
     // Play background music
-    // Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
+    Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
     while (states.is_game_running) {
         SDL_Event event;

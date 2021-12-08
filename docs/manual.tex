@@ -4,6 +4,8 @@ title: Introduction to Ghostless Pacman
 geometry: margin=2cm
 ---
 
+%% dump
+
 ![](https://i.imgur.com/QEg8UpR.png)
 
 # Introduction
@@ -29,6 +31,8 @@ Game obstacles that look tougher than 'X'.
 
 >
 >
+
+\includegraphics(assets\game_elements\box.png)
 
 And instead of a dollar sign for the exit door, here's an exit door.
 
@@ -113,3 +117,129 @@ Upon opening the application, the user can navigate through it intuitively. The 
 > 3. Press 3 to *Exit.* Confirm by pressing Y, or deny by pressing N.
 > 
 > 4. *(Extra!)* Press A to know what's *About the Game.*
+
+
+## Project Layout
+
+` ` `bash
+├─ assets/          	images and sounds used in the game
+├─ bin/     		  	contains the DLLs and the compiled executable
+├─ external/	      	  	contains the external libraries downloaded
+├─ cmake/           	build scripts
+├─ src/             	holds the 
+│  ├─ assets.c      	handles the state of the 
+│  ├─ assets.h     	
+|  |
+│  ├─ declarations.h  	contains structs, macros, and enums used throughout 
+|  | 				the game
+|  |
+│  ├─ logic.c          	contains functions that handle the flow of the game
+│  ├─ logic.h         	
+|  |
+│  ├─ main.c  		contains the game loop and handles the initialization 	|  | 				and termination of the program.
+|  |
+│  ├─ state.c  		handles the different `states` of the program
+│  ├─ state.h  		
+│  ├─ utils.c  		contains utility functions
+│  └─ utils.h          	
+```
+# Compiling 
+## Windows
+### Installing CMake and GNU Make
+
+To compile this application, you need to have **CMake**  and **GNU Make** on your system.  The easiest way to do this is by using the **scoop package manager**. **Scoop** is a package manager for windows that automates the installation of various software using commands. You can learn more about it here
+
+
+ To do this open powershell run the following command.
+
+```bash
+iwr -useb get.scoop.sh | iex
+
+```
+If you get an error you might need to change the execution policy (i.e. enable Powershell), to do so run the following command and redo the command above.
+
+```bash
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+```
+Confirm that you have successfully installed scoop, by running the following command”
+
+```bash
+scoop --help
+```
+Once you see  you have successfully installed **scoop**.
+```bash
+Usage: scoop <command> [<args>]
+
+Some useful commands are:
+
+alias       Manage scoop aliases
+bucket      Manage Scoop buckets
+cache       Show or clear the download cache
+```
+
+Now to install **CMake** and **GNU Make** run the following command:
+
+```bash
+scoop install cmake make 
+```
+ 
+To check whether the installation is successful for **GNU Make** run the following command:
+
+```bash
+make --help
+```
+You will be able to see the following:
+```
+Usage: make [options] [target] ...
+Options:
+  -b, -m                      Ignored for compatibility.
+  -B, --always-make           Unconditionally make all targets.
+  -C DIRECTORY, --directory=DIRECTORY
+                              Change to DIRECTORY before doing anything
+```
+
+To check whether the installation is successful for **CMake** run the following command:
+```bash
+cmake --help
+```
+You will be able to see the following:
+```bash
+Usage
+
+  cmake [options] <path-to-source>
+  cmake [options] <path-to-existing-build>
+  cmake [options] -S <path-to-source> -B <path-to-build>
+
+Specify a source directory to (re-)generate a build system for it in the
+current working directory.  Specify an existing build directory to
+re-generate its build system.
+```
+### Compiling the game
+
+Once you have installed **CMake** and **GNU Make**, you may now compile the application. To do so, navigate to the _ghostless-pacman_ folder  and run.
+ 
+```bash
+make build
+```
+This command will automatically download external GUI libraries which were used in making the game. After that it will compile the program and place it to the _bin_ folder.
+
+### Running the game
+
+Now the only thing left is to run the application, you can navigate to the bin folder and open the `ghostless-pacman.exe` file which will run the game. Or you can run the following command to do this automatically:
+
+```bash
+make run
+```
+**NOTE**: It is important to avoid moving the executable since Windows will not be able to find the DLLs which are required for running the game.
+
+
+## Linux
+Use your distribution’s package manager to install the following packages:
+-SDL2
+-SDL2_Mixer
+-SDL2_Image
+
+Navigate to the the `ghostless-pacman` folder and run:
+```bash
+make build
+```
