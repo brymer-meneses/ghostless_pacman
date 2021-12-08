@@ -272,12 +272,12 @@ enum Move {
 };
 
 /*
- * Position is a struct that holds the `x` and `y` position of a MapElement
+ * Position is a struct that holds the `x` and `y` position of a BoardElement
  */
-typedef struct MapPosition {
+typedef struct BoardPosition {
     int row;
     int col;
-} MapPosition;
+} BoardPosition;
 
 
 #endif

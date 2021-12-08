@@ -17,7 +17,8 @@
 
 void render_board(Board *board, Assets* assets) {
 
-    /* A function that renders the map of the game including
+    /* 
+     * A function that renders the map of the game including
      * the main board which applies the concept of an array
      * defining a 10-by-10 grid for the game. This function
      * includes rendering the sprites or visual assets inside
@@ -28,8 +29,8 @@ void render_board(Board *board, Assets* assets) {
      *      Assets* assets
      *          - A pointer to the struct Assets that points
      *            to the required assets
-     *      Map *map   
-     *          - A pointer to the struct Map that contains
+     *      Board *board   
+     *          - A pointer to the struct Board that contains
      *            the necessary items to render the map
      */
 
@@ -78,23 +79,31 @@ void render_board(Board *board, Assets* assets) {
     }
 }
 
-MapPosition calculate_pacman_position(Sprite* pacman) {
+BoardPosition calculate_pacman_position(Sprite* pacman) {
 
-    /* A function that calculate and returns the position of Pacman */
+    /* 
+     * A helper function that calculate and returns the position of Pacman 
+     * 
+     * params:
+     *      Sprite *pacman
+     *          - a sprite containing pacman
+     *  
+     */
 
-    MapPosition pos;
-    pos.col = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / 45;
-    pos.row = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / 45;
-    return pos;
+    BoardPosition position;
+    position.col = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / 45;
+    position.row = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / 45;
+    return position;
 };
 
 
-enum GameState check_player_status(MapPosition next_position, enum BoardElement future_obstacle, Board *board, Assets* assets) {
+enum GameState check_player_status(BoardPosition next_position, enum BoardElement future_obstacle, Board *board, Assets* assets) {
 
-    /* A function that dictates the state of the game based on the
+    /* 
+     * A function that dictates the state of the game based on the
      * current player status, specifically involving the blocks and
      * food
-     * ...
+     * params:
      */
 
     int row = next_position.row;
@@ -126,7 +135,7 @@ enum GameState check_player_status(MapPosition next_position, enum BoardElement 
     return GAME_IN_PROGRESS;
 };
 
-enum GameState check_if_player_won(MapPosition next_position, Board* board, Assets* assets) {
+enum GameState check_if_player_won(BoardPosition next_position, Board* board, Assets* assets) {
     // Check if the pacman has eaten all the fruit
     if (board->total_player_score == board->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
@@ -140,12 +149,16 @@ enum GameState check_if_player_won(MapPosition next_position, Board* board, Asse
 
 void fill_board_with_foods(Board *board) {
     int total_foods_generated = 0;
-    int rand_x, rand_y;
+    int rand_row, rand_col;
     while (total_foods_generated < board->number_of_foods){
-         rand_x =  gen_random_num(0,9); // Generate random number between 0-9
-         rand_y =  gen_random_num(0,9); // Generate random number between 0-9
-         if (board->array[rand_x][rand_y] == EMPTY) {
-            board->array[rand_x][rand_y] = FOOD;
+        // Generate random number between 0-9
+         rand_row =  gen_random_num(0,9); 
+        // Generate random number between 0-9
+         rand_col =  gen_random_num(0,9);
+
+         if (board->array[rand_row][rand_col] == EMPTY) {
+
+            board->array[rand_row][rand_col] = FOOD;
             total_foods_generated++;
         }
     }
@@ -161,6 +174,7 @@ void fill_board_with_blocks(Board *board) {
          rand_row =  gen_random_num(1,8); // Generate random number between 1-8
          rand_col =  gen_random_num(1,8); // Generate random number between 1-8
          if (board->array[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
+
              board->array[rand_row][rand_col] = BLOCK;
              total_blocks_generated++;
         }
@@ -172,9 +186,9 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
     Sprite* pacman = &assets->game.pacman;
 
     // Current position of pacman
-    MapPosition current_position = calculate_pacman_position(pacman);
+    BoardPosition current_position = calculate_pacman_position(pacman);
     // Next position of pacman when the player moves
-    MapPosition next_position;
+    BoardPosition next_position;
 
     enum BoardElement future_obstacle;
     switch (move) {
@@ -268,7 +282,20 @@ void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
 
 bool check_for_impossible_win_scenario(Board* board) {
     /*
-     *
+     * A function that checks for instances when
+     * the randomly generated map is impossibe to win.
+     *  
+     * params:
+     *      Board *board
+     *          - a pointer to the struct `Board` which
+     *            contains the variables regarding the game
+     * returns:
+     *      true
+     *          - if there is a possibility that the randomly
+     *            generated map contains an impossible win
+     *            scenario.
+     *      false
+     *          - if the above condition is not met.
      */
 
     for (int row=0; row<10; row++) {

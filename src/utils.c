@@ -49,7 +49,7 @@ SDL_Window* create_window() {
 
 SDL_Renderer* create_renderer(SDL_Window* window) {
     /*
-     *  A function that create a renderer, which manages the graphics hardware. 
+     *  A function that creates a renderer, which manages the graphics hardware. 
      *  A `renderer` is a variable defined in SDL that handles the rendering
      *  of any element in the screen.
      */

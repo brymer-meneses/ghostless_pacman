@@ -77,8 +77,8 @@ int main () {
         // Clears the previous `states` in the window.
         SDL_RenderClear(renderer);
     
+        // Render the current `state` of the gmae
         render_state(&states, &board, &assets);
-
         SDL_RenderPresent(renderer);
 
         // Limit the framerate to 60 frames per second
