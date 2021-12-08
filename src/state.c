@@ -182,8 +182,8 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
      *       State *states
      *           - A pointer to the struct `States`, which tracks all the states
      *              of the game.
-     *       Map *map    
-     *          - A pointer to the struct `Map`, which encapsulates variables required 
+     *       Board *board    
+     *          - A pointer to the struct `Board`, which encapsulates variables required 
      *            in the game.
      *       Assets *assets
      *           - A pointer to the struct `Assets`, which holds all the images or sounds
