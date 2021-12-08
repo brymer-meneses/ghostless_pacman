@@ -1,3 +1,8 @@
+/*
+ *  This file, `utils.c`, contains utility functions that are used throughout
+ *  the program. 
+ */
+
 
 #include "stdbool.h"
 #include "stdio.h"
@@ -15,17 +20,13 @@ void init_SDL() {
     IMG_Init(IMG_INIT_PNG);
 
     // Initializes SDL, if it fails exit with an error code.
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
         SDL_Quit();
     }  
 
     // Initialize SDL audio system and mixer
-    SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT , 2, 2048);
-
-    // Initializing everything
-    SDL_Init(SDL_INIT_EVERYTHING);
 }
 
 
@@ -47,10 +48,13 @@ SDL_Window* create_window() {
 }
 
 SDL_Renderer* create_renderer(SDL_Window* window) {
-    // A function that create a renderer, which manages the graphics hardware
+    /*
+     *  A function that create a renderer, which manages the graphics hardware. 
+     *  A `renderer` is a variable defined in SDL that handles the rendering
+     *  of any element in the screen.
+     */
 
-    // Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    Uint32 render_flags = SDL_RENDERER_PRESENTVSYNC;
+    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, render_flags);
 
     if (!renderer) {
@@ -76,6 +80,9 @@ void render_sprite(Sprite *sprite) {
 }
 
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
+    /*
+     *
+     */
 
     SDL_Surface* image_surface = IMG_Load(filename);
     if (!image_surface) {
@@ -100,6 +107,17 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 }
 
 int gen_random_num(int min, int max) {
+    /* 
+     * Generates a random number with a minimum or maximum.
+     * 
+     * params:
+     *      int max
+     *          the maximum number that will be generated
+     *      int min
+     *          the minimum number that will be generated
+     * returns:
+     *      a random number generated in with range [min, max].
+     */
 
     return rand() % (max + 1 - min) + min;
 }

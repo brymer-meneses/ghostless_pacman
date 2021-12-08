@@ -12,7 +12,7 @@
 #define SPRITE_UPDATE_DELAY 100
 
 #define NUMBER_OF_BLOCKS 10
-#define NUMBER_OF_TUTORIAL_SLIDES 7
+#define NUMBER_OF_PAGES_IN_TUTORIAL 7
 #define NUMBER_OF_FOOD_INPUT_PROMPTS 9
 #define NUMBER_OF_SCORE_VISUALS 10
 
@@ -60,7 +60,7 @@ typedef struct Assets {
 
 
     struct { 
-        Sprite tutorial_slides[NUMBER_OF_TUTORIAL_SLIDES];
+        Sprite tutorial_pages[NUMBER_OF_PAGES_IN_TUTORIAL];
         Sprite food_input_prompts[NUMBER_OF_FOOD_INPUT_PROMPTS];
         Sprite score_visuals[NUMBER_OF_SCORE_VISUALS];
         Sprite about_screen;
@@ -251,11 +251,11 @@ typedef struct States {
     enum GameState           game_state;
     enum WrongInputState     wrong_input_state;
     enum MenuChoiceState     current_menu_choice;
-    int                      current_tutorial_slide_index;
+    int                      current_tutorial_page;
     int                      current_number_of_foods_picked;
     bool                     show_quit_confirmation;
     bool                     is_game_running;
-    Uint32                   wrong_input_time;
+    Uint32                   wrong_input_time; // Uint32 is a type defined by SDL
 } States;
 
 enum MapElement {

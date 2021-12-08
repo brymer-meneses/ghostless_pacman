@@ -1,3 +1,8 @@
+/*
+ 
+ */
+
+
 #include "stdio.h"
 #include "stdbool.h"
 
@@ -11,59 +16,89 @@
 void render_state(States* states, Map *map, Assets *assets) {
     /* 
      *   A function that handles the `state` of the game, the game changes
-     *   `state` when the player hits a wall causing them to lose. This function handles
-     *   the different `states` of the game.
+     *   `state` when the player hits a wall causing them to lose or when the 
+     *   player chooses to go to the menu etc. This function `renders`, in other
+     *   words, shows the current `state` of the game.
+     *   
      *
      *   params: 
-     *       SDL_Event event 
-     *           - Specifies an `event` in the game like when the player presses
-     *             the button `w` on their keyboard.
-     *       PlayerState *player_state
-     *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
-     *             It is necessay to become a pointer since this function will modify some 
+     *       States *states 
+     *           - A pointer to the struct `States`, which handles the different states of the
+     *             game. 
      *       Map *map    
      *          - A pointer to the struct Map, which encapsulates variables required 
      *            in the game.
-     *       GameSprites *game_sprites
-     *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
+     *      Assets *assets
+     *           - A pointer to the struct `Assets`, which contains the images or sounds
+     *             used in the game.
      */
 
-    Sprite about_screen = assets->misc.about_screen;
-    Sprite game_lost_hit_block = assets->prompt.game_lost_hit_block;
-    Sprite game_lost_hit_border = assets->prompt.game_lost_hit_border;
-    Sprite game_lost_insufficient_food = assets->prompt.game_lost_insufficient_food;
-    Sprite game_won = assets->prompt.game_won;
-    Sprite* tutorial_slides = assets->misc.tutorial_slides;
+    // Sprite is a struct that holds several variables that  
+    
+    Sprite about_screen                 = assets->misc.about_screen;
+    Sprite game_lost_hit_block          = assets->prompt.game_lost_hit_block;
+    Sprite game_lost_hit_border         = assets->prompt.game_lost_hit_border;
+    Sprite game_lost_insufficient_food  = assets->prompt.game_lost_insufficient_food;
+    Sprite game_won                     = assets->prompt.game_won;
 
-    // States
-    enum PlayerState player_state = states->player_state;
-    enum GameState game_state =states->game_state;
-    enum WrongInputState wrong_input_state = states->wrong_input_state;
-    enum MenuChoiceState current_menu_choice = states->current_menu_choice;
+    Sprite player_chose_start           = assets->menu.player_chose_start;
+    Sprite player_chose_about           = assets->menu.player_chose_about;
+    Sprite player_chose_exit            = assets->menu.player_chose_exit;
+    Sprite player_chose_none            = assets->menu.player_chose_none;
+    Sprite player_chose_tutorial        = assets->menu.player_chose_tutorial;
 
-    int current_tutorial_slide_index = states->current_tutorial_slide_index;
+    Sprite wrong_input_in_about_game    = assets->reminders.wrong_input_in_about_game;
+    Sprite wrong_input_in_menu          = assets->reminders.wrong_input_in_menu;
+    Sprite wrong_input_in_tutorial      = assets->reminders.wrong_input_in_tutorial;
+    Sprite wrong_input_in_game          = assets->reminders.wrong_input_in_game;
+    Sprite wrong_input_in_game_prompts  = assets->reminders.wrong_input_in_game_prompts;
+    Sprite wrong_input_in_food_input    = assets->reminders.wrong_input_in_food_input;
 
+    Sprite* tutorial_pages              = assets->misc.tutorial_pages;
+    Sprite* score_visuals               = assets->misc.score_visuals;
+    Sprite* food_input_prompts          = assets->misc.food_input_prompts;
+
+    // PlayerState refers to the location of the player.
+    // This will change if the player goes to the menu or in the tutorial.
+    enum PlayerState player_state               = states->player_state;
+
+    // GameState refers to the state of the main game itself. Here "main game", 
+    // refers to the time wherein the player can see the board along with the food
+    // and pacman. This state tracks when the player won the game, lost etc.
+    enum GameState game_state                   = states->game_state;
+
+    // WrongInputState tracks when the player presses a wrong key.
+    enum WrongInputState wrong_input_state      = states->wrong_input_state;
+
+    // MenuChoiceState tracks the current selection of the player in the menu. This
+    // is responsible for highlighting the current menu choice of the player.
+    enum MenuChoiceState current_menu_choice    = states->current_menu_choice;
+
+    // `current_tutorial_page` tracks the current `page` in the tutorial.
+    int current_tutorial_page                   = states->current_tutorial_page;
+
+    // The switch statement below
     switch (player_state) {
         case PLAYER_IN_MENU:
             switch (current_menu_choice) {
                 case PLAYER_CHOSE_START:
-                    render_sprite(&assets->menu.player_chose_start);
+                    render_sprite(&player_chose_start);
                     break;
                 case PLAYER_CHOSE_ABOUT:
-                    render_sprite(&assets->menu.player_chose_about);
+                    render_sprite(&player_chose_about);
                     break;
                 case PLAYER_CHOSE_EXIT:
-                    render_sprite(&assets->menu.player_chose_exit);
+                    render_sprite(&player_chose_exit);
                     break;
                 case PLAYER_CHOSE_TUTORIAL:
-                    render_sprite(&assets->menu.player_chose_tutorial);
+                    render_sprite(&player_chose_tutorial);
                     break;
                 case PLAYER_CHOSE_NONE:
-                    render_sprite(&assets->menu.player_chose_none);
+                    render_sprite(&player_chose_none);
                 }
             break;
         case PLAYER_IN_TUTORIAL:
-            render_sprite(&tutorial_slides[current_tutorial_slide_index]);
+            render_sprite(&tutorial_pages[current_tutorial_page]);
             break;
         case PLAYER_IN_ABOUT:
             render_sprite(&about_screen);
@@ -72,60 +107,63 @@ void render_state(States* states, Map *map, Assets *assets) {
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
                     // C is a zero based language that's why we have to subtract 1 
-                    // when accessing its array. This is also the reason why we have to 
+                    // when accessing the Sprite array `food_input_prompts`.
+                    // This is also the reason why we have to 
                     // set the initial number of foods selected to 1, since it will be decremented to 0.
-                    render_sprite(&assets->misc.food_input_prompts[states->current_number_of_foods_picked-1]);
+                    
+                    render_sprite(&food_input_prompts[states->current_number_of_foods_picked - 1]);
                     break;
                 case GAME_WON:
-                    render_map(map, assets);
                     render_sprite(&game_won);
-                    render_sprite(&assets->misc.score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BLOCK:
-                    render_map(map, assets);
                     render_sprite(&game_lost_hit_block);
-                    render_sprite(&assets->misc.score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BORDER:
-                    render_map(map, assets);
                     render_sprite(&game_lost_hit_border);
-                    render_sprite(&assets->misc.score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[map->total_player_score]);
                     break;
                 case GAME_LOST_INSUFFICIENT_FOOD:
-                    render_map(map, assets);
                     render_sprite(&game_lost_insufficient_food);
-                    render_sprite(&assets->misc.score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[map->total_player_score]);
                     break;
                 case GAME_IN_PROGRESS:
                     render_map(map, assets);
-                    render_sprite(&assets->misc.score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[map->total_player_score]);
                     break;
             }
             break;
     }
+    
+    // The switch statement below processes the wrong input states which were 
+    // recorded and displays a prompt in response to these wrong inputs.
     switch (wrong_input_state) {
         case WRONG_INPUT_NONE:
             // do nothing
             break;
         case WRONG_INPUT_IN_ABOUT_GAME:
-            render_reminder(&assets->reminders.wrong_input_in_about_game, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_about_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME:
-            render_reminder(&assets->reminders.wrong_input_in_game, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_TUTORIAL:
-            render_reminder(&assets->reminders.wrong_input_in_tutorial, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_tutorial, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_FOOD_INPUT:
-            render_reminder(&assets->reminders.wrong_input_in_food_input, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_food_input, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_MENU:
-            render_reminder(&assets->reminders.wrong_input_in_menu, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_menu, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME_PROMPTS:
-            render_reminder(&assets->reminders.wrong_input_in_game_prompts, states, 2000, 535, 5);
+            render_reminder(&wrong_input_in_game_prompts, states, 2000, 535, 5);
             break;
     }
+
+    // Shoo the quit confirmation prompt.
     if (states->show_quit_confirmation) {
         render_sprite(&assets->misc.quit_confirmation_prompt);
     };
@@ -133,30 +171,37 @@ void render_state(States* states, Map *map, Assets *assets) {
 
 void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
     /* 
-     *   A function that handles the various keypresses of the user.
+     *   A function that processes the different keypresses made by the player during the game.
+     *   This function modifies the `states` variable in accordance with the
+     *   response to the various keypresses of the player.
      *
      *   params: 
      *       SDL_Event event 
      *           - Specifies an `event` in the game like when the player presses
      *             the button `w` on their keyboard.
-     *       PlayerState *player_state
-     *           - A pointer to an enum `PlayerState` which tracks the state of the application. 
-     *             It is necessay to become a pointer since this function will modify some 
+     *       State *states
+     *           - A pointer to the struct `States`, which tracks all the states
+     *              of the game.
      *       Map *map    
-     *          - A pointer to the struct Map, which encapsulates variables required 
+     *          - A pointer to the struct `Map`, which encapsulates variables required 
      *            in the game.
-     *       GameSprites *game_sprites
-     *           - A pointer to the struct `GameSprites` which holds all the sprites for running the game.
+     *       Assets *assets
+     *           - A pointer to the struct `Assets`, which holds all the images or sounds
+     *              used in the game.
      */
-    bool is_not_on_the_last_slide = states->current_tutorial_slide_index != NUMBER_OF_TUTORIAL_SLIDES - 1;
-    bool is_not_on_the_first_slide = states->current_tutorial_slide_index != 0;
+    bool is_not_on_the_last_slide = states->current_tutorial_page != NUMBER_OF_PAGES_IN_TUTORIAL - 1;
+    bool is_not_on_the_first_slide = states->current_tutorial_page != 0;
 
     enum PlayerState player_state = states->player_state;
     enum GameState game_state = states->game_state;
     enum MenuChoiceState current_menu_choice = states->current_menu_choice;
 
+    // 
+    SDL_Keycode player_keypress = event.key.keysym.sym;
+
+    // Handle state when the exit prompt is shown in the screen
     if (states->show_quit_confirmation) {
-        switch (event.key.keysym.sym) {
+        switch (player_keypress) {
             case SDLK_n:
                 states->show_quit_confirmation = false;
                 break;
@@ -164,8 +209,12 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                 states->is_game_running = false;
                 break;
         }
+        // Early return ensures that the application will ignore every other 
+        // keypress aside from `n` and `y`.
         return;
     }
+
+    // SDLK_x refers to when SDL detect
     switch (player_state) {
         case PLAYER_IN_GAME:
             switch (game_state) {
@@ -174,7 +223,7 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     // as the desired number of food pieces on the game. An option to return
                     // to menu is also offered by pressing 'M'. Otherwise, a wrong input
                     // reminder will be shown.
-                    switch (event.key.keysym.sym) {
+                    switch (player_keypress) {
                         case SDLK_2:
                         case SDLK_KP_2:
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);
@@ -232,8 +281,8 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     // user to change the desired number, even after pressing some other
                     // number previously. Once 'Enter' is pressed, the game state will be
                     // changed to GAME_IN_PROGRESS, which is the actual game proper.
-                    switch (event.key.keysym.scancode) {
-                        case SDL_SCANCODE_RETURN:
+                    switch (player_keypress) {
+                        case SDLK_RETURN:
                             Mix_PlayChannel(1, assets->sounds.start_game, 0);
                             if (states->current_number_of_foods_picked != 1) {
                                 reset_map(map, assets, states->current_number_of_foods_picked);
@@ -246,12 +295,12 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     }
                     break;
                 case GAME_IN_PROGRESS:
-                // This case is associated with the accepted keypresses during the actual game.
-                // That is, 'W' to move up, 'S' to move down, 'A' to move left, and 'D' to move
-                // right. Also, options to return to menu and to exit the game can be done by
-                // pressing 'M' or pressing 'X' respectively. Keypresses othere than these would
-                // trigger a wrong input reminder.
-                    switch (event.key.keysym.sym) {
+                    // This case is associated with the accepted keypresses during the actual game.
+                    // That is, 'W' to move up, 'S' to move down, 'A' to move left, and 'D' to move
+                    // right. Also, options to return to menu and to exit the game can be done by
+                    // pressing 'M' or pressing 'X' respectively. Keypresses othere than these would
+                    // trigger a wrong input reminder.
+                    switch (player_keypress) {
                         case SDLK_w:
                             move_pacman(MOVE_UP, assets, map, states);
                             break;
@@ -279,11 +328,13 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                             break;
                         }
                     break;
+                // The following `game_states` all listen to the same
+                // keypresses, that's why they are grouped.
                 case GAME_LOST_INSUFFICIENT_FOOD:
                 case GAME_LOST_HIT_BORDER:
                 case GAME_LOST_HIT_BLOCK:
                 case GAME_WON:
-                    switch (event.key.keysym.sym) {
+                    switch (player_keypress) {
                         case SDLK_r:
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_GAME;
@@ -308,7 +359,7 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
             };
             break;
         case PLAYER_IN_MENU:
-            switch (event.key.keysym.sym) {
+            switch (player_keypress) {
                 case SDLK_1:
                 case SDLK_KP_1:
                     Mix_PlayChannel(0, assets->sounds.option_select, 0);
@@ -328,7 +379,6 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     Mix_PlayChannel(0, assets->sounds.option_select, 0);
                     states->current_menu_choice = PLAYER_CHOSE_EXIT;
                     break;
-
                 case SDLK_RETURN:
                     // A separate switch is created for pressing 'Enter'. This allows the
                     // user to change the chosen  option, even after pressing some other
@@ -336,14 +386,17 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     // changed to GAME_IN_PROGRESS, which is the actual game proper.
                     switch (states->current_menu_choice) {
                         case PLAYER_CHOSE_ABOUT:
+                            // Play confirmation sound
                             Mix_PlayChannel(1, assets->sounds.open_about_game, 0);
                             states->player_state = PLAYER_IN_ABOUT;
                             break;
                         case PLAYER_CHOSE_TUTORIAL:
+                            // Play confirmation sound
                             Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                             states->player_state = PLAYER_IN_TUTORIAL;
                             break;
                         case PLAYER_CHOSE_START:
+                            // Play confirmation sound
                             Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                             states->player_state = PLAYER_IN_GAME;
                             break;
@@ -363,18 +416,18 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     break;
             };
             // Reset tutorial slide
-            states->current_tutorial_slide_index = 0;
+            states->current_tutorial_page = 0;
             break;
         case PLAYER_IN_TUTORIAL:
-            switch (event.key.keysym.sym) {
+            switch (player_keypress) {
                 case SDLK_RIGHT:
                     if (is_not_on_the_last_slide) 
-                        states->current_tutorial_slide_index += 1;
+                        states->current_tutorial_page += 1;
                         Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
                 case SDLK_LEFT:
                     if (is_not_on_the_first_slide)  
-                        states->current_tutorial_slide_index -= 1;
+                        states->current_tutorial_page -= 1;
                         Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
                     break;
                 case SDLK_m:
@@ -397,7 +450,7 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
             }
             break;
         case PLAYER_IN_ABOUT:
-            switch (event.key.keysym.sym) {
+            switch (player_keypress) {
                 case SDLK_m:
                     Mix_PlayChannel(1, assets->sounds.option_confirm, 0);
                     states->player_state = PLAYER_IN_MENU;
@@ -410,5 +463,5 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
         default:
             break;
     }
-
+    return;
 }

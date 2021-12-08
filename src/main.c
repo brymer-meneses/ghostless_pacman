@@ -45,8 +45,8 @@ int main () {
     // Set the initial state of the game when th player enters th game from 
     // the menu.
     states.game_state = GAME_IN_FOOD_NUMBER_INPUT;
-    // Set the initial index for the tutorial slides 
-    states.current_tutorial_slide_index = 0;
+    // Set the initial index for the tutorial page
+    states.current_tutorial_page = 0;
     // Set the initial wrong key state
     states.wrong_input_state = WRONG_INPUT_NONE,
     // Set the initial number of foods. This value will change later on.

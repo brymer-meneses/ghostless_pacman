@@ -45,7 +45,6 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
 
     // Load menu highlights, based on the current menu option the user chooses
-
     assets.menu.player_chose_start         = load_sprite(renderer, "../assets/menu/highlight_start.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_tutorial      = load_sprite(renderer, "../assets/menu/highlight_tutorial.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_exit          = load_sprite(renderer, "../assets/menu/highlight_exit.png", 0, 1, fullscreen_rect);
@@ -53,7 +52,6 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     assets.menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
     // Load game prompts, based on the game results
-    
     assets.prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_insufficient_food = load_sprite(renderer, "../assets/results/food_miss.png", 0, 1, prompt_rect);
@@ -69,10 +67,10 @@ Assets load_all_assets(SDL_Renderer *renderer) {
 
     char filename[35];
 
-    // Populate the sprite array with tutorial slides.
-    for (int i = 0; i < NUMBER_OF_TUTORIAL_SLIDES; i++) {
-        sprintf(filename, "../assets/tutorial/slide_%d.png", i+1);
-        assets.misc.tutorial_slides[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
+    // Populate the sprite array with tutorial pages
+    for (int i = 0; i < NUMBER_OF_PAGES_IN_TUTORIAL; i++) {
+        sprintf(filename, "../assets/tutorial/page_%d.png", i+1);
+        assets.misc.tutorial_pages[i] = load_sprite(renderer, filename, 0, 1, fullscreen_rect);
     }
 
     // Populate the sprite array with food input prompts.
@@ -169,7 +167,7 @@ void free_all_assets(Assets *assets) {
 
     SDL_DestroyTexture(assets->misc.quit_confirmation_prompt.texture);
 
-    free_sprite_array(assets->misc.tutorial_slides, NUMBER_OF_TUTORIAL_SLIDES);
+    free_sprite_array(assets->misc.tutorial_pages, NUMBER_OF_PAGES_IN_TUTORIAL);
     free_sprite_array(assets->misc.food_input_prompts, NUMBER_OF_FOOD_INPUT_PROMPTS);
     free_sprite_array(assets->misc.score_visuals, NUMBER_OF_SCORE_VISUALS);
     free_sprite_array(assets->game.foods, MAX_NUMBER_OF_FOOD);
