@@ -16,11 +16,8 @@
 #define NUMBER_OF_FOOD_INPUT_PROMPTS 9
 #define NUMBER_OF_SCORE_VISUALS 10
 
-#define ELEMENT_INITIAL_POSITION_X (95 + 20)
-#define ELEMENT_INITIAL_POSITION_Y (95 + 10)
-
-#define PACMAN_INITIAL_POSITION_X (ELEMENT_INITIAL_POSITION_X - 8)
-#define PACMAN_INITIAL_POSITION_Y (ELEMENT_INITIAL_POSITION_Y - 5)
+#define ELEMENT_INITIAL_POSITION_X (95 + 12)
+#define ELEMENT_INITIAL_POSITION_Y (95 + 6)
 
 #define MAX_NUMBER_OF_FOOD 9
 
@@ -109,9 +106,18 @@ typedef struct Assets {
 
 } Assets;
 
+enum MapElement {
+    EMPTY,
+    PACMAN,
+    FOOD,
+    BLOCK,
+    EXIT,
+};
+
 typedef struct Map { 
-    // Pointer to a 10 by 10, two-dimensional array
-    int board[10][10];
+    // Pointer to a 10 by 10, two-dimensional array that contains 
+    // enums
+    enum MapElement board[10][10];
     // Total number of foods generated in the map
     int number_of_foods;
     // Total number of blocks generated in the map
@@ -258,14 +264,6 @@ typedef struct States {
     Uint32                   wrong_input_time; // Uint32 is a type defined by SDL
 } States;
 
-enum MapElement {
-    EMPTY,
-    PACMAN,
-    FOOD,
-    BLOCK,
-    EXIT,
-};
-
 enum Move {
     MOVE_UP,
     MOVE_DOWN,
@@ -274,12 +272,12 @@ enum Move {
 };
 
 /*
- * Position is a struct that holds the `x` and `y` position of an element
+ * Position is a struct that holds the `x` and `y` position of a MapElement
  */
-typedef struct Position {
-    int x;
-    int y;
-} Position;
+typedef struct MapPosition {
+    int row;
+    int col;
+} MapPosition;
 
 
 #endif

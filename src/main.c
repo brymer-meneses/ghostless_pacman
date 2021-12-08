@@ -57,7 +57,7 @@ int main () {
     states.is_game_running = true;
 
     // Play background music
-    Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
+    // Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
     while (states.is_game_running) {
         SDL_Event event;
