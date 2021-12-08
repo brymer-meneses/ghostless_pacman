@@ -33,7 +33,6 @@ int main () {
     // Initialize application icon 
     SDL_Surface* icon = IMG_Load("../assets/game_elements/pacman_solo.png");
     SDL_SetWindowIcon(window, icon);
-    // ?
 
     // Set the background color to the color 
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
@@ -85,11 +84,13 @@ int main () {
         SDL_Delay(1000/60); 
     }
 
+    // Free all resources and allocated memory
+    SDL_FreeSurface(icon);
     free_all_assets(&assets);
     IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
-    SDL_Quit();
     Mix_CloseAudio();
+    SDL_Quit();
     return 0;
 }

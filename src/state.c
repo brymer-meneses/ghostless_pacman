@@ -3,7 +3,6 @@
  * states of the application.
  */
 
-
 #include "stdio.h"
 #include "stdbool.h"
 

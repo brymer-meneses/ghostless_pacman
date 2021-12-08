@@ -135,7 +135,11 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
 };
 
 enum GameState check_if_player_won(BoardPosition next_position, Board* board, Assets* assets) {
-    // Checks if the pacman has eaten all the food
+    /*
+     *  
+     */
+
+    // Check if the pacman has eaten all the foods
     if (board->total_player_score == board->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return GAME_WON;
@@ -147,6 +151,9 @@ enum GameState check_if_player_won(BoardPosition next_position, Board* board, As
 }
 
 void fill_board_with_foods(Board *board) {
+    /*
+     *
+     */
     int total_foods_generated = 0;
     int rand_row, rand_col;
     while (total_foods_generated < board->number_of_foods){
