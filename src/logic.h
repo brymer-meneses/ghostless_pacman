@@ -3,11 +3,11 @@
 
 #include "declarations.h"
 
-void move_pacman(enum Move move, Assets *assets, Map* map, States* states);
+void move_pacman(enum Move move, Assets *assets, Board* board, States* states);
 
-void render_map(Map* map, Assets *assets);
+void render_board(Board* board, Assets *assets);
 
-void init_map(Map* map, Assets *assets, int number_of_foods);
+void init_board(Board* map, Assets *assets, int number_of_foods);
 
 
 #endif // !DECLARE_H

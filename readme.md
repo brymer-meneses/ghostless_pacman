@@ -12,7 +12,7 @@ geometry: margin=2cm
 
 # Description
 
-The program mainly utilized the concept of arrays to return a working 10-by-10 game board. To improve user experience, visual and audio elements were added to the program interface. This feature is the significant purpose of using a library called *SDL* or *[Simple DirectMedia Layer](https://www.libsdl.org/)*.
+The program mainly utilized the concept of arrays to return a working 10-by-10 game board. To improve user experience, visual and audio elements were added to the program interface. This feature is the significant purpose of using a library called _SDL_ or _[Simple DirectMedia Layer](https://www.libsdl.org/)_.
 
 ![Image of Pacman, in the Ghostless Pacman game](https://i.imgur.com/wP7ynGR.png)
 
@@ -105,11 +105,12 @@ To recall, below is a list of these occurrences:
 Upon opening the application, the user can navigate through it intuitively. The program also provides instructions and reminders within itself. Nonetheless, here is a quick guide.
 
 > Choose from the menu:
-> 
-> 1. Press 1 to *Start.* You will be prompted to pick a food number from 2-9. Hit enter, and the game begins! Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn. You have to eat all the pieces before going to the door. Don’t miss one! Don’t hit a block or get out of the box! After a game, you can always play again.
-> 
-> 2. Press 2 to *Tutorial.* Navigate through the slides by using arrow left (←) and arrow right (→)
-> 
-> 3. Press 3 to *Exit.* Confirm by pressing Y, or deny by pressing N.
-> 
-> 4. *(Extra!)* Press A to know what's *About the Game.*
+>
+> 1. Press 1 to _Start._ You will be prompted to pick a food number from 2-9. Hit enter, and the game begins! Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn. You have to eat all the pieces before going to the door. Don’t miss one! Don’t hit a block or get out of the box! After a game, you can always play again.
+>
+> 2. Press 2 to _Tutorial._ Navigate through the slides by using arrow left (←) and arrow right (→)
+>
+> 3. Press 3 to _Exit._ Confirm by pressing Y, or deny by pressing N.
+>
+> 4. _(Extra!)_ Press A to know what's _About the Game._
+

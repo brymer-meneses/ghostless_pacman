@@ -106,7 +106,7 @@ typedef struct Assets {
 
 } Assets;
 
-enum MapElement {
+enum BoardElement {
     EMPTY,
     PACMAN,
     FOOD,
@@ -114,17 +114,17 @@ enum MapElement {
     EXIT,
 };
 
-typedef struct Map { 
+typedef struct Board { 
     // Pointer to a 10 by 10, two-dimensional array that contains 
     // enums
-    enum MapElement board[10][10];
+    enum BoardElement array[10][10];
     // Total number of foods generated in the map
     int number_of_foods;
     // Total number of blocks generated in the map
     int number_of_blocks;
     // Current score of the player 
     int total_player_score;
-} Map;
+} Board;
 
 
 /* 

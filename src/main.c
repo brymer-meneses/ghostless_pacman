@@ -42,7 +42,7 @@ int main () {
     Assets assets = load_all_assets(renderer);
 
     // Initialize map which will be used in the game
-    Map map;
+    Board board;
      
     States states;
     // Set the initial state of the player
@@ -58,6 +58,7 @@ int main () {
     states.current_number_of_foods_picked = 1;
     // Set the initial menu choice
     states.current_menu_choice = PLAYER_CHOSE_NONE;
+
     states.show_quit_confirmation = false;
     states.is_game_running = true;
 
@@ -68,17 +69,19 @@ int main () {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                states.is_game_running = false; 
                 states.show_quit_confirmation = true;
             }
             else if (event.type == SDL_KEYDOWN) 
-                process_keypress(event, &states, &map, &assets);
+                process_keypress(event, &states, &board, &assets);
         }
+        // Clears the previous `states` in the window.
         SDL_RenderClear(renderer);
     
-        render_state(&states, &map, &assets);
+        render_state(&states, &board, &assets);
 
         SDL_RenderPresent(renderer);
+
+        // Limit the framerate to 60 frames per second
         SDL_Delay(1000/60); 
     }
 

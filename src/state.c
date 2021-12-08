@@ -1,5 +1,6 @@
 /*
- 
+ * This file contains functions that process and render the different 
+ * states of the application.
  */
 
 
@@ -13,24 +14,24 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 
-void render_state(States* states, Map *map, Assets *assets) {
+void render_state(States* states, Board *board, Assets *assets) {
     /* 
-     *   A function that handles the `state` of the game, the game changes
+     *   A function that handles the `state` of the application, it changes
      *   `state` when the player hits a wall causing them to lose or when the 
      *   player chooses to go to the menu etc. This function `renders`, in other
-     *   words, shows the current `state` of the game.
+     *   words, shows the current `state` of the application.
      *   
      *
      *   params: 
      *       States *states 
      *           - A pointer to the struct `States`, which handles the different states of the
      *             game. 
-     *       Map *map    
-     *          - A pointer to the struct Map, which encapsulates variables required 
-     *            in the game.
+     *       Board *board
+     *          - A pointer to the struct Board, which encapsulates variables required 
+     *            in the game itself.
      *      Assets *assets
      *           - A pointer to the struct `Assets`, which contains the images or sounds
-     *             used in the game.
+     *             used in the application.
      */
 
     // Sprite is a struct that holds several variables that  
@@ -115,23 +116,23 @@ void render_state(States* states, Map *map, Assets *assets) {
                     break;
                 case GAME_WON:
                     render_sprite(&game_won);
-                    render_sprite(&score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BLOCK:
                     render_sprite(&game_lost_hit_block);
-                    render_sprite(&score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BORDER:
                     render_sprite(&game_lost_hit_border);
-                    render_sprite(&score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_INSUFFICIENT_FOOD:
                     render_sprite(&game_lost_insufficient_food);
-                    render_sprite(&score_visuals[map->total_player_score]);
+                    render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_IN_PROGRESS:
-                    render_map(map, assets);
-                    render_sprite(&score_visuals[map->total_player_score]);
+                    render_board(board, assets);
+                    render_sprite(&score_visuals[board->total_player_score]);
                     break;
             }
             break;
@@ -169,7 +170,7 @@ void render_state(States* states, Map *map, Assets *assets) {
     };
 }
 
-void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets) {
+void process_keypress(SDL_Event event, States *states, Board* board, Assets* assets) {
     /* 
      *   A function that processes the different keypresses made by the player during the game.
      *   This function modifies the `states` variable in accordance with the
@@ -285,7 +286,7 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                         case SDLK_RETURN:
                             Mix_PlayChannel(1, assets->sounds.start_game, 0);
                             if (states->current_number_of_foods_picked != 1) {
-                                init_map(map, assets, states->current_number_of_foods_picked);
+                                init_board(board, assets, states->current_number_of_foods_picked);
                                 states->game_state = GAME_IN_PROGRESS;
                             }
                             states->current_number_of_foods_picked = 1;
@@ -302,16 +303,16 @@ void process_keypress(SDL_Event event, States *states, Map* map, Assets* assets)
                     // trigger a wrong input reminder.
                     switch (player_keypress) {
                         case SDLK_w:
-                            move_pacman(MOVE_UP, assets, map, states);
+                            move_pacman(MOVE_UP, assets, board, states);
                             break;
                         case SDLK_a:
-                            move_pacman(MOVE_LEFT, assets, map, states);
+                            move_pacman(MOVE_LEFT, assets, board, states);
                             break;
                         case SDLK_s:
-                            move_pacman(MOVE_DOWN, assets, map, states);
+                            move_pacman(MOVE_DOWN, assets, board, states);
                             break;
                         case SDLK_d:
-                            move_pacman(MOVE_RIGHT, assets, map, states);
+                            move_pacman(MOVE_RIGHT, assets, board, states);
                             break;
                         case SDLK_m:
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);

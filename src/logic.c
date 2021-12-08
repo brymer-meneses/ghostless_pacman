@@ -15,7 +15,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 
-void render_map(Map *map, Assets* assets) {
+void render_board(Board *board, Assets* assets) {
 
     /* A function that renders the map of the game including
      * the main board which applies the concept of an array
@@ -49,7 +49,7 @@ void render_map(Map *map, Assets* assets) {
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            enum MapElement element = map->board[row][col];
+            enum BoardElement element = board->array[row][col];
                 switch (element) {
                     case EMPTY:
                         break;
@@ -89,7 +89,7 @@ MapPosition calculate_pacman_position(Sprite* pacman) {
 };
 
 
-enum GameState check_player_status(MapPosition next_position, enum MapElement future_obstacle, Map *map, Assets* assets) {
+enum GameState check_player_status(MapPosition next_position, enum BoardElement future_obstacle, Board *board, Assets* assets) {
 
     /* A function that dictates the state of the game based on the
      * current player status, specifically involving the blocks and
@@ -106,8 +106,8 @@ enum GameState check_player_status(MapPosition next_position, enum MapElement fu
 
     switch (future_obstacle) {
         case FOOD:
-            map->total_player_score++;
-            map->board[row][col] = EMPTY;
+            board->total_player_score++;
+            board->array[row][col] = EMPTY;
             Mix_PlayChannel(2, assets->sounds.pacman_munch, 0);
             break;
         case BLOCK:
@@ -126,9 +126,9 @@ enum GameState check_player_status(MapPosition next_position, enum MapElement fu
     return GAME_IN_PROGRESS;
 };
 
-enum GameState check_if_player_won(MapPosition next_position, Map* map, Assets* assets) {
-    // Check if the pacman has `ate` all the fruit
-    if (map->total_player_score == map->number_of_foods) {
+enum GameState check_if_player_won(MapPosition next_position, Board* board, Assets* assets) {
+    // Check if the pacman has eaten all the fruit
+    if (board->total_player_score == board->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return GAME_WON;
     } else {
@@ -138,36 +138,36 @@ enum GameState check_if_player_won(MapPosition next_position, Map* map, Assets* 
 
 }
 
-void fill_board_with_foods(Map *map) {
+void fill_board_with_foods(Board *board) {
     int total_foods_generated = 0;
     int rand_x, rand_y;
-    while (total_foods_generated < map->number_of_foods){
+    while (total_foods_generated < board->number_of_foods){
          rand_x =  gen_random_num(0,9); // Generate random number between 0-9
          rand_y =  gen_random_num(0,9); // Generate random number between 0-9
-         if (map->board[rand_x][rand_y] == EMPTY) {
-            map->board[rand_x][rand_y] = FOOD;
+         if (board->array[rand_x][rand_y] == EMPTY) {
+            board->array[rand_x][rand_y] = FOOD;
             total_foods_generated++;
         }
     }
 }
 
-void fill_board_with_blocks(Map *map) {
+void fill_board_with_blocks(Board *board) {
     int total_blocks_generated = 0;
     int rand_row;
     int rand_col;
-    while (total_blocks_generated < map->number_of_blocks) {
+    while (total_blocks_generated < board->number_of_blocks) {
          // Avoid generating blocks that are adjacent to the 
          // border of the map.
          rand_row =  gen_random_num(1,8); // Generate random number between 1-8
          rand_col =  gen_random_num(1,8); // Generate random number between 1-8
-         if (map->board[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
-             map->board[rand_row][rand_col] = BLOCK;
+         if (board->array[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
+             board->array[rand_row][rand_col] = BLOCK;
              total_blocks_generated++;
         }
     }
 }
 
-void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
+void move_pacman(enum Move move, Assets *assets, Board* board, States *states) {
 
     Sprite* pacman = &assets->game.pacman;
 
@@ -176,7 +176,7 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
     // Next position of pacman when the player moves
     MapPosition next_position;
 
-    enum MapElement future_obstacle;
+    enum BoardElement future_obstacle;
     switch (move) {
         case MOVE_UP:
             next_position.row =  current_position.row -  1;
@@ -185,19 +185,19 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 270;
 
-            future_obstacle = map->board[next_position.row][next_position.col];
+            future_obstacle = board->array[next_position.row][next_position.col];
             if (future_obstacle == EXIT) { 
-                states->game_state = check_if_player_won(next_position, map, assets);
+                states->game_state = check_if_player_won(next_position, board, assets);
                 break;
             } else { 
-                states->game_state = check_player_status(next_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(next_position, future_obstacle, board, assets);
                 if (states->game_state != GAME_IN_PROGRESS) 
                     break;
             }
 
 
-            map->board[current_position.row][current_position.col] = EMPTY;
-            map->board[next_position.row][next_position.col] = PACMAN;
+            board->array[current_position.row][current_position.col] = EMPTY;
+            board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_DOWN:
@@ -207,18 +207,18 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             pacman->flip = SDL_FLIP_VERTICAL;
             pacman->rotation = 90;
 
-            future_obstacle = map->board[next_position.row][next_position.col];
+            future_obstacle = board->array[next_position.row][next_position.col];
             if (future_obstacle == EXIT) { 
-                states->game_state = check_if_player_won(next_position, map, assets);
+                states->game_state = check_if_player_won(next_position, board, assets);
                 break;
             } else { 
-                states->game_state = check_player_status(next_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(next_position, future_obstacle, board, assets);
                 if (states->game_state != GAME_IN_PROGRESS) 
                     break;
             }
 
-            map->board[current_position.row][current_position.col] = EMPTY;
-            map->board[next_position.row][next_position.col] = PACMAN;
+            board->array[current_position.row][current_position.col] = EMPTY;
+            board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_LEFT:
@@ -228,18 +228,18 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             pacman->flip = SDL_FLIP_HORIZONTAL;
             pacman->rotation = 0;
 
-            future_obstacle = map->board[next_position.row][next_position.col];
+            future_obstacle = board->array[next_position.row][next_position.col];
             if (future_obstacle == EXIT) { 
-                states->game_state = check_if_player_won(next_position, map, assets);
+                states->game_state = check_if_player_won(next_position, board, assets);
                 break;
             } else { 
-                states->game_state = check_player_status(next_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(next_position, future_obstacle, board, assets);
                 if (states->game_state != GAME_IN_PROGRESS) 
                     break;
             }
 
-            map->board[current_position.row][current_position.col] = EMPTY;
-            map->board[next_position.row][next_position.col] = PACMAN;
+            board->array[current_position.row][current_position.col] = EMPTY;
+            board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
         case MOVE_RIGHT:
@@ -249,28 +249,31 @@ void move_pacman(enum Move move, Assets *assets, Map* map, States *states) {
             pacman->flip = SDL_FLIP_NONE;
             pacman->rotation = 0;
 
-            future_obstacle = map->board[next_position.row][next_position.col];
+            future_obstacle = board->array[next_position.row][next_position.col];
             if (future_obstacle == EXIT) { 
-                states->game_state = check_if_player_won(next_position, map, assets);
+                states->game_state = check_if_player_won(next_position, board, assets);
             } else { 
-                states->game_state = check_player_status(next_position, future_obstacle, map, assets);
+                states->game_state = check_player_status(next_position, future_obstacle, board, assets);
                 if (states->game_state != GAME_IN_PROGRESS) 
                     break;
             }
 
-            map->board[current_position.row][current_position.col] = EMPTY;
-            map->board[next_position.row][next_position.col] = PACMAN;
+            board->array[current_position.row][current_position.col] = EMPTY;
+            board->array[next_position.row][next_position.col] = PACMAN;
             Mix_PlayChannel(-1, assets->sounds.pacman_step, 0);
             break;
 
     };
 }
 
-bool check_for_impossible_win_scenario(Map* map) {
+bool check_for_impossible_win_scenario(Board* board) {
+    /*
+     *
+     */
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            enum MapElement element = map->board[row][col];
+            enum BoardElement element = board->array[row][col];
             if (element == FOOD || element == EXIT) { 
                 /* 
                  *  We define `impassable_adjacent_neighbors` as the number of
@@ -298,12 +301,12 @@ bool check_for_impossible_win_scenario(Map* map) {
                         if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
                             impassable_adjacent_neighbors++;
                         // Count the number of adjacent blocks or exit.
-                        } else if (map->board[row + i][col + j] == BLOCK || map->board[row + i][col + j] == EXIT) 
+                        } else if (board->array[row + i][col + j] == BLOCK || board->array[row + i][col + j] == EXIT) 
                             impassable_adjacent_neighbors++;
                         }
                 } 
                 // printf("row: %d col: %d has: %d\n", row, col, impassable_adjacent_neighbors);
-                if (impassable_adjacent_neighbors >= 3) 
+                if (impassable_adjacent_neighbors >= 4) 
                     return false;
                 }
             }
@@ -312,39 +315,45 @@ bool check_for_impossible_win_scenario(Map* map) {
     return true;
 }
 
-void init_map(Map* map, Assets* assets, int number_of_foods) {
+void init_map(Board* board, Assets* assets, int number_of_foods) {
 
     // Ensure the board is empty
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
-            map->board[row][col] = EMPTY;
+            board->array[row][col] = EMPTY;
         }
     }
 
     // Reset the position of pacman
-    map->board[0][0] = PACMAN;
+    board->array[0][0] = PACMAN;
     assets->game.pacman.rect.x = ELEMENT_INITIAL_POSITION_X;
     assets->game.pacman.rect.y = ELEMENT_INITIAL_POSITION_Y;
     // Reset the rotation and flip of pacman
     assets->game.pacman.flip = SDL_FLIP_NONE;
     assets->game.pacman.rotation = 0;
 
-    map->total_player_score = 0;
-    map->number_of_blocks = NUMBER_OF_BLOCKS;
-    map->number_of_foods = number_of_foods;
+    board->total_player_score = 0;
+    board->number_of_blocks = NUMBER_OF_BLOCKS;
+    board->number_of_foods = number_of_foods;
 
-    int exit_coordinate_x = gen_random_num(1, 9);
-    int exit_coordinate_y = gen_random_num(1,9);
+    // NOTE: Restricting the random number generated for row and col
+    //       of the exit coordinate, ensures that pacman will not be
+    //       adjacent to the exit.
 
-    map->board[exit_coordinate_x][exit_coordinate_y] = EXIT;
+    // Generate random number between 1-9 and assign it
+    int exit_coordinate_row = gen_random_num(1,9); 
+    // Generate random number between 1-9 and assign it
+    int exit_coordinate_col = gen_random_num(1,9); 
 
-    fill_board_with_blocks(map);
-    fill_board_with_foods(map);
+    board->array[exit_coordinate_row][exit_coordinate_col] = EXIT;
 
-    bool is_win_scenario_possible = check_for_impossible_win_scenario(map);
+    fill_board_with_blocks(board);
+    fill_board_with_foods(board);
+
+    bool is_win_scenario_possible = check_for_impossible_win_scenario(board);
 
     // Initialize pacman again when an impossible win scenario may occur
     if (!is_win_scenario_possible) {
-        init_map(map, assets, number_of_foods);
+        init_map(board, assets, number_of_foods);
     }
 }
