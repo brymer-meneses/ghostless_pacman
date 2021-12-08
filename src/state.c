@@ -36,28 +36,28 @@ void render_state(States* states, Board *board, Assets *assets) {
 
     // Sprite is a struct that holds several variables that  
     
-    Sprite about_screen                 = assets->misc.about_screen;
-    Sprite game_lost_hit_block          = assets->prompt.game_lost_hit_block;
-    Sprite game_lost_hit_border         = assets->prompt.game_lost_hit_border;
-    Sprite game_lost_insufficient_food  = assets->prompt.game_lost_insufficient_food;
-    Sprite game_won                     = assets->prompt.game_won;
+    Sprite *about_screen                 = &assets->misc.about_screen;
+    Sprite *game_lost_hit_block          = &assets->prompt.game_lost_hit_block;
+    Sprite *game_lost_hit_border         = &assets->prompt.game_lost_hit_border;
+    Sprite *game_lost_insufficient_food  = &assets->prompt.game_lost_insufficient_food;
+    Sprite *game_won                     = &assets->prompt.game_won;
 
-    Sprite player_chose_start           = assets->menu.player_chose_start;
-    Sprite player_chose_about           = assets->menu.player_chose_about;
-    Sprite player_chose_exit            = assets->menu.player_chose_exit;
-    Sprite player_chose_none            = assets->menu.player_chose_none;
-    Sprite player_chose_tutorial        = assets->menu.player_chose_tutorial;
+    Sprite *player_chose_start           = &assets->menu.player_chose_start;
+    Sprite *player_chose_about           = &assets->menu.player_chose_about;
+    Sprite *player_chose_exit            = &assets->menu.player_chose_exit;
+    Sprite *player_chose_none            = &assets->menu.player_chose_none;
+    Sprite *player_chose_tutorial        = &assets->menu.player_chose_tutorial;
 
-    Sprite wrong_input_in_about_game    = assets->reminders.wrong_input_in_about_game;
-    Sprite wrong_input_in_menu          = assets->reminders.wrong_input_in_menu;
-    Sprite wrong_input_in_tutorial      = assets->reminders.wrong_input_in_tutorial;
-    Sprite wrong_input_in_game          = assets->reminders.wrong_input_in_game;
-    Sprite wrong_input_in_game_prompts  = assets->reminders.wrong_input_in_game_prompts;
-    Sprite wrong_input_in_food_input    = assets->reminders.wrong_input_in_food_input;
+    Sprite *wrong_input_in_about_game    = &assets->reminders.wrong_input_in_about_game;
+    Sprite *wrong_input_in_menu          = &assets->reminders.wrong_input_in_menu;
+    Sprite *wrong_input_in_tutorial      = &assets->reminders.wrong_input_in_tutorial;
+    Sprite *wrong_input_in_game          = &assets->reminders.wrong_input_in_game;
+    Sprite *wrong_input_in_game_prompts  = &assets->reminders.wrong_input_in_game_prompts;
+    Sprite *wrong_input_in_food_input    = &assets->reminders.wrong_input_in_food_input;
 
-    Sprite* tutorial_pages              = assets->misc.tutorial_pages;
-    Sprite* score_visuals               = assets->misc.score_visuals;
-    Sprite* food_input_prompts          = assets->misc.food_input_prompts;
+    Sprite *tutorial_pages               = assets->misc.tutorial_pages;
+    Sprite *score_visuals                = assets->misc.score_visuals;
+    Sprite *food_input_prompts           = assets->misc.food_input_prompts;
 
     // PlayerState refers to the location of the player.
     // This will change if the player goes to the menu or in the tutorial.
@@ -83,26 +83,26 @@ void render_state(States* states, Board *board, Assets *assets) {
         case PLAYER_IN_MENU:
             switch (current_menu_choice) {
                 case PLAYER_CHOSE_START:
-                    render_sprite(&player_chose_start);
+                    render_sprite(player_chose_start);
                     break;
                 case PLAYER_CHOSE_ABOUT:
-                    render_sprite(&player_chose_about);
+                    render_sprite(player_chose_about);
                     break;
                 case PLAYER_CHOSE_EXIT:
-                    render_sprite(&player_chose_exit);
+                    render_sprite(player_chose_exit);
                     break;
                 case PLAYER_CHOSE_TUTORIAL:
-                    render_sprite(&player_chose_tutorial);
+                    render_sprite(player_chose_tutorial);
                     break;
                 case PLAYER_CHOSE_NONE:
-                    render_sprite(&player_chose_none);
+                    render_sprite(player_chose_none);
                 }
             break;
         case PLAYER_IN_TUTORIAL:
             render_sprite(&tutorial_pages[current_tutorial_page]);
             break;
         case PLAYER_IN_ABOUT:
-            render_sprite(&about_screen);
+            render_sprite(about_screen);
             break;
         case PLAYER_IN_GAME:
             switch (game_state) {
@@ -115,19 +115,19 @@ void render_state(States* states, Board *board, Assets *assets) {
                     render_sprite(&food_input_prompts[states->current_number_of_foods_picked - 1]);
                     break;
                 case GAME_WON:
-                    render_sprite(&game_won);
+                    render_sprite(game_won);
                     render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BLOCK:
-                    render_sprite(&game_lost_hit_block);
+                    render_sprite(game_lost_hit_block);
                     render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_HIT_BORDER:
-                    render_sprite(&game_lost_hit_border);
+                    render_sprite(game_lost_hit_border);
                     render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_LOST_INSUFFICIENT_FOOD:
-                    render_sprite(&game_lost_insufficient_food);
+                    render_sprite(game_lost_insufficient_food);
                     render_sprite(&score_visuals[board->total_player_score]);
                     break;
                 case GAME_IN_PROGRESS:
@@ -142,25 +142,24 @@ void render_state(States* states, Board *board, Assets *assets) {
     // recorded and displays a prompt in response to these wrong inputs.
     switch (wrong_input_state) {
         case WRONG_INPUT_NONE:
-            // do nothing
             break;
         case WRONG_INPUT_IN_ABOUT_GAME:
-            render_reminder(&wrong_input_in_about_game, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_about_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME:
-            render_reminder(&wrong_input_in_game, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_game, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_TUTORIAL:
-            render_reminder(&wrong_input_in_tutorial, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_tutorial, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_FOOD_INPUT:
-            render_reminder(&wrong_input_in_food_input, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_food_input, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_MENU:
-            render_reminder(&wrong_input_in_menu, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_menu, states, 2000, 535, 5);
             break;
         case WRONG_INPUT_IN_GAME_PROMPTS:
-            render_reminder(&wrong_input_in_game_prompts, states, 2000, 535, 5);
+            render_reminder(wrong_input_in_game_prompts, states, 2000, 535, 5);
             break;
     }
 
@@ -276,6 +275,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                             Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                             states->wrong_input_time = SDL_GetTicks();
+                            break;
                     }
                     
                     // A separate switch is created for pressing 'Enter'. This allows the
