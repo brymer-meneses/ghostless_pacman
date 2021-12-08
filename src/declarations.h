@@ -260,7 +260,7 @@ typedef struct States {
     int                      current_tutorial_page;
     int                      current_number_of_foods_picked;
     bool                     show_quit_confirmation;
-    bool                     is_game_running;
+    bool                     player_wants_to_quit;
     Uint32                   wrong_input_time; // Uint32 is a type defined by SDL
 } States;
 

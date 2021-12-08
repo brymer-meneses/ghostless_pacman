@@ -26,7 +26,8 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     Assets assets;
 
     // SDL_Rect is a struct that holds the `x` and `y` position
-    // as well as the `h` height and `w` width of any rendered in the screen.
+    // as well as the `h` height and `w` width of any element rendered in the
+    // screen.
 
     SDL_Rect pacman_rect        = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=35, .w=35};
     SDL_Rect block_rect         = {.x=ELEMENT_INITIAL_POSITION_X, .y=ELEMENT_INITIAL_POSITION_Y, .h=30, .w=30};
@@ -39,7 +40,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     SDL_Rect reminder_rect      = {.x=43,   .y=700, .h=98,  .w=554};
     SDL_Rect quit_rect          = {.x=36,   .y=193, .h=253, .w=567};
 
-    // Load all sprites used for running the main game
+    // Load all sprites used for running the game
     assets.game.pacman = load_sprite(renderer, "../assets/game_elements/pacman.png", 40, 10, pacman_rect);
     assets.game.main   = load_sprite(renderer, "../assets/game_elements/main.png", 0, 1, fullscreen_rect);
     assets.game.exit   = load_sprite(renderer, "../assets/game_elements/exit.png", 0, 1, exit_rect);
@@ -51,6 +52,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     assets.menu.player_chose_about         = load_sprite(renderer, "../assets/menu/highlight_about.png", 0, 1, fullscreen_rect);
     assets.menu.player_chose_none          = load_sprite(renderer, "../assets/menu/highlight_none.png", 0, 1, fullscreen_rect);
 
+    /// Game Prompts
     // Load game prompts, based on the game results
     assets.prompt.game_lost_hit_block         = load_sprite(renderer, "../assets/results/block_hit.png", 0, 1, prompt_rect);
     assets.prompt.game_lost_hit_border        = load_sprite(renderer, "../assets/results/border_hit.png", 0, 1, prompt_rect);
@@ -58,10 +60,10 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     assets.prompt.game_won                    = load_sprite(renderer, "../assets/results/won.png", 0, 1, prompt_rect);
 
 
-    // Miscellaneous
-    //      Load screen upon choosing About the Game from the menu
+    /// Miscellaneous
+    // Load screen upon choosing About the Game from the menu
     assets.misc.about_screen               = load_sprite(renderer, "../assets/misc/about_game.png", 0, 1, fullscreen_rect);
-    //      Load prompt upon choosing Exit from the menu
+    // Load prompt upon choosing Exit from the menu
     assets.misc.quit_confirmation_prompt =  load_sprite(renderer, "../assets/misc/quit_confirmation.png", 0, 1, quit_rect);
 
 

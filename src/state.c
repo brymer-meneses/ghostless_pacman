@@ -206,7 +206,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                 states->show_quit_confirmation = false;
                 break;
             case SDLK_y:
-                states->is_game_running = false;
+                states->player_wants_to_quit = true;
                 break;
         }
         // Early return ensures that the application will ignore every other 
@@ -270,28 +270,27 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                             states->current_number_of_foods_picked = 1;
                             break;
                         case SDLK_RETURN:
+                            // Handle when the user presses enter without entering
+                            // their desired food number.
+                            if (states->current_number_of_foods_picked != 1) {
+
+                                init_board(board, assets, states->current_number_of_foods_picked);
+                                states->game_state = GAME_IN_PROGRESS;
+                                Mix_PlayChannel(1, assets->sounds.start_game, 0);
+
+                            } else {
+
+                                states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
+                                states->wrong_input_time = SDL_GetTicks();
+                                Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
+                            }
+                            // Reset the number of current foods picked
+                            states->current_number_of_foods_picked = 1;
                             break;
                         default:
                             Mix_PlayChannel(-1, assets->sounds.game_notification, 0);
                             states->wrong_input_state = WRONG_INPUT_IN_FOOD_INPUT;
                             states->wrong_input_time = SDL_GetTicks();
-                            break;
-                    }
-                    
-                    // A separate switch is created for pressing 'Enter'. This allows the
-                    // user to change the desired number, even after pressing some other
-                    // number previously. Once 'Enter' is pressed, the game state will be
-                    // changed to GAME_IN_PROGRESS, which is the actual game proper.
-                    switch (player_keypress) {
-                        case SDLK_RETURN:
-                            Mix_PlayChannel(1, assets->sounds.start_game, 0);
-                            if (states->current_number_of_foods_picked != 1) {
-                                init_board(board, assets, states->current_number_of_foods_picked);
-                                states->game_state = GAME_IN_PROGRESS;
-                            }
-                            states->current_number_of_foods_picked = 1;
-                            break;
-                        default:
                             break;
                     }
                     break;

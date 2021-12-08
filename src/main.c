@@ -60,12 +60,12 @@ int main () {
     states.current_menu_choice = PLAYER_CHOSE_NONE;
 
     states.show_quit_confirmation = false;
-    states.is_game_running = true;
+    states.player_wants_to_quit = false;
 
     // Play background music
     Mix_FadeInMusic(assets.sounds.background_music, -1, 4000);
 
-    while (states.is_game_running) {
+    while (!states.player_wants_to_quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
