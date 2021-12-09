@@ -14,16 +14,16 @@
 
 void init_SDL() {
     /*
-     *  A helper function that handles the initialization of SDL.
+     *  A helper function that handles the initialization of SDL
      */
 
     // Turn on anti-aliasing by default
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
-    // Tell SDL to initialize loading of png images. 
+    // Tell SDL to initialize loading of PNG images
     IMG_Init(IMG_INIT_PNG);
 
-    // Initializes SDL, if it fails exit with an error code.
+    // Initializes SDL, or exit with an error code if it fails
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
         SDL_Quit();
@@ -37,13 +37,12 @@ void init_SDL() {
 SDL_Window* create_window() {
     // A function that initializes SDL and opens up a window
 
-
     // Initialize a window using SDL
     SDL_Window* window = SDL_CreateWindow("Ghostless Pacman",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
                                         WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-    // If the window initialization fails, quit sdl
+    // If the window initialization fails, quit SDL
     if (!window) { 
         printf("Error creating window: %s\n", SDL_GetError());
         SDL_Quit();
@@ -94,9 +93,6 @@ void render_sprite(Sprite *sprite) {
 }
 
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
-    /*
-     *
-     */
 
     SDL_Surface* image_surface = IMG_Load(filename);
     if (!image_surface) {
@@ -122,7 +118,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 
 int gen_random_num(int min, int max) {
     /* 
-     * Generates a random number with a minimum or maximum.
+     * Generates a random number with a minimum or maximum
      * 
      * params:
      *      int max
@@ -130,7 +126,7 @@ int gen_random_num(int min, int max) {
      *      int min
      *          the minimum number that will be generated
      * returns:
-     *      a random number generated in with range [min, max].
+     *      a random number generated in with range [min, max]
      */
 
     return rand() % (max + 1 - min) + min;
