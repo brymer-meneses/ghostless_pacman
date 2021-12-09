@@ -60,5 +60,46 @@ round in the game is winnable by preventing
 is surrounded by blocks from all sides.\\
 
 The code also made use of header (.h) files to declare certain variables for
-the game. Some major concepts involved are for and while loops, structs, and
-switch cases.
+the game. Some significant concepts involved are for and while loops, structs, and
+switch cases.\\
+
+Variables used in the game are much elaborated on the lines of code at which they were used. To give an overview, here are some major ones:\\
+
+\begin{table}[H]
+    \centering
+    \def\arraystretch{2}
+    \begin{tabular}{ m{20em} m{15em} } 
+        Variable & Use \\
+        \hline
+        \codeword{window} & associates to the window of the whole application, different from the board of the actual game \\
+        
+        \codeword{board} & associates to the board of the actual game, which utilizes an array of 10 columns and 10 rows \\
+
+        \codeword{number_of_blocks} & returns an integer that corresponds to how many blocks are displayed on the game board\\
+
+        \codeword{number_of_foods} & returns an integer that corresponds to how many food pieces are displayed on the game board, in response to desired number that the user chose \\
+
+        \codeword{current_number_of_foods_picked} & returns the number of food eaten by Pacman as the player navigates through the game board \\
+
+        \codeword{total_player_score} & reflects the current number of foods picked\\
+
+        \codeword{player_state} & an \codeword{enum} variable that returns the current state of the player in the application. States include \codeword{PLAYER_IN_MENU}, \codeword{PLAYER_IN_GAME}, \codeword{PLAYER_IN_TUTORIAL}, and \codeword{PLAYER_IN_ABOUT}.\\
+
+        \codeword{game_state} & an \codeword{enum} variable that returns the current state of the game itself. States include \codeword{GAME_WON}, \codeword{GAME_LOST_HIT_BLOCK}, \codeword{GAME_LOST_HIT_BORDER}, \codeword{GAME_LOST_INSUFFICIENT_FOOD}, \codeword{GAME_IN_PROGRESS}, and \codeword{GAME_IN_FOOD_NUMBER_INPUT}.\\
+    \end{tabular}
+    \caption{Major variables used in creating Ghostless Pacman}
+\end{table}
+
+% line break, kasi napuputol sa page sa haba
+
+\begin{table}[H]
+    \centering
+    \def\arraystretch{2}
+    \begin{tabular}{ m{20em} m{15em} } 
+        Variable & Use \\
+        \hline
+        \codeword{player_keypress} & is a variable related to the scanning of what keys the user presses, through SDL's \codeword{SDL_Keycode}. This variable is frequently mentioned in the code, since the program mostly relies on the keypresses and inputs of the user. \\
+        \codeword{wrong_input_state} & an \codeword{enum} variable that returns the current state of wrong input or keypress, specifically at which game state it occurs. States include \codeword{WRONG_INPUT_NONE}, \codeword{WRONG_INPUT_IN_MENU}, \codeword{WRONG_INPUT_IN_GAME}, \codeword{WRONG_INPUT_IN_GAME_PROMPTS}, \codeword{WRONG_INPUT_IN_ABOUT_GAME}, \codeword{WRONG_INPUT_IN_TUTORIAL}, and \codeword{WRONG_INPUT_IN_FOOD_INPUT}\\
+    \end{tabular}
+    \caption{(Continuation) Major variables used in creating Ghostless Pacman}
+\end{table}
