@@ -38,21 +38,26 @@ void render_board(Board *board, Assets* assets) {
     //  Changing `y` and `x` of the struct SDL_Rect that is a member of the
     //  struct Sprite, will cause the image encapsulatd in the Sprite to move
     //  depending on how much you increase or decrease these variables.
-    //
 
     Sprite* main   =   &assets->game.main;
     Sprite* pacman =   &assets->game.pacman;
     Sprite* exit   =   &assets->game.exit;
 
+    // NOTE:
+    //  The variable `foods` and `blocks` points into an array containing sprites.
+    //  this is it is important to iterate through the members of this array and 
+    //  render the accordingly.
+
     Sprite* foods  =   assets->game.foods;
     Sprite* blocks =   assets->game.blocks;
+
+    int current_food_index  = 0;
+    int current_block_index = 0;
 
     render_sprite(main);
     render_sprite(exit);
     render_sprite(pacman);
 
-    int current_food_index  = 0;
-    int current_block_index = 0;
 
     for (int row=0; row<10; row++) {
         for (int col=0; col<10; col++) {
@@ -156,7 +161,30 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
     return GAME_IN_PROGRESS;
 };
 
-enum GameState check_if_player_won(BoardPosition next_position, Board* board, Assets* assets) {
+enum GameState check_if_player_won(BoardPosition next_position, Board *board, Assets *assets) {
+
+    /* 
+     * A function that checks if the player won in the game.
+     *
+     * params
+     *      BoardPosition next_position
+     *          A struct holding the next position of pacman on the board.
+     *      Board *board
+     *          A pointer to the struct board which stores all the variables
+     *          related to the game itself.
+     *      Assets *assets
+     *          A pointer to the struct Assets that points
+     *          to the required assets
+     * returns
+     *      enum GameState
+     *          the `state` of the game when pacman moves into the `next_position`. 
+     *
+     * example
+     *      If pacman moves into the exit on its `next_position`, and pacman has 
+     *      eaten all the fruit. This function will return a game_state enum
+     *      PLAYER_WON.
+     */
+
 
     // Check if the pacman has eaten all the foods
     if (board->total_player_score == board->number_of_foods) {
@@ -171,6 +199,28 @@ enum GameState check_if_player_won(BoardPosition next_position, Board* board, As
 
 void move_pacman(enum PacmanMove pacman_move, Assets *assets, Board* board, States *states) {
 
+    /* 
+     * A function that handels the movement of pacman
+     * current player status, specifically involving the blocks and
+     * food
+     *
+     * params
+     *      BoardPosition next_position
+     *          A struct holding the next position of pacman
+     *      enum BoardElement future_obstace
+     *          An enum that represents the future obstacle that pacman will
+     *          encounter on its `next_position`
+     *      Board *board
+     *          A pointer to the struct board which stores all the variables
+     *          related to the game itself.
+     * returns
+     *      enum GameState
+     *          the `state` of the game when pacman moves into the `next_position`. 
+     *
+     * example
+     *      If pacman moves into a block on its `next_position`, this function
+     *      will return a `GAME_LOST_HIT_BLOCK` enum.
+     */
     Sprite* pacman = &assets->game.pacman;
 
     // Current position of pacman
@@ -371,11 +421,12 @@ void fill_board_with_blocks(Board *board) {
 
 void fill_board_with_exit(Board *board) {
     /*
-     * A function that fills the board with an exit
+     * A function that randomly fills the board with an exit
      * 
      * params
      *       Board *board
-     *          A pointer to the struct Board
+     *          A pointer to the struct Board which holds
+     *          variables that are concerned with the game itself.
      */
 
     // NOTE: 

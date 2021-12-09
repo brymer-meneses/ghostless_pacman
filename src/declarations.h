@@ -18,13 +18,6 @@
 #define MAX_NUMBER_OF_FOOD 9
 
 /*
- * ELEMENT_INITIAL_POSITION_X and ELEMENT_INITIAL_POSITION_Y
- * is the initial position of
- */
-#define ELEMENT_INITIAL_POSITION_X (95 + 12)
-#define ELEMENT_INITIAL_POSITION_Y (95 + 6)
-
-/*
  *  MAX_ADJACENT_IMPASSABLE_NEIGHBORS is the maximum number of
  *  adjacent spaces around a food piece or an exit that is impossible
  *  to be passed through. This includes adjacent block or borders ajacent
@@ -43,11 +36,41 @@
  */
 #define MAX_ADJACENT_IMPASSABLE_NEIGHBORS 3
 
+/*
+ * ELEMENT_INITIAL_POSITION_X and ELEMENT_INITIAL_POSITION_Y
+ * is the initial position of a BoardElement.
+ */
+#define ELEMENT_INITIAL_POSITION_X (95 + 12)
+#define ELEMENT_INITIAL_POSITION_Y (95 + 6)
+
 #include "stdbool.h"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_image.h"
+
+/*
+ * BoardElement is an enum that encodes all the possible 
+ * elements in the board.
+ */
+
+enum BoardElement {
+    EMPTY,
+    PACMAN,
+    FOOD,
+    BLOCK,
+    EXIT,
+};
+
+/*
+ * BoardPosition is a struct that holds the `x` and `y` position of a
+ * BoardElement.
+ */
+typedef struct BoardPosition {
+    int row;
+    int col;
+} BoardPosition;
+
 
 /*
  * Sprite is a struct that holds related variables 
@@ -128,14 +151,6 @@ typedef struct Assets {
 
 
 } Assets;
-
-enum BoardElement {
-    EMPTY,
-    PACMAN,
-    FOOD,
-    BLOCK,
-    EXIT,
-};
 
 /*
 
@@ -293,7 +308,7 @@ typedef struct States {
 
 
 /*
- * MOVE is an 
+ * PacmanMove is an enum that handles the movement of pacman on the screen.
  */
 
 enum PacmanMove {
@@ -302,15 +317,6 @@ enum PacmanMove {
    MOVE_PACMAN_LEFT,
    MOVE_PACMAN_RIGHT,
 };
-
-/*
- * BoardPosition is a struct that holds the `x` and `y` position of a
- * BoardElement
- */
-typedef struct BoardPosition {
-    int row;
-    int col;
-} BoardPosition;
 
 
 #endif

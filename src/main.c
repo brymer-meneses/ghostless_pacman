@@ -1,6 +1,10 @@
 /*
  * This file, 'main.c', contains the main loop of the game,
  * as well as its termination and the initialization of SDL
+ *
+ * Authors
+ *      Brymer Meneses 
+ *      Aaron Paul Gapud
  */
 
 
