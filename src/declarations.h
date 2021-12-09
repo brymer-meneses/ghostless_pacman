@@ -153,12 +153,13 @@ typedef struct Assets {
 } Assets;
 
 /*
-
+ * Board is a struct that holds variables that relate to the game
+ * itself.
  */
 
 typedef struct Board { 
-    // Pointer to a 10 by 10, two-dimensional array that contains 
-    // enums
+    // Pointer to a 10 by 10, two-dimensional array that encodes
+    // the
     enum BoardElement array[10][10];
     // The total number of foods generated in the board
     int number_of_foods;

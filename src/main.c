@@ -39,10 +39,10 @@ int main () {
     SDL_Surface* icon = IMG_Load("../assets/game_elements/pacman_solo.png");
     SDL_SetWindowIcon(window, icon);
 
-    // Set the background color
+    // Set the background color for the window
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
     
-    // Load all game assets
+    // Load all application assetsa
     Assets assets = load_all_assets(renderer);
 
     // Initialize board that will be used in the game
