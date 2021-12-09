@@ -3,6 +3,7 @@
 
 \begin{enumerate}
     \item Application launches
+    \item User chooses from the menu options:
     \begin{enumerate}[label=\alph*.]
         \item
             \begin{itemize}[label={}]
@@ -28,23 +29,13 @@
         \item Else, display a wrong input reminder.
     \end{enumerate}
     
-    \item User chooses from the menu options:
-        \begin{enumerate}[label=\alph*]
-            \item
-            \begin{itemize}[label={}]
-                \item If the user input is from 2 to 9, display chosen number 
-                \item \hspace{1cm} If the user presses Enter, proceed to In-play Algorithm
-            \end{itemize}
-            \item  If the user presses M, go back to Step 2
-	        \item Else, display a wrong input reminder
-        \end{enumerate}
     \item User chooses the number of food pieces s/he wants for the game
         \begin{enumerate}[label=\alph*]
-            \item User chooses the number of food pieces s/he wants for the game
+            \item If the user input is from 2 to 9, display chosen number
             \begin{itemize}[label={}]
-                \item If the user input is from 2 to 9, display chosen number
+                \item If the user presses Enter, proceed to In-game Algorithm
+                \item Else, display a wrong input reminder
             \end{itemize}
-            \item If the user presses Enter, proceed to In-play Algorithm
             \item If the user presses M, go back to Step 2
             \item Else, display a wrong input reminder
         \end{enumerate}
@@ -75,8 +66,8 @@
             \item If the user presses S, pacman moves down
             \item If the user presses A, pacman moves left
             \item If the user presses D, pacman moves right
-            \item If the user presses M, the program goes back to menu (go back to Step 2 of the Pre-play Algorithm)
-            \item If the user presses X, the program prompts a quit window (recall Step 5 of the Pre-play Algorithm)
+            \item If the user presses M, the program goes back to menu (go back to Step 2 of the Pre-game Algorithm)
+            \item If the user presses X, the program prompts a quit window (recall Step 5 of the Pre-game Algorithm)
             \begin{itemize}[label={}]
                 \item If the user presses Y, exit the program
                 \item If the user presses N, the prompt closes
@@ -91,9 +82,9 @@
         \end{enumerate}
     \item With the prompts from the game results, the user chooses between the options to restart, return to menu, or exit the game
         \begin{enumerate}[label=\alph*]
-            \item If the user presses R, restart the game (go back to Step 3 of the Pre-play Algorithm)
-            \item If the user presses M, return to menu (go back to Step 2 of the Pre-play Algorithm)
-            \item If the user presses X, the program prompts a quit window (recall Step 5 of the Pre-play Algorithm)
+            \item If the user presses R, restart the game (go back to Step 3 of the Pre-game Algorithm)
+            \item If the user presses M, return to menu (go back to Step 2 of the Pre-game Algorithm)
+            \item If the user presses X, the program prompts a quit window (recall Step 5 of the Pre-game Algorithm)
                 \begin{itemize}[label={}]
                     \item If the user presses Y, exit the program
                     \item If the user presses N, the prompt closes
