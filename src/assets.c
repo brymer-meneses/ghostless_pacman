@@ -1,7 +1,7 @@
 /*
  *  This file, `assets.c`, contains functions that handle the loading and 
- *  freeing of all the assets in the game.
- *  The term 'asset' refers to images, music or sound effects that are used in the game.
+ *  freeing of all the assets in the application.
+ *  The term 'asset' refers to images, music or sound effects that are used in the application.
  */
 
 
@@ -16,6 +16,7 @@
 Assets load_all_assets(SDL_Renderer *renderer) { 
    /*
     * A function that handles the loading of all assets required for the game, such as various images and sounds.
+    * This includes loading various images and sounds for the application.
     *
     * params
     *      SDL_Renderer *renderer
@@ -24,7 +25,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     *
     * returns
     *     Assets assets
-    *         A struct containing all the game assets.
+    *         A struct containing all the assets required in the application.
     */
 
     Assets assets;
@@ -128,7 +129,7 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     return assets;
 }
 
-void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
+void free_sprite_array(Sprite* sprite_array, int length_of_array) {
    /*
     * A function that handles the release of the memory allocated for a
     * sprite array.
@@ -136,7 +137,7 @@ void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
     * params:
     *     Sprite* sprite 
     *         - Pointer to a sprite array
-    *     size_t length_of_array
+    *     int   length_of_array
     *         - The length of the array
     */
     for (int i=0; i<length_of_array; i++) {
@@ -148,8 +149,8 @@ void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
 void free_all_assets(Assets *assets) { 
    /*
     * A function that handles the release of all memory allocated for all
-    * the assets in the game. This includes freeing all the sounds
-    * and images used.
+    * the assets used in the application. This includes freeing all the sounds
+    * and images used in the application.
     *
     * params:
     *     Assets *assets

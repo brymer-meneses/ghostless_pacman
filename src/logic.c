@@ -66,24 +66,24 @@ void render_board(Board *board, Assets* assets) {
                     case EMPTY:
                         break;
                     case PACMAN:
-                        pacman->rect.x = ELEMENT_INITIAL_POSITION_X + (45 * col);
-                        pacman->rect.y = ELEMENT_INITIAL_POSITION_Y + (45 * row);
+                        pacman->rect.x = ELEMENT_INITIAL_POSITION_X + (BOX_WIDTH * col);
+                        pacman->rect.y = ELEMENT_INITIAL_POSITION_Y + (BOX_WIDTH * row);
                         break;
                     case FOOD:
-                        foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X  +  (45 * col);
-                        foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  +  (45 * row);
+                        foods[current_food_index].rect.x =  ELEMENT_INITIAL_POSITION_X  +  (BOX_WIDTH * col);
+                        foods[current_food_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  +  (BOX_WIDTH * row);
                         render_sprite(&foods[current_food_index]);
                         current_food_index++;
                         break;
                     case BLOCK:
-                        blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X  + (45 * col);
-                        blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  + (45 * row);
+                        blocks[current_block_index].rect.x =  ELEMENT_INITIAL_POSITION_X  + (BOX_WIDTH * col);
+                        blocks[current_block_index].rect.y =  ELEMENT_INITIAL_POSITION_Y  + (BOX_WIDTH * row);
                         render_sprite(&blocks[current_block_index]);
                         current_block_index++;
                         break;
                     case EXIT:
-                        exit->rect.x = ELEMENT_INITIAL_POSITION_X  + (45 * col);
-                        exit->rect.y = ELEMENT_INITIAL_POSITION_Y  + (45 * row);
+                        exit->rect.x = ELEMENT_INITIAL_POSITION_X  + (BOX_WIDTH * col);
+                        exit->rect.y = ELEMENT_INITIAL_POSITION_Y  + (BOX_WIDTH * row);
                         break;
                 }
         }
@@ -98,11 +98,14 @@ BoardPosition calculate_pacman_position(Sprite* pacman) {
      * params
      *      Sprite *pacman
      *          a pointer to a sprite containing pacman
+     * returns
+     *      BoardPosition
+     *          the current position of pacman
      */
 
     BoardPosition position;
-    position.col = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / 45;
-    position.row = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / 45;
+    position.col = (pacman->rect.x - ELEMENT_INITIAL_POSITION_X) / BOX_WIDTH;
+    position.row = (pacman->rect.y - ELEMENT_INITIAL_POSITION_Y) / BOX_WIDTH;
     return position;
 };
 
@@ -177,8 +180,8 @@ enum GameState check_if_player_won(BoardPosition next_position, Board *board, As
      *          A pointer to the struct board which stores all the variables
      *          related to the game itself.
      *      Assets *assets
-     *          A pointer to the struct Assets that points
-     *          to the required assets
+     *          A pointer to the struct Assets that holds the required assets
+     *          in the application.
      * returns
      *      enum GameState
      *          the `state` of the game when pacman moves into the `next_position`. 
@@ -207,17 +210,14 @@ void move_pacman(enum PacmanMove pacman_move, Assets *assets, Board* board, Stat
      * A function that handles the movement of pacman
      *
      * params
-     *      BoardPosition next_position
-     *          A struct holding the next position of pacman
-     *      enum BoardElement future_obstace
-     *          An enum that represents the future obstacle that pacman will
-     *          encounter on its `next_position`
+     *      enum pacman_move
+     *          An enum that represents the pacman move
+     *      Assets *assets
+     *          A pointer to the struct Assets that holds
+     *          the required assets of the application.
      *      Board *board
      *          A pointer to the struct board which stores all the variables
      *          related to the game itself.
-     * returns
-     *      enum GameState
-     *          the `state` of the game when pacman moves into the `next_position`. 
      *
      * example
      *      If pacman moves into a block on its `next_position`, this function
