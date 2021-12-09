@@ -76,8 +76,6 @@ void render_state(States* states, Board *board, Assets *assets) {
     // `current_tutorial_page` tracks the current `page` in the tutorial.
     int current_tutorial_page                   = states->current_tutorial_page;
 
-    // The switch statement below
-        // ?
     switch (player_state) {
         case PLAYER_IN_MENU:
             switch (current_menu_choice) {
