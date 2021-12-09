@@ -32,7 +32,7 @@ if (UNIX)
 endif ()
 
 ## Handle Dependencies for Windows
-if (UNIX)
+if (WIN32)
     if (MSVC)
         message( SEND_ERROR "This project is configured to use MinGW" )
     endif ()
@@ -64,7 +64,7 @@ if (UNIX)
     message("Downloading complete...")
     set(ARCH x86_64-w64-mingw32)
 
-    include_directories(
+    target_include_directories(
         ${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/include/
         ${PROJECT_SOURCE_DIR}/external/SDL2_mixer/${ARCH}/include/
