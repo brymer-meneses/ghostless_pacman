@@ -35,10 +35,6 @@ int main () {
     SDL_Window* window = create_window();
     SDL_Renderer* renderer = create_renderer(window);
 
-    // Initialize application icon 
-    SDL_Surface* icon = IMG_Load("../assets/game_elements/pacman_solo.png");
-    SDL_SetWindowIcon(window, icon);
-
     // Set the background color for the window
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
     
@@ -91,7 +87,6 @@ int main () {
 
     // Free all resources and allocated memory used throughout
     // the application
-    SDL_FreeSurface(icon);
     free_all_assets(&assets);
     IMG_Quit();
     SDL_DestroyWindow(window);
