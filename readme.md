@@ -7,6 +7,28 @@ without the, as stated, ghosts. It was mainly recreated using the C language by
 Brymer Meneses and Paul Gapud, freshman Computer Science students from the
 University of the Philippines - Baguio.
 
+The program mainly utilized the concept of arrays to return a working 10-by-10
+game board. To improve user experience, visual and audio elements were added to
+the program interface. This feature is the significant purpose of using a
+library called _SDL_ or _[Simple DirectMedia Layer](https://www.libsdl.org/)_.
+
+![Image of Pacman, in the Ghostless Pacman game](https://i.imgur.com/wP7ynGR.png)
+
+Here is Pacman, who looks more like Pacman than a plain 'O'. In fact, this
+Pacman actually munches. Rendering its animation is a feature of the said SDL
+library. The same feature allowed the program to display food pieces as
+something more delicious than asterisks or any other punctuation.
+
+![Image of Food, in the Ghostless Pacman game](https://i.imgur.com/jppJPvC.png)
+
+Game obstacles that look tougher than 'X'.
+
+![Image of Block, in the Ghostless Pacman game](https://i.imgur.com/10PmFAi.png)
+
+And instead of a dollar sign for the exit door, here's an exit door.
+
+![Image of Door, in the Ghostless Pacman game](https://i.imgur.com/d2olp1M.png)
+
 # Manual
 
 Upon opening the application, the user can navigate through it intuitively. The program also provides instructions and reminders within itself. Nonetheless, here is a quick guide.
@@ -135,30 +157,6 @@ Navigate to the the `ghostless-pacman` folder and run:
 ```bash
 make build
 ```
-
-# Description
-
-The program mainly utilized the concept of arrays to return a working 10-by-10
-game board. To improve user experience, visual and audio elements were added to
-the program interface. This feature is the significant purpose of using a
-library called _SDL_ or _[Simple DirectMedia Layer](https://www.libsdl.org/)_.
-
-![Image of Pacman, in the Ghostless Pacman game](https://i.imgur.com/wP7ynGR.png)
-
-Here is Pacman, who looks more like Pacman than a plain 'O'. In fact, this
-Pacman actually munches. Rendering its animation is a feature of the said SDL
-library. The same feature allowed the program to display food pieces as
-something more delicious than asterisks or any other punctuation.
-
-![Image of Food, in the Ghostless Pacman game](https://i.imgur.com/jppJPvC.png)
-
-Game obstacles that look tougher than 'X'.
-
-![Image of Block, in the Ghostless Pacman game](https://i.imgur.com/10PmFAi.png)
-
-And instead of a dollar sign for the exit door, here's an exit door.
-
-![Image of Door, in the Ghostless Pacman game](https://i.imgur.com/d2olp1M.png)
 
 # Algorithm
 
