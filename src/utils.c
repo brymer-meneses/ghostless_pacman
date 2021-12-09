@@ -35,7 +35,14 @@ void init_SDL() {
 
 
 SDL_Window* create_window() {
-    // A function that initializes SDL and opens up a window
+    /*
+     *  A function that initializes the application window.
+     *
+     *  returns
+     *      SDL_Window *window
+     *           A pointer to the struct SDL_Window
+     *
+     */
 
     // Initialize a window using SDL
     SDL_Window* window = SDL_CreateWindow("Ghostless Pacman",
@@ -50,11 +57,16 @@ SDL_Window* create_window() {
     return window;
 }
 
-SDL_Renderer* create_renderer(SDL_Window* window) {
+SDL_Renderer* create_renderer(SDL_Window *window) {
     /*
      *  A function that creates a renderer, which manages the graphics hardware. 
      *  A `renderer` is a variable defined in SDL that handles the rendering
      *  of any element in the screen.
+     *
+     *  params
+     *      SDL_Window *window
+     *           A pointer to the struct SDL_Window
+     *
      */
 
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -94,6 +106,26 @@ void render_sprite(Sprite *sprite) {
 
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
 
+    /*
+     * A function that handles the loading of a sprite into memory
+     *
+     * params
+     *      SDL_Renderer *renderer
+     *          A pointer to the struct SDL_Renderer which handles the rendering of every element
+     *          in the screen
+     *      char *filename
+     *          A char which encodes the filename of the image which will be loaded into memory
+     *      int  sprite_frame_size
+     *          
+     *      int  total_frames
+     *          
+     *      SDL_Rect rect
+     *          
+     * example
+     *         Sprite*  sprite = load_sprite(filename)
+     *
+     */
+
     SDL_Surface* image_surface = IMG_Load(filename);
     if (!image_surface) {
         printf("Error creating surface\n");
@@ -118,7 +150,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
 
 int gen_random_num(int min, int max) {
     /* 
-     * Generates a random number with a minimum or maximum
+     * A function that generates a random number with a minimum or maximum
      * 
      * params:
      *      int max
@@ -126,22 +158,42 @@ int gen_random_num(int min, int max) {
      *      int min
      *          the minimum number that will be generated
      * returns:
-     *      a random number generated in with range [min, max]
+     *      a random number generated in the range [min, max].
      */
 
     return rand() % (max + 1 - min) + min;
 }
 
 
-void render_reminder(Sprite* sprite, States* states, Uint32 duration, int maximum_height, int climb_speed){
+void render_reminder(Sprite* sprite, States* states, Uint32 duration, int maximum_height, int move_speed){
+    /* 
+     * A function that handles the rendering of a reminder. This
+     * function is used for displaying reminders for the player when
+     * they made a wrong input to the application.
+     * 
+     * params
+     *      Sprite *sprite
+     *          A pointer to the struct Sprite that represents the image
+     *          you want to display in the screen.
+     *      States *states 
+     *          A pointer to the struct `States`, which handles the different states of the
+     *          game. 
+     *      Uint32 duration 
+     *          The number of miliseconds that it takes until the reminder goes down on the screen.
+     *          Note that, Uint32 is a type defined by SDL.
+     *      int maximum_height
+     *          The maximum height the reminder is allowed to go up.
+     *      int move_speed
+     *          The speed at which the reminder goes up or down (measured in pixels).
+     */
     render_sprite(sprite);
     Uint32 time_until_reminder_goes_down = states->wrong_input_time + duration;
 
     if (time_until_reminder_goes_down < SDL_GetTicks()) {
-        sprite->rect.y += climb_speed;
+        sprite->rect.y += move_speed;
     } else {
         if (sprite->rect.y >= maximum_height) {
-            sprite->rect.y -= climb_speed;
+            sprite->rect.y -= move_speed;
         }
     }
 }
