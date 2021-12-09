@@ -18,6 +18,11 @@ Assets load_all_assets(SDL_Renderer *renderer) {
     * A function that handles the loading of all assets required for the game.
     * This includes loading various images and sounds for the game.
     *
+    * params
+    *      SDL_Renderer *renderer
+    *          A pointer to the struct SDL_Renderer which handles the rendering of every element
+    *          in the screen.
+    *
     * returns
     *     Assets assets
     *         A struct containing all the game assets.
@@ -186,4 +191,5 @@ void free_all_assets(Assets *assets) {
     Mix_FreeChunk(assets->sounds.option_select);
     Mix_FreeChunk(assets->sounds.quit_sound);
     Mix_FreeChunk(assets->sounds.open_about_game);
+    Mix_FreeChunk(assets->sounds.start_game);
 }

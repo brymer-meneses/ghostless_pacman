@@ -89,17 +89,31 @@ void render_sprite(Sprite *sprite) {
      *          A pointer to the struct Sprite that represents the image
      *          you want to display in the screen.
      * example
-     *          doing render_sprite(pacman) will render pacman on the screen.
+     *      doing render_sprite(pacman) will render pacman on the screen.
      */
 
     bool is_sprite_static = sprite->total_frames == 1;
 
+    // NOTE:
+    // The following if-else statement handles, (a) when the sprite is static, meaning it 
+    // does not need to be animated, (b) when the sprite need to be animated.
+
     if (is_sprite_static) {
         SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &sprite->rect);
     } else {
+
+        // NOTE:
+        // If you will look at the pacman.png located under the "assets/game_elements" folder you will see
+        // that it is a collection
+
         Uint32 ticks = SDL_GetTicks();
+        //
         Uint32 current_frame = ( ticks/ SPRITE_UPDATE_DELAY  + sprite->current_frame) % sprite->total_frames;
+
+        //
         SDL_Rect clip_rect = { current_frame * sprite->frame_size, 0, sprite->rect.w, sprite->rect.h };
+
+        //
         SDL_RenderCopyEx(sprite->renderer, sprite->texture, &clip_rect, &sprite->rect, sprite->rotation, NULL, sprite->flip);
     }
 }
@@ -107,22 +121,28 @@ void render_sprite(Sprite *sprite) {
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
 
     /*
-     * A function that handles the loading of a sprite into memory
+     * A function that handles the loading of images into memory.
      *
      * params
      *      SDL_Renderer *renderer
      *          A pointer to the struct SDL_Renderer which handles the rendering of every element
-     *          in the screen
+     *          in the screen.
      *      char *filename
-     *          A char which encodes the filename of the image which will be loaded into memory
-     *      int  sprite_frame_size
+     *          A string which encodes the filename of the image which will be
+     *           loaded into memory.
+     *      int sprite_frame_size
      *          
-     *      int  total_frames
+     *      int total_frames
      *          
      *      SDL_Rect rect
      *          
+     * returns
+     *      A struct Sprite
+     *
      * example
-     *         Sprite*  sprite = load_sprite(filename)
+     *      Sprite image = load_sprite(image_filename);
+     *      Then you will be able render the `image` by doing
+     *      render_sprite(&image);
      *
      */
 

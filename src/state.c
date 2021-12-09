@@ -165,6 +165,10 @@ void render_state(States* states, Board *board, Assets *assets) {
     // Show the quit confirmation prompt
     if (states->show_quit_confirmation) {
         render_sprite(&assets->misc.quit_confirmation_prompt);
+
+        // Avoid rendering wrong input reminders reminders when the quit 
+        // confirmation prompt is shown in the screen.
+        states->wrong_input_state = WRONG_INPUT_NONE;
     };
 }
 
@@ -329,6 +333,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                             Mix_PlayChannel(0, assets->sounds.option_select, 0);
                             states->player_state = PLAYER_IN_MENU;
                             states->game_state = GAME_IN_FOOD_NUMBER_INPUT;
+                            break;
                         case SDLK_x:
                             Mix_PlayChannel(0, assets->sounds.quit_sound, 0);
                             states->show_quit_confirmation = true;

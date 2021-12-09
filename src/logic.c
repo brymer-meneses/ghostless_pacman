@@ -27,8 +27,8 @@ void render_board(Board *board, Assets* assets) {
      * 
      * params
      *      Assets* assets
-     *            A pointer to the struct Assets that points
-     *            to the required assets
+     *            A pointer to the struct Assets that hold
+     *            required assets of the application
      *      Board *board   
      *            A pointer to the struct Board that contains
      *            the necessary items to render the map
@@ -123,6 +123,10 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
      *      Board *board
      *          A pointer to the struct board which stores all the variables
      *          related to the game itself.
+     *      Assets* assets
+     *            A pointer to the struct Assets that points
+     *            to the required assets
+     *
      * returns
      *      enum GameState
      *          the `state` of the game when pacman moves into the `next_position`. 
@@ -323,11 +327,19 @@ int count_impassable_neighbors(Board* board, int row, int col) {
      * A function that calculates the number of impassable neighbors
      * there are in the given `row` and `col` variables.
      *  
-     * params:
+     * params
      *      Board *board
-     *          - a pointer to the struct `Board` which
-     *            contains the variables regarding the game
-     * returns:
+     *            A pointer to the struct `Board` which
+     *            contains the variables regarding the game.
+     *      int row
+     *            A variable corresponding to the row index of the
+     *            10-by-10 array.
+     *      int col
+     *            A variable corresponding to the column index of the
+     *            10-by-10 array.
+     * returns
+     *       the number of impassable neighbors adjacent to the 
+     *       given row and column.
      *      
      *  NOTE:
      *
@@ -349,9 +361,13 @@ int count_impassable_neighbors(Board* board, int row, int col) {
      */
 
     int impassable_adjacent_neighbors = 0;
+
+    // Loop through all the adjacent neighbors of the row and col
     for (int i=-1; i<=1; i++) {
         for (int j=-1; j<=1; j++) {
-            // Counts the number of adjacent spaces exposed to the border
+
+            if (i == 0 && j == 0) continue;
+            // Counts the number of adjacent spaces touching the border
             if (row + i == 0 || row + i == 9 || col + j == 0 || col + j == 9) {
                 impassable_adjacent_neighbors++;
             // Counts the number of adjacent blocks or exit
@@ -359,12 +375,13 @@ int count_impassable_neighbors(Board* board, int row, int col) {
                 impassable_adjacent_neighbors++;
             }
     } 
+    printf("%d\n", impassable_adjacent_neighbors);
     return impassable_adjacent_neighbors;
 }
 
 void fill_board_with_foods(Board *board) {
     /* 
-     * A function that randomly fills the board with food
+     * A function that randomly fills the board with food.
      * 
      * params
      *       Board *board
@@ -383,7 +400,7 @@ void fill_board_with_foods(Board *board) {
 
          if (
             board->array[rand_row][rand_col] == EMPTY &&
-            number_of_impassable_neighbors <= MAX_ADJACENT_IMPASSABLE_NEIGHBORS
+            number_of_impassable_neighbors < MAX_ADJACENT_IMPASSABLE_NEIGHBORS
          ) {
             board->array[rand_row][rand_col] = FOOD;
             total_foods_generated++;
@@ -393,7 +410,7 @@ void fill_board_with_foods(Board *board) {
 
 void fill_board_with_blocks(Board *board) {
     /*
-     * A function that fills the board with blocks
+     * A function that fills the board with blocks.
      * 
      * params
      *       Board *board
@@ -409,9 +426,11 @@ void fill_board_with_blocks(Board *board) {
          //   To decrease the chances of an impossible win scenario, the following
          //   restricts the random generation of row and column index wihin the 
          //   range [1,8].
-         rand_row =  gen_random_num(1,8); // Generate random number between 1-8
-         rand_col =  gen_random_num(1,8); // Generate random number between 1-8
-         if (board->array[rand_row][rand_col] == EMPTY && rand_row != 0 && rand_col != 0) {
+
+         // Generate random number between 1-8
+         rand_row =  gen_random_num(1,8); 
+         rand_col =  gen_random_num(1,8);
+         if (board->array[rand_row][rand_col] == EMPTY) {
 
              board->array[rand_row][rand_col] = BLOCK;
              total_blocks_generated++;
@@ -437,18 +456,29 @@ void fill_board_with_exit(Board *board) {
     // Generate random number between 1-9
     int rand_row = gen_random_num(1,9); 
     int rand_col = gen_random_num(1,9); 
-    int number_impassable_neighbors = count_impassable_neighbors(board, rand_col, rand_row);
-
-    while (number_impassable_neighbors > MAX_ADJACENT_IMPASSABLE_NEIGHBORS) {
+    int number_impassable_neighbors = count_impassable_neighbors(board, rand_row, rand_col);
+    
+    while (!(number_impassable_neighbors < MAX_ADJACENT_IMPASSABLE_NEIGHBORS)) {
         rand_row = gen_random_num(1,9); 
         rand_col = gen_random_num(1,9); 
-        number_impassable_neighbors = count_impassable_neighbors(board, rand_col, rand_row);
+        number_impassable_neighbors = count_impassable_neighbors(board, rand_row, rand_col);
     } 
 
     board->array[rand_row][rand_col] = EXIT;
 }
 
 void init_board(Board* board, Assets* assets, int number_of_foods) {
+    /*
+     * A function that initializes the board
+     *
+     * params
+     *      Board *board
+     *          A pointer to the struct Board which holds
+     *          variables that are concerned with the game itself.
+     *      Assets* assets
+     *            A pointer to the struct Assets that hold
+     *            required assets of the application
+     */
 
     // Reset the board array
     for (int row=0; row<10; row++) {
