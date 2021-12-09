@@ -15,9 +15,9 @@
 
 void render_state(States* states, Board *board, Assets *assets) {
     /* 
-     *   A function that handles the `state` of the application, it changes
-     *   `state` when the player hits a wall causing them to lose or when the 
-     *   player chooses to go to the menu etc. This function `renders`, in other
+     *   A function that handles the `state` of the application. It changes
+     *   `state` when the player hits a wall causing a Game Over, or when the 
+     *   player chooses to go to the menu, etc. This function `renders` or, in other
      *   words, shows the current `state` of the application.
      *   
      *
@@ -33,8 +33,7 @@ void render_state(States* states, Board *board, Assets *assets) {
      *             used in the application.
      */
 
-    // Sprite is a struct that holds several variables that  
-    
+    // Sprite is a struct that holds several variables
     Sprite *about_screen                 = &assets->misc.about_screen;
     Sprite *game_lost_hit_block          = &assets->prompt.game_lost_hit_block;
     Sprite *game_lost_hit_border         = &assets->prompt.game_lost_hit_border;
@@ -62,9 +61,9 @@ void render_state(States* states, Board *board, Assets *assets) {
     // This will change if the player goes to the menu or in the tutorial.
     enum PlayerState player_state               = states->player_state;
 
-    // GameState refers to the state of the main game itself. Here "main game", 
-    // refers to the time wherein the player can see the board along with the food
-    // and pacman. This state tracks when the player won the game, lost etc.
+    // GameState refers to the state of the main game itself. Here, "main game"
+    // refers to the time when the player can see the board along with the food
+    // and pacman. This state tracks when the player won the game, lost, etc.
     enum GameState game_state                   = states->game_state;
 
     // WrongInputState tracks when the player presses a wrong key.
@@ -78,6 +77,7 @@ void render_state(States* states, Board *board, Assets *assets) {
     int current_tutorial_page                   = states->current_tutorial_page;
 
     // The switch statement below
+        // ?
     switch (player_state) {
         case PLAYER_IN_MENU:
             switch (current_menu_choice) {
@@ -106,10 +106,10 @@ void render_state(States* states, Board *board, Assets *assets) {
         case PLAYER_IN_GAME:
             switch (game_state) {
                 case GAME_IN_FOOD_NUMBER_INPUT:
-                    // C is a zero based language that's why we have to subtract 1 
+                    // C is a zero based language. Hence, we have to subtract 1 
                     // when accessing the Sprite array `food_input_prompts`.
-                    // This is also the reason why we have to 
-                    // set the initial number of foods selected to 1, since it will be decremented to 0.
+                    // This is also the reason why we have to set the initial number
+                    // of foods selected to 1, since it will be decremented to 0.
                     
                     render_sprite(&food_input_prompts[states->current_number_of_foods_picked - 1]);
                     break;
@@ -137,8 +137,8 @@ void render_state(States* states, Board *board, Assets *assets) {
             break;
     }
     
-    // The switch statement below processes the wrong input states which were 
-    // recorded and displays a prompt in response to these wrong inputs.
+    // The switch statement below processes the recorded wrong input states 
+    // and displays a prompt in response to these wrong inputs.
     switch (wrong_input_state) {
         case WRONG_INPUT_NONE:
             break;
@@ -162,7 +162,7 @@ void render_state(States* states, Board *board, Assets *assets) {
             break;
     }
 
-    // Shoo the quit confirmation prompt.
+    // Show the quit confirmation prompt
     if (states->show_quit_confirmation) {
         render_sprite(&assets->misc.quit_confirmation_prompt);
     };
@@ -176,13 +176,13 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
      *
      *   params: 
      *       SDL_Event event 
-     *             Specifies an `event` in the game like when the player presses
+     *             Specifies an `event` in the game, such as when the player presses
      *             the button `w` on their keyboard.
      *       State *states
      *             A pointer to the struct `States`, which tracks all the states
      *             of the game.
      *       Board *board    
-     *             A pointer to the struct `Board`, which encapsulates variables required 
+     *             A pointer to the struct `Board`, which encapsulates the variables required 
      *             in the game.
      *       Assets *assets
      *             A pointer to the struct `Assets`, which holds all the images or sounds
@@ -223,7 +223,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
     // NOTE:
     // The copious amount of switch statements were due to the fact that the application
     // had to take into consideration the different `states` that occur throughout the runtime
-    // of the application. These `states` listen to different keys, this is why there is a need
+    // of the application. These `states` listen to different keys, so there is a need
     // to separate them.
 
     switch (player_state) {
@@ -310,7 +310,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                     // This case is associated with the accepted keypresses during the actual game.
                     // That is, 'W' to move up, 'S' to move down, 'A' to move left, and 'D' to move
                     // right. Also, options to return to menu and to exit the game can be done by
-                    // pressing 'M' or pressing 'X' respectively. Keypresses othere than these would
+                    // pressing 'M' or pressing 'X' respectively. Keypresses other than these would
                     // trigger a wrong input reminder.
                     switch (player_keypress) {
                         case SDLK_w:
@@ -394,7 +394,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
                     break;
                 case SDLK_RETURN:
                     // A separate switch is created for pressing 'Enter'. This allows the
-                    // user to change the chosen  option, even after pressing some other
+                    // user to change the chosen option, even after pressing some other
                     // number previously. Once 'Enter' is pressed, the game state will be
                     // changed to GAME_IN_PROGRESS, which is the actual game proper.
                     switch (states->current_menu_choice) {

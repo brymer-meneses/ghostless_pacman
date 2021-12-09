@@ -1,6 +1,6 @@
 /*
- * This file, 'main.c', contains the main loop of the game as well as the
- * initialization of SDL and the termination of the game.
+ * This file, 'main.c', contains the main loop of the game,
+ * as well as its termination and the initialization of SDL
  */
 
 
@@ -35,20 +35,20 @@ int main () {
     SDL_Surface* icon = IMG_Load("../assets/game_elements/pacman_solo.png");
     SDL_SetWindowIcon(window, icon);
 
-    // Set the background color to the color 
+    // Set the background color
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
     
     // Load all game assets
     Assets assets = load_all_assets(renderer);
 
-    // Initialize board which will be used in the game
+    // Initialize board that will be used in the game
     Board board;
      
     States states;
     // Set the initial state of the player
     states.player_state = PLAYER_IN_MENU;
-    // Set the initial state of the game when th player enters th game from 
-    // the menu.
+    // Set the initial state of the game when
+    // the player starts the game from the menu
     states.game_state = GAME_IN_FOOD_NUMBER_INPUT;
     // Set the initial index for the tutorial page
     states.current_tutorial_page = 0;
@@ -74,7 +74,7 @@ int main () {
             else if (event.type == SDL_KEYDOWN) 
                 process_keypress(event, &states, &board, &assets);
         }
-        // Clears the previous `states` in the window.
+        // Clear the previous `states` in the window.
         SDL_RenderClear(renderer);
     
         // Render the current `state` of the application
