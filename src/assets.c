@@ -15,8 +15,7 @@
 
 Assets load_all_assets(SDL_Renderer *renderer) { 
    /*
-    * A function that handles the loading of all assets required for the game.
-    * This includes loading various images and sounds for the game.
+    * A function that handles the loading of all assets required for the game, such as various images and sounds.
     *
     * params
     *      SDL_Renderer *renderer
@@ -149,8 +148,8 @@ void free_sprite_array(Sprite* sprite_array, size_t length_of_array) {
 void free_all_assets(Assets *assets) { 
    /*
     * A function that handles the release of all memory allocated for all
-    * the assets used in the game. This includes freeing all the sounds
-    * and images used in the game.
+    * the assets in the game. This includes freeing all the sounds
+    * and images used.
     *
     * params:
     *     Assets *assets

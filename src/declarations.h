@@ -20,8 +20,7 @@
 /*
  *  MAX_ADJACENT_IMPASSABLE_NEIGHBORS is the maximum number of
  *  adjacent spaces around a food piece or an exit that is impossible
- *  to be passed through. This includes adjacent block or borders ajacent
- *  to it.
+ *  to be passed through. This includes its adjacent blocks or borders.
  *
  *  Legend: 
  *       x  block
@@ -88,7 +87,7 @@ typedef struct Sprite {
 } Sprite;
 
 /*
- * Assets is a struct that holds the all the `assets` of the game. This 
+ * Assets is a struct that holds all the `assets` of the game. This 
  * includes images, or sounds which enhance the experience of the user. 
  */
 typedef struct Assets {
@@ -153,13 +152,14 @@ typedef struct Assets {
 } Assets;
 
 /*
- * Board is a struct that holds variables that relate to the game
- * itself.
+ * Board is a struct that holds variables
+ * related to the game itself.
  */
 
 typedef struct Board { 
     // Pointer to a 10 by 10, two-dimensional array that encodes
     // the
+        // ?
     enum BoardElement array[10][10];
     // The total number of foods generated in the board
     int number_of_foods;
@@ -197,7 +197,7 @@ enum PlayerState {
  *
  *   GAME_IN_FOOD_NUMBER_INPUT
  *       - where the player is prompted to choose the number of food
- *         to be displayed in the game (from 2 to 9)
+ *         to be displayed in the game board (from 2 to 9)
  *
  *   GAME_IN_PROGRESS
  *       - where the player plays the game
@@ -249,7 +249,7 @@ enum GameState {
  *               keys other than 'M' to return to menu or 'X' to
  *               exit the game
  *         WRONG_INPUT_IN_GAME_PROMPTS
- *             - is registered after the results of the game, displayed
+ *             - is registered after the results of the game displayed
  *               through the game prompts, when the user presses
  *               keys other than 'R' to restart, 'M' to return to
  *               menu, or 'X' to exit
@@ -283,7 +283,7 @@ enum WrongInputState {
 };
 
 /* 
- * MenuChoiceState is associated to the menu option that the player chooses.
+ * MenuChoiceState is associated with the menu option that the player chooses.
  * Recall that in the menu, the player can choose from the options 'Start',
  * 'Tutorial', 'About the Game', and 'Exit'.
  */

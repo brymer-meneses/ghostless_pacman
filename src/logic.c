@@ -27,8 +27,8 @@ void render_board(Board *board, Assets* assets) {
      * 
      * params
      *      Assets* assets
-     *            A pointer to the struct Assets that hold
-     *            required assets of the application
+     *            A pointer to the struct Assets that holds
+     *            the required assets of the application
      *      Board *board   
      *            A pointer to the struct Board that contains
      *            the necessary items to render the map
@@ -36,7 +36,7 @@ void render_board(Board *board, Assets* assets) {
 
     // NOTE:
     //  Changing `y` and `x` of the struct SDL_Rect that is a member of the
-    //  struct Sprite, will cause the image encapsulatd in the Sprite to move
+    //  struct Sprite will cause the image encapsulatd in the Sprite to move
     //  depending on how much you increase or decrease these variables.
 
     Sprite* main   =   &assets->game.main;
@@ -44,9 +44,9 @@ void render_board(Board *board, Assets* assets) {
     Sprite* exit   =   &assets->game.exit;
 
     // NOTE:
-    //  The variable `foods` and `blocks` points into an array containing sprites.
-    //  this is it is important to iterate through the members of this array and 
-    //  render the accordingly.
+    //  The variable `foods` and `blocks` point to an array containing sprites.
+    //  It is important to iterate through the members of this array and 
+    //  render them accordingly.
 
     Sprite* foods  =   assets->game.foods;
     Sprite* blocks =   assets->game.blocks;
@@ -168,7 +168,7 @@ enum GameState check_player_status(BoardPosition next_position, enum BoardElemen
 enum GameState check_if_player_won(BoardPosition next_position, Board *board, Assets *assets) {
 
     /* 
-     * A function that checks if the player won in the game.
+     * A function that checks if the player won the game.
      *
      * params
      *      BoardPosition next_position
@@ -185,12 +185,12 @@ enum GameState check_if_player_won(BoardPosition next_position, Board *board, As
      *
      * example
      *      If pacman moves into the exit on its `next_position`, and pacman has 
-     *      eaten all the fruit. This function will return a game_state enum
+     *      eaten all the food pieces. This function will return a game_state enum
      *      PLAYER_WON.
      */
 
 
-    // Check if the pacman has eaten all the foods
+    // Check if the pacman has eaten all the food pieces
     if (board->total_player_score == board->number_of_foods) {
         Mix_PlayChannel(-1, assets->sounds.game_win, 0);
         return GAME_WON;
@@ -204,9 +204,7 @@ enum GameState check_if_player_won(BoardPosition next_position, Board *board, As
 void move_pacman(enum PacmanMove pacman_move, Assets *assets, Board* board, States *states) {
 
     /* 
-     * A function that handels the movement of pacman
-     * current player status, specifically involving the blocks and
-     * food
+     * A function that handles the movement of pacman
      *
      * params
      *      BoardPosition next_position
