@@ -1,7 +1,6 @@
 
 include(FetchContent)
 
-set (FETCH_CONTENT_QUIET FALSE)
 # Handle Dependencies for UNIX
 if (UNIX)
     FetchContent_Declare(
