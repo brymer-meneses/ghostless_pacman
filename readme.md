@@ -2,6 +2,25 @@
 
 # Introduction
 
+Ghostless Pacman is a 2021 adaptation of the video game series Pac-man™, only
+without the, as stated, ghosts. It was mainly recreated using the C language by
+Brymer Meneses and Paul Gapud, freshman Computer Science students from the
+University of the Philippines - Baguio.
+
+# Manual
+
+Upon opening the application, the user can navigate through it intuitively. The program also provides instructions and reminders within itself. Nonetheless, here is a quick guide.
+
+> Choose from the menu:
+>
+> 1. Press 1 to _Start._ You will be prompted to pick a food number from 2-9. Hit enter, and the game begins! Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn. You have to eat all the pieces before going to the door. Don’t miss one! Don’t hit a block or get out of the box! After a game, you can always play again.
+>
+> 2. Press 2 to _Tutorial._ Navigate through the slides by using arrow left (←) and arrow right (→)
+>
+> 3. Press 3 to _Exit._ Confirm by pressing Y, or deny by pressing N.
+>
+> 4. _(Extra!)_ Press A to know what's _About the Game._
+
 # Compiling
 
 ## Windows
@@ -206,17 +225,3 @@ To recall, below is a list of these occurrences:
   - In navigating, the program displays a reminder when the user presses keys other than '←' or '→' to navigate through the tutorial slides, when the user presses keys other than 'M' to return to menu
   - In the last slide, the program displays a reminder when the user presses keys other than '1' to start the game, 'M' to return to menu, or 'X' to exit
 - In _About the Game_, the program displays a reminder when the user presses keys other than 'M' to return to menu
-
-# Manual
-
-Upon opening the application, the user can navigate through it intuitively. The program also provides instructions and reminders within itself. Nonetheless, here is a quick guide.
-
-> Choose from the menu:
->
-> 1. Press 1 to _Start._ You will be prompted to pick a food number from 2-9. Hit enter, and the game begins! Move Pacman using W, A, S, and D, or visit the Tutorial from the menu to learn. You have to eat all the pieces before going to the door. Don’t miss one! Don’t hit a block or get out of the box! After a game, you can always play again.
->
-> 2. Press 2 to _Tutorial._ Navigate through the slides by using arrow left (←) and arrow right (→)
->
-> 3. Press 3 to _Exit._ Confirm by pressing Y, or deny by pressing N.
->
-> 4. _(Extra!)_ Press A to know what's _About the Game._
