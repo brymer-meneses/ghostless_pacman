@@ -17,6 +17,10 @@
 #define NUMBER_OF_SCORE_VISUALS 10
 #define MAX_NUMBER_OF_FOOD 9
 
+// Defines the size (in pixels) of each box in the grid, which appears in the game
+// itself.
+#define BOX_WIDTH 45
+
 /*
  *  MAX_ADJACENT_IMPASSABLE_NEIGHBORS is the maximum number of
  *  adjacent spaces around a food piece or an exit that is impossible
@@ -87,7 +91,7 @@ typedef struct Sprite {
 } Sprite;
 
 /*
- * Assets is a struct that holds all the `assets` of the game. This 
+ * Assets is a struct that holds the all the `assets` of the application. This 
  * includes images, or sounds which enhance the experience of the user. 
  */
 typedef struct Assets {
