@@ -64,7 +64,7 @@ if (WIN32)
     message("Downloading complete...")
     set(ARCH x86_64-w64-mingw32)
 
-    target_include_directories(
+    include_directories(
         ${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/external/SDL2_image/${ARCH}/include/
         ${PROJECT_SOURCE_DIR}/external/SDL2_mixer/${ARCH}/include/
