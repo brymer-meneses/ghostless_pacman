@@ -99,23 +99,36 @@ void render_sprite(Sprite *sprite) {
     // does not need to be animated, (b) when the sprite need to be animated.
 
     if (is_sprite_static) {
+
+        // NOTE:
+        // SDL_RenderCopy is a SDL defined function that displays an image into the screen
         SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &sprite->rect);
     } else {
 
         // NOTE:
         // If you will look at the pacman.png located under the "assets/game_elements" folder you will see
-        // that it is a collection
+        // that it is a collection of frames that in succession animates the movement of pacman's mouth.
+        // We can render this animation by cropping each of these frames and rendering them in the screen in 
+        // a fast manner.
 
+        // The amount of miliseconds since SDL was initiated.
         Uint32 ticks = SDL_GetTicks();
-        //
-        Uint32 current_frame = ( ticks/ SPRITE_UPDATE_DELAY  + sprite->current_frame) % sprite->total_frames;
 
-        //
-        SDL_Rect clip_rect = { current_frame * sprite->frame_size, 0, sprite->rect.w, sprite->rect.h };
+        Uint32 current_frame_index = ( ticks/ SPRITE_UPDATE_DELAY  + sprite->current_frame) % sprite->total_frames;
 
-        //
+        // Clip rect defines a rectangle that contains the current frame being displayed
+        SDL_Rect clip_rect = { current_frame_index * sprite->frame_size, 0, sprite->rect.w, sprite->rect.h };
+
+        // NOTE:
+        // SDL_RenderCopyEx differs with SDL_RenderCopyEx insofar as, SDL_RenderCopyEx has extra parameters which 
+        // can be used to rotate or flip the image displayed in the screen.
         SDL_RenderCopyEx(sprite->renderer, sprite->texture, &clip_rect, &sprite->rect, sprite->rotation, NULL, sprite->flip);
+
+        // NOTE:
+        // A better explanation for animating images using SDL can be found in this
+        // link: https://bit.ly/3lS9v55 if the reader is interested.
     }
+
 }
 
 Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size, int total_frames, SDL_Rect rect) {
@@ -129,18 +142,19 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
      *          in the screen.
      *      char *filename
      *          A string which encodes the filename of the image which will be
-     *           loaded into memory.
+     *          loaded into memory.
      *      int sprite_frame_size
-     *          
+     *          The width of the frame of an animated sprite.
      *      int total_frames
-     *          
+     *          The total frames for animating a sprite.
      *      SDL_Rect rect
+     *          An instance of the SDL_Rect struct
      *          
      * returns
      *      A struct Sprite
      *
      * example
-     *      Sprite image = load_sprite(image_filename);
+     *      Sprite image = load_sprite(renderer, image_filename, 0, 1, image_rect);
      *      Then you will be able render the `image` by doing
      *      render_sprite(&image);
      *
