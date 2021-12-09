@@ -39,8 +39,9 @@ bucket      Manage Scoop buckets
 cache       Show or clear the download cache
 \end{lstlisting}
 
-\subsubsection{Installing Scoop}
-Once you have successfully installed \textbf{scoop}.
+% \subsubsection{Installing Scoop}
+% Once you have successfully installed \textbf{scoop}.
+    % excess or kulang?
 
 \subsubsection{Installing CMake and GNU Make}
 To install \textbf{CMake} and \textbf{GNU Make} run the following
@@ -89,7 +90,7 @@ re-generate its build system.
 \subsubsection{Compiling the game}
 
 This project is configured to only work with
-the MingGW Compiler, so make that it is installed on your computer.
+the MingGW Compiler, so make sure that it is installed on your computer.\\
 
 Once you have installed \textbf{CMake} and \textbf{GNU Make}, you may now
 compile the application. To do so, navigate to the \codeword{ghostless-pacman}
@@ -100,21 +101,21 @@ make build
 \end{lstlisting}
 
 This command will automatically download external GUI libraries which were used
-in making the game. After that it will compile the program and place it to the
+in making the game. After that it will compile the program and place it in the
 \codeword{bin} folder.
 
 \subsubsection{Running the game}
 
-Now the only thing left is to run the application, you can navigate to the \codeword{bin}
-folder and open the \codeword{ghostless-pacman.exe} file which will run the game. Or you
-can run the following command below, to compile and run the application automatically.
+Now the only thing left is to run the application. You can navigate to the \codeword{bin}
+folder and open the \codeword{ghostless-pacman.exe} file which will run the game, or you
+can run the following command below to compile and run the application automatically.
 
 \begin{lstlisting}[language=bash]
 make run
 \end{lstlisting}
 
 Note that, it is important to avoid moving the executable since Windows will not
-be able to find the DLLs which are required for running the game.
+be able to find the DLLs which are required for running the game.\\
 
 Hooray! You have now compiled and run the application.
 
