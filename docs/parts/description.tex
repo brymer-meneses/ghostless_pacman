@@ -54,10 +54,26 @@ program as the project requires:
 \end{enumerate}
 
 Another crucial function defined is
-\codeword{check_for_impossible_win_scenario}, which checks and ensures that any
-round in the game is winnable by preventing
-\codeword{impassable_adjacent_neighbors}, that is, no food piece or exit door
-is surrounded by blocks from all sides.\\
+\codeword{count_impassable_neighbors} which helps in ensuring that any
+round in the game is winnable by preventing instances such as a food piece or exit door is surrounded by blocks from all sides.\\
+
+Other functions are described in the code itself through comments, but here are some more brief descriptions:
+
+\begin{itemize}[label={}]
+    \item \codeword{init_board} initializes the board of the game.
+    \item \codeword{render_board} renders the game board including the main board, Pacman, cherries, blocks, and the exit door.
+    \item \codeword{fill_board_with_exit} randomly places in the game board an exit door.
+    \item \codeword{move_pacman} handles the movement of Pacman.
+    \item \codeword{calculate_pacman_position} is a helper function that calculates and returns the position of Pacman.
+    \item \codeword{render_state} handles the `state` of the application. It changes `state` when the player hits a wall causing a Game Over, or when the player chooses to go to the menu, etc. This function `renders` or, in other words, shows the current `state` of the application.
+    \item \codeword{render_sprite} renders the various image assets needed for the game.
+    \item \codeword{render_reminder} renders the image and animation of the prompts that pop up after a wrong input or choosing to exit the application.
+    \item \codeword{process_keypress} handles the different keypresses made by the player during the game. This function modifies the `states` variable in accordance with the response to the various keypresses of the player.
+    \item \codeword{SDL_GetTicks} is an SDL-defined function that counts the miliseconds since the function is called. This is essential for the spacing of animations involved.
+    \item \codeword{SDL_Delay} is an SDL-defined function that delays execution of certain parts of the code.
+    \item \codeword{Mix_FadeInMusic} is an SDL-defined function that loads the background music for the game.
+\end{itemize}
+
 
 The code also made use of header (.h) files to declare certain variables for
 the game. Some significant concepts involved are for and while loops, structs, and
