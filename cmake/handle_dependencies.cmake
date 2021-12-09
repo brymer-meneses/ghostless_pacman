@@ -1,7 +1,8 @@
 
 include(FetchContent)
 
-## Handle Dependencies for UNIX
+set (FETCH_CONTENT_QUIET FALSE)
+# Handle Dependencies for UNIX
 if (UNIX)
     FetchContent_Declare(
         SDL2_CMAKE 
@@ -32,25 +33,24 @@ if (UNIX)
 endif ()
 
 ## Handle Dependencies for Windows
-if (WIN32)
+if (UNIX)
     if (MSVC)
         message( SEND_ERROR "This project is configured to use MinGW" )
     endif ()
 
     add_definitions(-DSDL_MAIN_HANDLED)
 
+
     FetchContent_Declare(
         SDL2
         URL             https://www.libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz        
         SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2
-        FETCH_CONTENT_QUIET false
     )
 
     FetchContent_Declare(
         SDL2_image
         URL             https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.5-mingw.tar.gz
         SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2_image
-        FETCH_CONTENT_QUIET false
     )
 
     FetchContent_Declare(
