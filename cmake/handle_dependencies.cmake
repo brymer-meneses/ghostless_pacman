@@ -57,14 +57,13 @@ if (UNIX)
         SDL2_mixer
         URL             https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.4-mingw.tar.gz
         SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/SDL2_mixer
-        FETCH_CONTENT_QUIET false
     )
     
     message("Downloading dependencies...")
     FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_mixer)
-    set(ARCH x86_64-w64-mingw32)
 
     message("Downloading complete...")
+    set(ARCH x86_64-w64-mingw32)
 
     include_directories(
         ${PROJECT_NAME}
