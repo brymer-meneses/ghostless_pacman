@@ -162,8 +162,7 @@ typedef struct Assets {
 
 typedef struct Board { 
     // Pointer to a 10 by 10, two-dimensional array that encodes
-    // the
-        // ?
+    // the different positions of all elements in the board.
     enum BoardElement array[10][10];
     // The total number of foods generated in the board
     int number_of_foods;
