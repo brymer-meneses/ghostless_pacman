@@ -375,7 +375,6 @@ int count_impassable_neighbors(Board* board, int row, int col) {
                 impassable_adjacent_neighbors++;
             }
     } 
-    printf("%d\n", impassable_adjacent_neighbors);
     return impassable_adjacent_neighbors;
 }
 
@@ -385,7 +384,7 @@ void fill_board_with_foods(Board *board) {
      * 
      * params
      *       Board *board
-     *          A pointer to the struct Board
+     *          A pointer to the struct Board.
      *
      */
     int total_foods_generated = 0;
