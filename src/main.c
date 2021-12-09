@@ -42,12 +42,12 @@ int main () {
     // Set the background color for the window
     SDL_SetRenderDrawColor(renderer, 24, 28, 36, 1);
     
-    // Load all application assetsa
+    // Load all application assets
     Assets assets = load_all_assets(renderer);
 
     // Initialize board that will be used in the game
     Board board;
-     
+    
     States states;
     // Set the initial state of the player
     states.player_state = PLAYER_IN_MENU;
@@ -90,7 +90,7 @@ int main () {
     }
 
     // Free all resources and allocated memory used throughout
-    // the applicaion.
+    // the application
     SDL_FreeSurface(icon);
     free_all_assets(&assets);
     IMG_Quit();

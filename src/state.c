@@ -58,12 +58,12 @@ void render_state(States* states, Board *board, Assets *assets) {
     Sprite *food_input_prompts           = assets->misc.food_input_prompts;
 
     // PlayerState refers to the location of the player.
-    // This will change if the player goes to the menu or in the tutorial.
+    // This will change if the player goes to the menu or to the tutorial.
     enum PlayerState player_state               = states->player_state;
 
     // GameState refers to the state of the main game itself. Here, "main game"
     // refers to the time when the player can see the board along with the food
-    // and pacman. This state tracks when the player won the game, lost, etc.
+    // and Pacman. This state tracks when the player won the game, lost, etc.
     enum GameState game_state                   = states->game_state;
 
     // WrongInputState tracks when the player presses a wrong key.
@@ -221,7 +221,7 @@ void process_keypress(SDL_Event event, States *states, Board* board, Assets* ass
     // NOTE:
     // SDLK_`x` refers to a keypress on the key `x`, while SDLK_KP_`x` refers
     // to a keypress on the key `x` that is located on the "keypad". This is
-    // the reasoning why there is a double case to the switch statements
+    // the reason why there is a double case to the switch statements
     // when the player is on the food input prompt.
 
     // NOTE:

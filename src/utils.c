@@ -20,7 +20,7 @@ void init_SDL() {
     // Turn on anti-aliasing by default
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
-    // Tell SDL to initialize loading of PNG images
+    // Tell SDL to initialize the loading of PNG images
     IMG_Init(IMG_INIT_PNG);
 
     // Initializes SDL, or exit with an error code if it fails
@@ -101,14 +101,14 @@ void render_sprite(Sprite *sprite) {
     if (is_sprite_static) {
 
         // NOTE:
-        // SDL_RenderCopy is a SDL defined function that displays an image into the screen
+        // SDL_RenderCopy is an SDL defined function that displays an image into the screen
         SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &sprite->rect);
     } else {
 
         // NOTE:
-        // If you will look at the pacman.png located under the "assets/game_elements" folder you will see
-        // that it is a collection of frames that in succession animates the movement of pacman's mouth.
-        // We can render this animation by cropping each of these frames and rendering them in the screen in 
+        // If you will look at pacman.png located under the "assets/game_elements" folder you will see
+        // that it is a collection of frames in succession that animates the movement of Pacman's mouth.
+        // We can render this animation by cropping each frame and rendering them on the screen in 
         // a fast manner.
 
         // The amount of miliseconds since SDL was initiated.
@@ -116,17 +116,18 @@ void render_sprite(Sprite *sprite) {
 
         Uint32 current_frame_index = ( ticks/ SPRITE_UPDATE_DELAY  + sprite->current_frame) % sprite->total_frames;
 
-        // Clip rect defines a rectangle that contains the current frame being displayed
+        // clip_rect defines a rectangle that contains the current frame being displayed
         SDL_Rect clip_rect = { current_frame_index * sprite->frame_size, 0, sprite->rect.w, sprite->rect.h };
 
         // NOTE:
         // SDL_RenderCopyEx differs with SDL_RenderCopyEx insofar as, SDL_RenderCopyEx has extra parameters which 
+                // ?
         // can be used to rotate or flip the image displayed in the screen.
         SDL_RenderCopyEx(sprite->renderer, sprite->texture, &clip_rect, &sprite->rect, sprite->rotation, NULL, sprite->flip);
 
         // NOTE:
-        // A better explanation for animating images using SDL can be found in this
-        // link: https://bit.ly/3lS9v55 if the reader is interested.
+        // If the reader is interested, a better explanation for animating images using SDL
+        // can be found in this link: https://bit.ly/3lS9v55
     }
 
 }
@@ -155,7 +156,7 @@ Sprite load_sprite(SDL_Renderer *renderer, char* filename, int sprite_frame_size
      *
      * example
      *      Sprite image = load_sprite(renderer, image_filename, 0, 1, image_rect);
-     *      Then you will be able render the `image` by doing
+     *      Then you will be able to render the `image` by doing
      *      render_sprite(&image);
      *
      */
@@ -192,7 +193,7 @@ int gen_random_num(int min, int max) {
      *      int min
      *          the minimum number that will be generated
      * returns:
-     *      a random number generated in the range [min, max].
+     *      a random number generated in the range [min, max]
      */
 
     return rand() % (max + 1 - min) + min;
@@ -213,7 +214,7 @@ void render_reminder(Sprite* sprite, States* states, Uint32 duration, int maximu
      *          A pointer to the struct `States`, which handles the different states of the
      *          game. 
      *      Uint32 duration 
-     *          The number of miliseconds that it takes until the reminder goes down on the screen.
+     *          The number of miliseconds that it takes until the reminder goes down the screen.
      *          Note that, Uint32 is a type defined by SDL.
      *      int maximum_height
      *          The maximum height the reminder is allowed to go up.
