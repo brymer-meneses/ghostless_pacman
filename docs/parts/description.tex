@@ -84,24 +84,40 @@ Variables used in the game are much elaborated on the lines of code at which the
 \begin{table}[H]
     \centering
     \def\arraystretch{2}
-    \begin{tabular}{ m{20em} m{15em} } 
+    \begin{tabular}{ m{16em} m{25em} } 
+        \toprule
         Variable & Use \\
-        \hline
-        \codeword{window} & associates to the window of the whole application, different from the board of the actual game \\
+        \midrule
+        \codeword{SDL_Window *window} & A variable which manages the window of the whole application.\\
         
-        \codeword{board} & associates to the board of the actual game, which utilizes an array of 10 columns and 10 rows \\
+        \midrule
+        \codeword{Board board} & 
+                            An instance of the \codeword{Board} struct containing
+                            variables which are related to the game itself. 
+                            It contains the following members:
+                            \begin{enumerate}
+                                \item \codeword{array}
+                                \item \codeword{number_of_blocks}
+                                \item \codeword{number_of_foods}
+                                \item \codeword{current_number_of_foods_picked}
+                                \item \codeword{total_player_score}
+                            \end{enumerate}
+        \\
 
-        \codeword{number_of_blocks} & returns an integer that corresponds to how many blocks are displayed on the game board\\
-
-        \codeword{number_of_foods} & returns an integer that corresponds to how many food pieces are displayed on the game board, in response to desired number that the user chose \\
-
-        \codeword{current_number_of_foods_picked} & returns the number of food eaten by Pacman as the player navigates through the game board \\
-
-        \codeword{total_player_score} & reflects the current number of foods picked\\
-
-        \codeword{player_state} & an \codeword{enum} variable that returns the current state of the player in the application. States include \codeword{PLAYER_IN_MENU}, \codeword{PLAYER_IN_GAME}, \codeword{PLAYER_IN_TUTORIAL}, and \codeword{PLAYER_IN_ABOUT}.\\
-
-        \codeword{game_state} & an \codeword{enum} variable that returns the current state of the game itself. States include \codeword{GAME_WON}, \codeword{GAME_LOST_HIT_BLOCK}, \codeword{GAME_LOST_HIT_BORDER}, \codeword{GAME_LOST_INSUFFICIENT_FOOD}, \codeword{GAME_IN_PROGRESS}, and \codeword{GAME_IN_FOOD_NUMBER_INPUT}.\\
+        \midrule
+        \codeword{States states} & 
+                            An instance of the struct \codeword{States} that
+                            manages the state of the application 
+                            It contains the following members:
+                            \begin{enumerate}
+                                \item \codeword{player_state}
+                                \item \codeword{game_state}
+                                \item \codeword{wrong_input_state}
+                                \item \codeword{current_tutorial_page}
+                                \item \codeword{ti}
+                            \end{enumerate}
+        \\
+        \bottomrule
     \end{tabular}
     \caption{Major variables used in creating Ghostless Pacman}
 \end{table}
