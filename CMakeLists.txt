@@ -19,6 +19,7 @@ project(ghostless-pacman)
 # necessary for running the game, since it depends on external gui 
 # libraries.
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin )
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 # Compile all the C files and headers located in the src/ folder
 message("Compiling source files...")
