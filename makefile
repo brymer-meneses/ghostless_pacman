@@ -25,7 +25,7 @@ clean:
 	$(rm) "./bin"
 
 docs:
-	pandoc "./readme.md" -o "./readme.pdf"
+	cd "./docs" && pdflatex -output-directory="../bin/docs" documentation.tex
 
 
 
