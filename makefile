@@ -1,3 +1,4 @@
+
 ifeq ($(OS),Windows_NT)
 	config := "MinGW Makefiles"
 	rm	   := del -fR
@@ -8,15 +9,15 @@ endif
 
 .PHONY: setup build run docs clean
 
-all: setup build run docs
+all: setup build docs
  
 setup:
 	cmake -S . -B build/ -G $(config) -Wno-dev
 
-build:
+build: setup
 	cd "./build" && $(MAKE) 
 
-run: setup build
+run: build
 	cd "./bin" && "./ghostless-pacman"
 
 clean:
@@ -26,9 +27,4 @@ clean:
 
 docs:
 	cd "./docs" && pdflatex -output-directory="../bin/docs" documentation.tex
-
-
-
-
-	
 
