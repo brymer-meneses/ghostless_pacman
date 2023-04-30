@@ -158,6 +158,20 @@ Navigate to the the `ghostless-pacman` folder and run:
 make build
 ```
 
+## MacOS
+
+Use brew to install the following dependencies:
+```bash
+brew install sdl2 sdl2_image sdl2_mixer
+```
+
+Navigate to the the `ghostless-pacman` folder and run:
+
+```bash
+make build
+```
+
+
 # Algorithm
 
 ## I. Pre-play Algorithm
