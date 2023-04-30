@@ -1,8 +1,22 @@
 
 include(FetchContent)
 
-# Handle Dependencies for UNIX
-if (UNIX)
+# Handle Dependencies for MacOS
+if (APPLE) 
+
+  # Add the include directory for SDL2
+  target_include_directories(${PROJECT_NAME} PRIVATE /opt/homebrew/include)
+
+  # Define the _THREAD_SAFE macro
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _THREAD_SAFE)
+
+  # Link with the SDL2 library
+  target_link_directories(${PROJECT_NAME} PRIVATE /opt/homebrew/lib)
+  target_link_libraries(${PROJECT_NAME} PRIVATE SDL2 SDL2_image SDL2_mixer)
+endif ()
+
+# Handle Dependencies for Linux
+if (LINUX)
     FetchContent_Declare(
         SDL2_CMAKE 
         GIT_REPOSITORY  https://github.com/aminosbh/sdl2-cmake-modules
